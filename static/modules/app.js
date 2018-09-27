@@ -16,7 +16,27 @@ function startApp() {
     // router.sendRouter();
 }
 
+function changingColor() {
+    let colorValue = {
+        R: 255,
+        G: 0,
+        B: 0
+    };
+
+    let growFlag = true;
+
+    let colorInterval = setInterval(() => {
+        document.body.style.backgroundColor = "rgb("+colorValue.R+", "+colorValue.G+", " + colorValue.B+")";
+        if (colorValue.G <= 250 && growFlag) {
+            colorValue.G += 1;
+        } else if (colorValue.G >= 5 && !growFlag) {
+            colorValue.G -= 1;
+        } else growFlag = !growFlag;
+    }, 100);
+}
+
 window.addEventListener("load", function () {
+    changingColor();
     startApp();
     document.querySelector(".main-box").hidden = false;
 });

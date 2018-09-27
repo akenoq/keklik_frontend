@@ -34,6 +34,8 @@ export default class OfficePage extends Page {
             document.getElementById("to-quizes-btn").classList.remove("active");
             document.getElementById("quizes-desk").hidden = true;
             document.getElementById("to-courses-btn").classList.add("active");
+            document.getElementById("profile").hidden = true;
+            document.getElementById("to-profile-btn").classList.remove("active");
         };
 
         document.getElementById("to-quizes-btn").onclick = () => {
@@ -42,6 +44,18 @@ export default class OfficePage extends Page {
             document.getElementById("to-quizes-btn").classList.add("active");
             document.getElementById("quizes-desk").hidden = false;
             document.getElementById("to-courses-btn").classList.remove("active");
+            document.getElementById("profile").hidden = true;
+            document.getElementById("to-profile-btn").classList.remove("active");
         };
+
+        document.getElementById("to-profile-btn").onclick = () => {
+            console.log("C3");
+            document.getElementById("courses-desk").hidden = true;
+            document.getElementById("to-quizes-btn").classList.remove("active");
+            document.getElementById("quizes-desk").hidden = true;
+            document.getElementById("to-courses-btn").classList.remove("active");
+            document.getElementById("profile").hidden = false;
+            document.getElementById("to-profile-btn").classList.add("active");
+        }
     }
 }
