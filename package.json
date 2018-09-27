@@ -1,0 +1,29 @@
+{
+  "name": "keklik",
+  "version": "1.0.0",
+  "description": "quiz for education",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --watch",
+    "prestart": "webpack",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akenoq/keklik_frontend.git"
+  },
+  "author": "brainstorm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akenoq/keklik_frontend/issues"
+  },
+  "homepage": "https://github.com/akenoq/keklik_frontend#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "webpack": "^4.20.1"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.1.1"
+  }
+}
