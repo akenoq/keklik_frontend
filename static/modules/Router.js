@@ -6,6 +6,7 @@ import PagePresenter from "./PagePresenter.js";
 import linkOnButtons from "./linkOnButtons.js";
 import OfficePage from "../views/OfficePage";
 import CoursePage from "../views/CoursePage";
+import GroupPage from "../views/GroupPage";
 
 export default class Router {
     constructor() {
@@ -21,6 +22,7 @@ export default class Router {
         globalBus().registerPage = new RegisterPage();
         globalBus().officePage = new OfficePage();
         globalBus().coursePage = new CoursePage();
+        globalBus().groupPage = new GroupPage();
 
         // pagePath
         const registerPagePath = RegisterPage.pagePath();
@@ -72,6 +74,10 @@ export default class Router {
 
             case "/group":
                 PagePresenter.showOnlyOnePage("group-page");
+                break;
+
+            case "/play":
+                PagePresenter.showOnlyOnePage("play-page");
                 break;
 
             default:

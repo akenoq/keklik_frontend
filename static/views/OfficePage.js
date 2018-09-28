@@ -23,10 +23,6 @@ export default class OfficePage extends Page {
         return "office-page";
     }
 
-    getForm() {
-        return this.form;
-    }
-
     addEventsOnButtons() {
         document.getElementById("to-courses-btn").onclick = () => {
             console.log("C1");

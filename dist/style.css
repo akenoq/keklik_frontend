@@ -1,7 +1,20 @@
+@font-face {
+    font-family: ComicRu; /* Имя шрифта */
+    src: url(./comic.ttf); /* Путь к файлу со шрифтом */
+}
+
 body {
-    /*background-color: #bbf242;*/
-    background-color: #feff47;
-    /*background-image: url("paper_texture.jpg") !important;*/
+    /* желтая тема */
+    /*background-color: #feff47;*/
+    background-color: #cbee7a;
+    font-family: ComicRu, Arial, Tahoma;
+}
+
+.main-page {
+    background-color: #8dff005e;
+    padding: 10px;
+    border-radius: 5px;
+    padding-bottom: 30px;
 }
 
 .regform {
@@ -27,7 +40,8 @@ body {
 }
 
 .navbar.bg-light {
-    background-color: #ffc107 !important;
+    /*background-color: #ffc107 !important;*/
+    background-color: white !important;
 }
 
 .page {
@@ -73,7 +87,17 @@ body {
 }
 
 .card-header {
-    background-color: #ffc107 !important;
+    /* желтая тема */
+    /*background-color: #ffc107 !important;*/
+    background-color: #77d352 !important;
+}
+
+.card-header-green-tab {
+    color: white;
+}
+
+.card-header-green-tab:hover {
+    color: white;
 }
 
 .ava {
@@ -83,4 +107,39 @@ body {
 .card-desk-play .card-img-top:hover {
     z-index: 5;
     background-color: rgba(50, 205, 50, 0.33);
+}
+
+.figure {
+    background-color: white;
+    padding-left: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    border-radius: 5px;
+}
+
+.img-fluid {
+    max-width: 95%;
+    height: auto;
+}
+
+.play-page {
+    align-content: center;
+}
+
+.new-quiz {
+    background-color: #77d351;
+}
+
+.new-quiz:hover {
+    cursor: pointer;
+}
+
+.edit-quiz:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.delete-quiz:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }

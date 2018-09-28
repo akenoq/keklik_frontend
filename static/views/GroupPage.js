@@ -3,23 +3,23 @@
 import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
 
-export default class CoursePage extends Page {
+export default class GroupPage extends Page {
 
     constructor() {
         super();
         this.addEventsOnButtons();
         this.addRedirectOnButtons(
-            {button: "group-card-1", nextPage: "group-page", pagePath: "/group"}
+            {button: "to-play-btn-1", nextPage: "play-page", pagePath: "/play"}
         );
-        console.log("course")
+        console.log("group")
     }
 
     static pagePath() {
-        return "/course";
+        return "/group";
     }
 
     static pageBoxName() {
-        return "course-page";
+        return "group-page";
     }
 
     addEventsOnButtons() {

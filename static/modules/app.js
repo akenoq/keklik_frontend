@@ -6,6 +6,7 @@ import RegisterPage from "../views/RegisterPage.js";
 import RegisterForm from "./RegisterForm.js";
 import OfficePage from "../views/OfficePage.js";
 import CoursesPage from "../views/CoursePage.js";
+import GroupPage from "../views/GroupPage.js";
 
 function startApp() {
     console.log("HELLO APP");
@@ -36,7 +37,7 @@ function changingColor() {
 }
 
 window.addEventListener("load", function () {
-    changingColor();
+    // changingColor();
     startApp();
     document.querySelector(".main-box").hidden = false;
 });
