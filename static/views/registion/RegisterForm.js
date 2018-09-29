@@ -1,8 +1,9 @@
 "use strict";
 
-import FormValidator from "./FormValidator.js";
-import globalBus from "./globalBus.js";
-// import fieldsCleaner from "./fieldsCleaner.js";
+import FormValidator from "../../modules/FormValidator.js";
+import globalBus from "../../modules/globalBus.js";
+import Requester from "../../modules/network/Requester.js";
+import fieldsCleaner from "./../../modules/fieldsCleaner.js";
 
 const messagesRegisterForm = {
     EMPTY_MESSAGE : "Заполнены не все поля",
@@ -20,6 +21,7 @@ export default class RegisterForm extends FormValidator {
         this.passwordValue = "";
         this.errorBox = null;
         this.addEventsToButtons();
+        console.log("reg FORM");
     }
 
     static msgEmptyField() {
@@ -56,23 +58,22 @@ export default class RegisterForm extends FormValidator {
         return true;
     }
 
-    // clearForm() {
-    //     this.clearFields(
-    //         "register-form__input-email",
-    //         "register-form__input-login",
-    //         "register-form__input-password",
-    //         "register-form__error-box"
-    //     );
-    // }
+    clearForm() {
+        this.clearFields(
+            "regform-login",
+            "regform-password",
+            "regform-err"
+        );
+    }
 
     sendRequest() {
-        globalBus.requester(this.loginValue, this.passwordValue, (err) => {
+        Requester.register(this.loginValue, this.passwordValue, (err) => {
             if (err) {
                 return this.errorBox.innerHTML = RegisterForm.msgResponseFromHost();
             }
 
             alert(RegisterForm.msgSignUpSuccess());
-            // this.clearForm();
+            this.clearForm();
 
             document.querySelector(".register-page__button-back").click();
         });

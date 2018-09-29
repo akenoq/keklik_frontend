@@ -1,7 +1,7 @@
 "use strict";
 
 import globalBus from "./globalBus.js";
-import RegisterPage from "../views/RegisterPage.js";
+import RegisterPage from "../views/registion/RegisterPage.js";
 import PagePresenter from "./PagePresenter.js";
 import linkOnButtons from "./linkOnButtons.js";
 import OfficePage from "../views/OfficePage";
@@ -78,6 +78,10 @@ export default class Router {
 
             case "/play":
                 PagePresenter.showOnlyOnePage("play-page");
+                break;
+
+            case "/edit":
+                PagePresenter.showOnlyOnePage("edit-page");
                 break;
 
             default:

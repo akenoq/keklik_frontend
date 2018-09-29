@@ -1,71 +1,141 @@
+/**
+ * Класс для запросов на сервер
+ */
 "use strict";
 
-import globalBus from "./../globalBus.js";
+import globalBus from "../globalBus";
 
-const msgFromHost = {
-    HTTP_OK: 200,
-    HTTP_CREATED: 201
+const messagesFromHost = {
+    HTTP_OK : 200,
+    XHR_READY : 4
 };
 
 export default class Requester {
+
     constructor() {
-        this.basicUrl = "http://keklik-api.herokuapp.com/api";
         globalBus().requester = this;
     }
 
-    httpRequest(url, type='GET', data='') {
-        let fullUrl = this.basicUrl + url;
-        let body = data;
-        return new Promise(function (resolve, reject) {
+    /**
+     * Возвращает url backend сервера
+     * @returns {string}
+     */
+    static baseUrl() {
+        return  "https://keklik-api.herokuapp.com/";
+    }
 
-            let xhr = new XMLHttpRequest();
-            xhr.open(type, fullUrl, true);
+    /**
+     * POST-запрос на сервер
+     * @param {string} address
+     * @param {object} data
+     * @param callback
+     */
+    static requestPost(address, data, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", this.baseUrl() + address, true);
+        xhr.withCredentials = true; //for cookies
 
-            if (type !== 'GET') {
-                xhr.withCredentials = true; //for cookies
-                body = JSON.stringify(data);
-                xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
-                xhr.send(body);
-            } else {
-                xhr.send();
+        const body = JSON.stringify(data);
+
+        xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
+
+        xhr.send(body);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState !== messagesFromHost.XHR_READY) {
+                return;
+            }
+            if (+xhr.status !== messagesFromHost.HTTP_OK) {
+                return callback(xhr, null);
             }
 
-            xhr.onload = function () {
-                if (this.status === msgFromHost.HTTP_OK ||
-                    this.status === msgFromHost.HTTP_CREATED) {
-                    resolve(JSON.parse(xhr.responseText));
-                } else {
-                    let error = new Error(this.statusText);
-                    error.code = this.status;
-                    reject(error);
-                }
-            };
+            const response = JSON.parse(xhr.responseText);
+            callback(null, response);
+        };
+    }
 
-            xhr.onerror = function () {
-                reject(new Error("Network Error"));
-            };
+    /**
+     * GET-запрос на сервер
+     * @param {string} address - string with url
+     * @param callback
+     */
+    static requestGet(address, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", this.baseUrl() + address, true);
+        xhr.withCredentials = true;
 
-            xhr.send();
-        });
+        xhr.send();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState !== messagesFromHost.XHR_READY) {
+                return;
+            }
+            if (+xhr.status !== messagesFromHost.HTTP_OK) {
+                return callback(xhr, null);
+            }
+
+            const response = JSON.parse(xhr.responseText);
+            callback(null, response);
+        };
+    }
+
+    /**
+     * PATCH-запрос на сервер
+     * @param {string} address
+     * @param {object} data
+     * @param callback
+     */
+    static requestPatch(address, data, callback) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("PATCH", this.baseUrl() + address, true);
+        xhr.withCredentials = true; //for cookies
+
+        const body = JSON.stringify(data);
+
+        xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
+
+        xhr.send(body);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState !== messagesFromHost.XHR_READY) {
+                return;
+            }
+            if (+xhr.status !== messagesFromHost.HTTP_OK) {
+                return callback(xhr, null);
+            }
+
+            const response = JSON.parse(xhr.responseText);
+            callback(null, response);
+        };
+    }
+
+    /**
+     * Авторизация пользователя
+     * @param username
+     * @param password
+     * @param callback
+     */
+    static auth(username, password, callback) {
+        const user = {username, password};
+        Requester.requestPost("api/users/signin/", user, callback);
     }
 
     /**
      * Регистрация пользователя
-     * @param login
+     * @param username
      * @param password
+     * @param callback
      */
-    register(login, password) {
-        const user = {login, password};
-        this.httpRequest("/users", user)
-            .then(
-                response => {
-                    return response
-                }
-            )
-            .catch (
-                error => {
-                    alert(`Rejected: ${error}`)
-                }
-            )
+    static register(username, password, callback) {
+        const user = {username, password};
+        Requester.requestPost("api/users/", user, callback);
+    }
+
+    /**
+     * Узнает информацию о текущем пользователе
+     * @param callback
+     */
+    static whoami(callback) {
+        Requester.requestGet("api/users/me/", callback);
     }
 }

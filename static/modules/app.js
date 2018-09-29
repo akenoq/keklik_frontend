@@ -2,11 +2,12 @@
 
 import globalBus from "./globalBus.js"
 import Router from "./Router.js"
-import RegisterPage from "../views/RegisterPage.js";
-import RegisterForm from "./RegisterForm.js";
+import RegisterPage from "../views/registion/RegisterPage.js";
+import RegisterForm from "../views/registion/RegisterForm.js";
 import OfficePage from "../views/OfficePage.js";
 import CoursesPage from "../views/CoursePage.js";
 import GroupPage from "../views/GroupPage.js";
+import Requester from "./network/Requester.js";
 
 function startApp() {
     console.log("HELLO APP");
