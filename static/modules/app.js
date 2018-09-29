@@ -1,9 +1,11 @@
 "use strict";
 
 import globalBus from "./globalBus.js"
-import Router from "./Router.js"
+import Router from "./Router.js";
 import RegisterPage from "../views/registion/RegisterPage.js";
 import RegisterForm from "../views/registion/RegisterForm.js";
+import LoginPage from "../views/login/LoginPage.js";
+import LoginForm from "../views/login/LoginForm.js";
 import OfficePage from "../views/OfficePage.js";
 import CoursesPage from "../views/CoursePage.js";
 import GroupPage from "../views/GroupPage.js";

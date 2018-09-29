@@ -4,6 +4,7 @@ import FormValidator from "../../modules/FormValidator.js";
 import globalBus from "../../modules/globalBus.js";
 import Requester from "../../modules/network/Requester.js";
 import fieldsCleaner from "./../../modules/fieldsCleaner.js";
+import PagePresenter from "../../modules/PagePresenter";
 
 const messagesRegisterForm = {
     EMPTY_MESSAGE : "Заполнены не все поля",
@@ -16,7 +17,7 @@ export default class RegisterForm extends FormValidator {
 
     constructor() {
         super();
-        // Object.assign(RegisterForm.prototype, fieldsCleaner);
+        Object.assign(RegisterForm.prototype, fieldsCleaner);
         this.loginValue = "";
         this.passwordValue = "";
         this.errorBox = null;
@@ -73,9 +74,10 @@ export default class RegisterForm extends FormValidator {
             }
 
             alert(RegisterForm.msgSignUpSuccess());
+
             this.clearForm();
 
-            document.querySelector(".register-page__button-back").click();
+            PagePresenter.showOnlyOnePage("office-page");
         });
     }
 

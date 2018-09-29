@@ -2,6 +2,7 @@
 
 import globalBus from "./globalBus.js";
 import RegisterPage from "../views/registion/RegisterPage.js";
+import LoginPage from "../views/login/LoginPage.js";
 import PagePresenter from "./PagePresenter.js";
 import linkOnButtons from "./linkOnButtons.js";
 import OfficePage from "../views/OfficePage";
@@ -20,6 +21,7 @@ export default class Router {
 
         // page
         globalBus().registerPage = new RegisterPage();
+        globalBus().loginPage = new LoginPage();
         globalBus().officePage = new OfficePage();
         globalBus().coursePage = new CoursePage();
         globalBus().groupPage = new GroupPage();
@@ -28,9 +30,7 @@ export default class Router {
         const registerPagePath = RegisterPage.pagePath();
         // const infoPage = new InfoPage();
 
-        globalBus().registerPage.addRedirectOnButtons(
-            {button: "regformBtn", nextPage: "login-page", pagePath: "/main"}
-        );
+
 
         Router.redirect();
 
@@ -62,6 +62,10 @@ export default class Router {
 
             case "/register":
                 PagePresenter.showOnlyOnePage("register-page");
+                break;
+
+            case "/login":
+                PagePresenter.showOnlyOnePage("login-page");
                 break;
 
             case "/info":

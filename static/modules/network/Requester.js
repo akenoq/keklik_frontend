@@ -6,9 +6,11 @@
 import globalBus from "../globalBus";
 
 const messagesFromHost = {
-    HTTP_OK : 200,
+    HTTP_OK : 2,
     XHR_READY : 4
 };
+
+const WITH_CREDENTIALS = true;
 
 export default class Requester {
 
@@ -33,7 +35,7 @@ export default class Requester {
     static requestPost(address, data, callback) {
         const xhr = new XMLHttpRequest();
         xhr.open("POST", this.baseUrl() + address, true);
-        xhr.withCredentials = true; //for cookies
+        xhr.withCredentials = WITH_CREDENTIALS; //for cookies
 
         const body = JSON.stringify(data);
 
@@ -45,7 +47,7 @@ export default class Requester {
             if (xhr.readyState !== messagesFromHost.XHR_READY) {
                 return;
             }
-            if (+xhr.status !== messagesFromHost.HTTP_OK) {
+            if (parseInt(+xhr.status/100) !== messagesFromHost.HTTP_OK) {
                 return callback(xhr, null);
             }
 
@@ -62,7 +64,7 @@ export default class Requester {
     static requestGet(address, callback) {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", this.baseUrl() + address, true);
-        xhr.withCredentials = true;
+        xhr.withCredentials = WITH_CREDENTIALS;
 
         xhr.send();
 
@@ -70,7 +72,7 @@ export default class Requester {
             if (xhr.readyState !== messagesFromHost.XHR_READY) {
                 return;
             }
-            if (+xhr.status !== messagesFromHost.HTTP_OK) {
+            if (parseInt(+xhr.status/100) !== messagesFromHost.HTTP_OK) {
                 return callback(xhr, null);
             }
 
@@ -88,7 +90,7 @@ export default class Requester {
     static requestPatch(address, data, callback) {
         const xhr = new XMLHttpRequest();
         xhr.open("PATCH", this.baseUrl() + address, true);
-        xhr.withCredentials = true; //for cookies
+        xhr.withCredentials = WITH_CREDENTIALS; //for cookies
 
         const body = JSON.stringify(data);
 
@@ -100,7 +102,7 @@ export default class Requester {
             if (xhr.readyState !== messagesFromHost.XHR_READY) {
                 return;
             }
-            if (+xhr.status !== messagesFromHost.HTTP_OK) {
+            if (parseInt(+xhr.status/100) !== messagesFromHost.HTTP_OK) {
                 return callback(xhr, null);
             }
 
@@ -117,7 +119,7 @@ export default class Requester {
      */
     static auth(username, password, callback) {
         const user = {username, password};
-        Requester.requestPost("api/users/signin/", user, callback);
+        Requester.requestPost("api/session/", user, callback);
     }
 
     /**
