@@ -2,6 +2,8 @@
 
 import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
+import globalBus from "../modules/globalBus";
+import Requester from "../modules/network/Requester";
 
 export default class OfficePage extends Page {
 
@@ -12,7 +14,8 @@ export default class OfficePage extends Page {
             {button: "course-card-1", nextPage: "course-page", pagePath: "/course"}
         );
         this.addEventsOnButtons();
-        console.log("office")
+        console.log("office");
+        globalBus().user = {};
     }
 
     static pagePath() {
@@ -21,6 +24,17 @@ export default class OfficePage extends Page {
 
     static pageBoxName() {
         return "office-page";
+    }
+
+    render() {
+        Requester.whoami((err, resp) => {
+            if (err) {
+                return alert("office error");
+            }
+
+            globalBus().user = resp;
+            document.getElementById("office-header-username").innerHTML = globalBus().user.username;
+        });
     }
 
     addEventsOnButtons() {

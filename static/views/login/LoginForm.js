@@ -74,6 +74,7 @@ export default class LoginForm extends FormValidator {
             }
             alert(LoginForm.msgSignUpSuccess());
             this.clearForm();
+            globalBus().officePage.render();
             PagePresenter.showOnlyOnePage("office-page");
         });
     }
