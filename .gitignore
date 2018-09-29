@@ -62,6 +62,6 @@ typings/
 .idea/
 
 # dist
-*/dist/app.js
+*dist/app.js
 
 */Requester_p.js
