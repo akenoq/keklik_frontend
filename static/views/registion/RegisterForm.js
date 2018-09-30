@@ -76,7 +76,7 @@ export default class RegisterForm extends FormValidator {
             alert(RegisterForm.msgSignUpSuccess());
 
             this.clearForm();
-
+            globalBus().officePage.render();
             PagePresenter.showOnlyOnePage("office-page");
         });
     }

@@ -26,6 +26,21 @@ export default class Requester {
         return  "https://keklik-api.herokuapp.com/";
     }
 
+    static getToken() {
+        return localStorage.getItem("token") !== null ? localStorage.getItem("token") : "no";
+    }
+
+    static setToken(resp) {
+        let token = "Token " + resp.token.toString();
+        localStorage.setItem("token", token);
+        console.log("TOKEN = " + localStorage.getItem("token"));
+    }
+
+    static setUser(resp) {
+        localStorage.setItem("user", JSON.stringify(resp));
+        console.log("USER = " + localStorage.getItem("user"));
+    }
+
     /**
      * POST-запрос на сервер
      * @param {string} address
@@ -40,6 +55,7 @@ export default class Requester {
         const body = JSON.stringify(data);
 
         xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
+        xhr.setRequestHeader("Authorization", Requester.getToken());
 
         xhr.send(body);
 
@@ -52,6 +68,11 @@ export default class Requester {
             }
 
             const response = JSON.parse(xhr.responseText);
+
+            // только при регистрации
+            Requester.setToken(response);
+            Requester.setUser(response);
+
             callback(null, response);
         };
     }
@@ -66,37 +87,9 @@ export default class Requester {
         xhr.open("GET", this.baseUrl() + address, true);
         xhr.withCredentials = WITH_CREDENTIALS;
 
+        xhr.setRequestHeader("Authorization", Requester.getToken());
+
         xhr.send();
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState !== messagesFromHost.XHR_READY) {
-                return;
-            }
-            if (parseInt(+xhr.status/100) !== messagesFromHost.HTTP_OK) {
-                return callback(xhr, null);
-            }
-
-            const response = JSON.parse(xhr.responseText);
-            callback(null, response);
-        };
-    }
-
-    /**
-     * PATCH-запрос на сервер
-     * @param {string} address
-     * @param {object} data
-     * @param callback
-     */
-    static requestPatch(address, data, callback) {
-        const xhr = new XMLHttpRequest();
-        xhr.open("PATCH", this.baseUrl() + address, true);
-        xhr.withCredentials = WITH_CREDENTIALS; //for cookies
-
-        const body = JSON.stringify(data);
-
-        xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
-
-        xhr.send(body);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState !== messagesFromHost.XHR_READY) {
