@@ -27,13 +27,13 @@ export default class OfficePage extends Page {
     }
 
     render() {
-        Requester.whoami((err, resp) => {
+        return Requester.whoami((err, resp) => {
             if (err) {
                 return alert("office error");
             }
-
             globalBus().user = resp;
             document.getElementById("office-header-username").innerHTML = globalBus().user.username;
+            return console.log("office norm");
         });
     }
 

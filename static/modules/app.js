@@ -14,9 +14,8 @@ import AuthWorker from "./network/AuthWorker";
 
 function startApp() {
     console.log("HELLO APP");
-
-    globalBus().router = new Router();
     globalBus().authWorker = new AuthWorker();
+    globalBus().router = new Router();
     let router = globalBus().router;
     // router = router.getMe(router);
     // router.sendRouter();

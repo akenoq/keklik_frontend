@@ -8,6 +8,7 @@ import linkOnButtons from "./linkOnButtons.js";
 import OfficePage from "../views/OfficePage";
 import CoursePage from "../views/CoursePage";
 import GroupPage from "../views/GroupPage";
+import Requester from "./network/Requester";
 
 export default class Router {
     constructor() {
@@ -55,12 +56,21 @@ export default class Router {
     static redirect() {
         const pathname = window.location.pathname;
         switch (pathname) {
+
             case "/main":
                 PagePresenter.showOnlyOnePage("main-page");
                 break;
 
             case "/office":
-                PagePresenter.showOnlyOnePage("office-page");
+                Requester.whoami((err, resp) => {
+                    if (err) {
+                        document.getElementById("nav-login-btn").click();
+                        return console.log("office error router");
+                    }
+                    globalBus().officePage.render();
+                    PagePresenter.showOnlyOnePage("office-page");
+                    return console.log("office norm router");
+                });
                 break;
 
             case "/register":
