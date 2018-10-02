@@ -14,31 +14,12 @@ const WITH_CREDENTIALS = true;
 
 export default class Requester {
 
-    constructor() {
-        globalBus().requester = this;
-    }
-
     /**
      * Возвращает url backend сервера
      * @returns {string}
      */
     static baseUrl() {
         return  "https://keklik-api.herokuapp.com/";
-    }
-
-    static getToken() {
-        return localStorage.getItem("token") !== null ? localStorage.getItem("token") : "no";
-    }
-
-    static setToken(resp) {
-        let token = "Token " + resp.token.toString();
-        localStorage.setItem("token", token);
-        console.log("TOKEN = " + localStorage.getItem("token"));
-    }
-
-    static setUser(resp) {
-        localStorage.setItem("user", JSON.stringify(resp));
-        console.log("USER = " + localStorage.getItem("user"));
     }
 
     /**
@@ -56,7 +37,7 @@ export default class Requester {
         const body = JSON.stringify(data);
 
         xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
-        xhr.setRequestHeader("Authorization", Requester.getToken());
+        xhr.setRequestHeader("Authorization", globalBus().authWorker.getToken());
 
         if (method === "GET") {
             xhr.send(null);
@@ -73,12 +54,6 @@ export default class Requester {
             }
 
             const response = JSON.parse(xhr.responseText);
-
-            if (method !== 'GET') {
-                // только при регистрации
-                Requester.setToken(response);
-                Requester.setUser(response);
-            }
 
             callback(null, response);
         };

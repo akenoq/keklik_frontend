@@ -10,11 +10,13 @@ import OfficePage from "../views/OfficePage.js";
 import CoursesPage from "../views/CoursePage.js";
 import GroupPage from "../views/GroupPage.js";
 import Requester from "./network/Requester.js";
+import AuthWorker from "./network/AuthWorker";
 
 function startApp() {
     console.log("HELLO APP");
 
     globalBus().router = new Router();
+    globalBus().authWorker = new AuthWorker();
     let router = globalBus().router;
     // router = router.getMe(router);
     // router.sendRouter();

@@ -68,10 +68,11 @@ export default class LoginForm extends FormValidator {
     }
 
     sendRequest() {
-        Requester.auth(this.loginValue, this.passwordValue, (err) => {
+        Requester.auth(this.loginValue, this.passwordValue, (err, resp) => {
             if (err) {
                 return this.errorBox.innerHTML = LoginForm.msgResponseFromHost();
             }
+            globalBus().authWorker.autharization(resp);
             alert(LoginForm.msgSignUpSuccess());
             this.clearForm();
             globalBus().officePage.render();
