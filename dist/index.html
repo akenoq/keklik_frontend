@@ -34,6 +34,7 @@
                     </li>
                 </ul>
                 <button id="nav-login-btn" class="btn btn-primary">Войти</button>
+                <button id="nav-signout-btn" class="btn btn-outline-secondary" hidden>Выйти</button>
             </div>
         </nav>
 
@@ -261,9 +262,20 @@
                                                    value="Анастасия Калугина">
                                         </div>
                                         <div id="profile-form-email" class="form-group">
-                                            <label for="exampleInputEmail1">Email адрес</label>
-                                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" value="kaluginana@mail.ru">
-                                            <small id="emailHelp" class="form-text text-muted">Email будет использоваться только Keklik`ом</small>
+                                            <label for="profile-email">Email адрес</label>
+                                            <input type="email" class="form-control" id="profile-email" aria-describedby="emailHelp" placeholder="Enter email" value="kaluginana@mail.ru">
+                                        </div>
+                                        <div id="profile-form-old-password" class="form-group">
+                                            <label for="profile-form-old-password">Старый пароль</label>
+                                            <input type="password" class="form-control" id="profile-old-password" aria-describedby="emailHelp" placeholder="Enter email" value="kaluginana@mail.ru">
+                                        </div>
+                                        <div id="profile-form-new-password" class="form-group">
+                                            <label for="profile-form-new-password">Новый пароль</label>
+                                            <input type="password" class="form-control" id="profile-new-password" aria-describedby="emailHelp" placeholder="Enter email" value="kaluginana@mail.ru">
+                                        </div>
+                                        <div id="profile-form-repeat-password" class="form-group">
+                                            <label for="profile-form-repeat-password">Повторите пароль</label>
+                                            <input type="password" class="form-control" id="profile-repeat-password" aria-describedby="emailHelp" placeholder="Enter email" value="kaluginana@mail.ru">
                                         </div>
                                         <button class="btn btn-primary">Подтвердить изменения</button>
                                     </form>
@@ -279,7 +291,7 @@
                 <img src="img/ava_course.jpg" class="ava rounded-circle border border-danger" width="75px" height="75px">
                 <span>Название курса</span>
             </h1>
-            <table class="table">
+            <table class="table bg-white">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>

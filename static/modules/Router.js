@@ -55,6 +55,39 @@ export default class Router {
 
     static redirect() {
         const pathname = window.location.pathname;
+        Requester.whoami((err) => {
+            if (err) {
+                switch (pathname) {
+
+                    case "/main":
+                        PagePresenter.showOnlyOnePage("main-page");
+                        break;
+
+                    case "/office":
+                        document.getElementById("nav-login-btn").click();
+                        break;
+
+                    case "/register":
+                        PagePresenter.showOnlyOnePage("register-page");
+                        break;
+
+                    case "/login":
+                        PagePresenter.showOnlyOnePage("login-page");
+                        break;
+
+                    case "/info":
+                        PagePresenter.showOnlyOnePage("info-page");
+                        break;
+
+                    default:
+                        PagePresenter.showOnlyOnePage("main-page");
+                        break;
+                }
+                return console.log("NOT AUTH");
+            }
+
+            return console.log("NORM AUTH");
+        });
         switch (pathname) {
 
             case "/main":
@@ -71,14 +104,6 @@ export default class Router {
                     PagePresenter.showOnlyOnePage("office-page");
                     return console.log("office norm router");
                 });
-                break;
-
-            case "/register":
-                PagePresenter.showOnlyOnePage("register-page");
-                break;
-
-            case "/login":
-                PagePresenter.showOnlyOnePage("login-page");
                 break;
 
             case "/info":
@@ -102,7 +127,7 @@ export default class Router {
                 break;
 
             default:
-                PagePresenter.showOnlyOnePage("main-page");
+                PagePresenter.showOnlyOnePage("office-page");
                 break;
         }
     }

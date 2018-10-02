@@ -6,12 +6,13 @@
 body {
     /* желтая тема */
     /*background-color: #feff47;*/
-    background-color: #cbee7a;
+    /*background-color: #cbee7a;*/
+    background-color: #a583da3d;
     font-family: ComicRu, Arial, Tahoma;
 }
 
 .main-page {
-    background-color: #8dff005e;
+    /*background-color: #8dff005e;*/
     padding: 10px;
     border-radius: 5px;
     padding-bottom: 30px;
@@ -89,7 +90,8 @@ body {
 .card-header {
     /* желтая тема */
     /*background-color: #ffc107 !important;*/
-    background-color: #77d352 !important;
+    /*background-color: #77d352 !important;*/
+    background-color: #b86b8a !important;
 }
 
 .card-header-green-tab {
