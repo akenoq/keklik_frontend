@@ -42,14 +42,15 @@ export default class Requester {
     }
 
     /**
-     * POST-запрос на сервер
+     * HTTP-запрос на сервер
+     * @param {string} method - метод запроса "GET", "POST"
      * @param {string} address
      * @param {object} data
      * @param callback
      */
-    static requestPost(address, data, callback) {
+    static requestToHost(method = "GET", address, data = null, callback) {
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", this.baseUrl() + address, true);
+        xhr.open(method, this.baseUrl() + address, true);
         xhr.withCredentials = WITH_CREDENTIALS; //for cookies
 
         const body = JSON.stringify(data);
@@ -57,7 +58,11 @@ export default class Requester {
         xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
         xhr.setRequestHeader("Authorization", Requester.getToken());
 
-        xhr.send(body);
+        if (method === "GET") {
+            xhr.send(null);
+        } else {
+            xhr.send(body);
+        }
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState !== messagesFromHost.XHR_READY) {
@@ -69,37 +74,12 @@ export default class Requester {
 
             const response = JSON.parse(xhr.responseText);
 
-            // только при регистрации
-            Requester.setToken(response);
-            Requester.setUser(response);
-
-            callback(null, response);
-        };
-    }
-
-    /**
-     * GET-запрос на сервер
-     * @param {string} address - string with url
-     * @param callback
-     */
-    static requestGet(address, callback) {
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", this.baseUrl() + address, true);
-        xhr.withCredentials = WITH_CREDENTIALS;
-
-        xhr.setRequestHeader("Authorization", Requester.getToken());
-
-        xhr.send();
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState !== messagesFromHost.XHR_READY) {
-                return;
-            }
-            if (parseInt(+xhr.status/100) !== messagesFromHost.HTTP_OK) {
-                return callback(xhr, null);
+            if (method !== 'GET') {
+                // только при регистрации
+                Requester.setToken(response);
+                Requester.setUser(response);
             }
 
-            const response = JSON.parse(xhr.responseText);
             callback(null, response);
         };
     }
@@ -112,7 +92,7 @@ export default class Requester {
      */
     static auth(username, password, callback) {
         const user = {username, password};
-        Requester.requestPost("api/session/", user, callback);
+        Requester.requestToHost("POST", "api/session/", user, callback);
     }
 
     /**
@@ -123,7 +103,7 @@ export default class Requester {
      */
     static register(username, password, callback) {
         const user = {username, password};
-        Requester.requestPost("api/users/", user, callback);
+        Requester.requestToHost("POST", "api/users/", user, callback);
     }
 
     /**
@@ -131,6 +111,6 @@ export default class Requester {
      * @param callback
      */
     static whoami(callback) {
-        Requester.requestGet("api/users/me/", callback);
+        Requester.requestToHost("GET", "api/users/me/", null, callback);
     }
 }
