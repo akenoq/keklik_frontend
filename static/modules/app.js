@@ -11,6 +11,7 @@ import CoursesPage from "../views/CoursePage.js";
 import GroupPage from "../views/GroupPage.js";
 import Requester from "./network/Requester.js";
 import AuthWorker from "./network/AuthWorker";
+import QuizEditorPage from "../views/edit_quiz/QuizEditorPage"
 
 function startApp() {
     console.log("HELLO APP");

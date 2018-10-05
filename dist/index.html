@@ -444,132 +444,199 @@
 
         <div class="edit-page page container" hidden>
             <h3>Создание викторины</h3>
-            <div class="edit-quiz-form">
+            <div class="edit-quiz-box" id="edit-quiz-form">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Название </span>
                     </div>
-                    <textarea class="form-control" aria-label="Новая викторина..."></textarea>
+                    <textarea id="edit-quiz-form__title" class="form-control" aria-label="Новая викторина..."></textarea>
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Описание</span>
                     </div>
-                    <textarea class="form-control" aria-label="Описание..."></textarea>
+                    <textarea id="edit-quiz-form__description" class="form-control" aria-label="Описание..."></textarea>
                 </div>
 
                 <div class="input-group mb-3">
                     <label>Метки викторины &nbsp;</label>
-                    <input class="form-control" type="text" placeholder="Математика, Физика">
+                    <input id="edit-quiz-form__tags" class="form-control" type="text" placeholder="Математика, Физика">
                 </div>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="timer-check">
-                    <label class="custom-control-label" for="timer-check">Автоматический переход к следующему вопросу</label>
-                </div>
+                <!--<div class="custom-control custom-checkbox">-->
+                    <!--<input type="checkbox" class="custom-control-input" id="timer-check">-->
+                    <!--<label class="custom-control-label" for="timer-check">Автоматический переход к следующему вопросу</label>-->
+                <!--</div>-->
                 <hr>
                 <br>
+                <div id="edit-quiz-form__questions">
+                    <div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_1">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Вопрос 1</span>
+                            </div>
+                            <textarea class="edit-question form-control" aria-label="Описание..."></textarea>
+                        </div>
 
-                <div class="input-group mb-3">
-                    <!--<div class="input-group-prepend">-->
-                        <!--<span class="input-group-text" id="inputGroupFileAddon01">Загрузить файл</span>-->
-                    <!--</div>-->
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Вопрос 1</span>
-                    </div>
-                    <textarea class="form-control" aria-label="Описание..."></textarea>
+                        <div class="row edit-quiz-form-ans-row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Вариант 1</span>
+                                    </div>
+                                    <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Вариант 2</span>
+                                    </div>
+                                    <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row edit-quiz-form-ans-row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Вариант 3</span>
+                                    </div>
+                                    <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Вариант 4</span>
+                                    </div>
+                                    <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row edit-quiz-form-ans-row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Вариант 5</span>
+                                    </div>
+                                    <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Вариант 6</span>
+                                    </div>
+                                    <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row edit-quiz-form-ans-row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Вариант 7</span>
+                                    </div>
+                                    <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">Вариант 8</span>
+                                    </div>
+                                    <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row edit-quiz-form-ans-row">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-success text-white">Правильный вариант</span>
+                                    </div>
+                                    <input maxlength="1" type="text" class="edit-answer form-control" placeholder="1" aria-label="" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text bg-info text-white">Максимум очков за ответ</span>
+                                    </div>
+                                    <input maxlength="3" type="text" class="edit-points form-control" placeholder="5" aria-label="" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                    </div><hr><br>
                 </div>
-                <div class="input-group mb-3">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                        <label class="custom-file-label" for="inputGroupFile01">Прикрепить картинку...</label>
-                    </div>
-                </div>
-
-
-                <div class="row edit-quiz-form-ans-row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 1</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 2</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                </div>
-                <div class="row edit-quiz-form-ans-row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text bg-success text-white">Вариант 3</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 4</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                </div>
-                <div class="row edit-quiz-form-ans-row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 5</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 6</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                </div>
-                <div class="row edit-quiz-form-ans-row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 7</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 8</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
+                <!--<hr>-->
 
                 <div class="btn-toolbar" role="toolbar" aria-label="quiz-form-btn-add">
                     <div class="btn-group mr-2" role="group" aria-label="First group">
-                        <button type="button" class="btn btn-primary">Еще вопрос</button>
+                        <button id="edit-quiz-form__add-question-btn" type="button" class="btn btn-primary">Еще вопрос</button>
                     </div>
                     <div class="btn-group mr-2" role="group" aria-label="quiz-form-btn-ok">
-                        <button type="button" class="btn btn-success">Готово</button>
+                        <button id="edit-quiz-form__send-btn" type="button" class="btn btn-success">Готово</button>
                     </div>
                 </div>
+            </div>
+        </div>
 
+        <div class="play-page-manage  page container" hidden>
+            <h1 class="content-logo">
+                <span class="text-center">Ход викторины</span>
+            </h1>
+            <br>
+            <div class="page-content">
+            <br>
+            <button type="button" class="btn btn-primary btn-lg btn-block">Следующий вопрос >></button>
+            <br>
+            <h3>
+                <span class="text-right">Ответили 5/15</span>
+            </h3>
+            <br>
+
+            <table class="table bg-white">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Имя участника</th>
+                    <th scope="col">Ответ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="table-group-line right-ans">
+                    <th scope="row">1</th>
+                    <td>Иванова Анна</td>
+                    <td>слон</td>
+                </tr>
+                <tr class="table-group-line right-ans">
+                    <th scope="row">2</th>
+                    <td>Кузнецов Максим</td>
+                    <td>слон</td>
+                </tr>
+                <tr class="table-group-line">
+                    <th scope="row">3</th>
+                    <td>Самсонов Петр</td>
+                    <td>баран</td>
+                </tr>
+                <tr class="table-group-line">
+                    <th scope="row">4</th>
+                    <td>Иванов Иван</td>
+                    <td>баран</td>
+                </tr>
+                <tr class="table-group-line">
+                    <th scope="row">5</th>
+                    <td>Кузнецов Коля</td>
+                    <td>жираф</td>
+                </tr>
+                <tr class="table-group-line">
+                    <th scope="row">6</th>
+                    <td>Мирный Никос</td>
+                    <td>ленивец</td>
+                </tr>
+                </tbody>
+            </table>
             </div>
         </div>
     </div>

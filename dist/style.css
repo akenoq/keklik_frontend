@@ -37,7 +37,12 @@ body {
 
 .btn-primary {
     background-color: #C9007A !important;
-    border-color: #97266A;
+    border-color: #C9007A;
+}
+
+.btn-primary:hover {
+    background-color: #9f0060 !important;
+    border-color: #9f0060;
 }
 
 .navbar.bg-light {
@@ -146,7 +151,7 @@ body {
     text-decoration: underline;
 }
 
-.edit-quiz-form {
+.edit-quiz-box {
     background-color: white;
     padding: 5%;
     border-radius: 5px;
@@ -167,4 +172,20 @@ body {
     margin-right: 2%;
     right: 0;
     color: red;
+}
+
+.right-ans {
+    background-color: #a1f607a1 !important;
+}
+
+.page-content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.input-group-text:hover {
+    cursor: default;
+    -moz-user-select: none;
+    user-select: none;
 }

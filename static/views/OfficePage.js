@@ -4,6 +4,7 @@ import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
 import globalBus from "../modules/globalBus";
 import Requester from "../modules/network/Requester";
+// import ProfileForm from "./ProfileForm";
 
 export default class OfficePage extends Page {
 
@@ -33,6 +34,7 @@ export default class OfficePage extends Page {
             }
             globalBus().user = resp;
             document.getElementById("office-header-username").innerHTML = globalBus().user.username;
+            // ProfileForm.render(resp);
             return console.log("office norm");
         });
     }

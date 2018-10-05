@@ -9,6 +9,7 @@ import OfficePage from "../views/OfficePage";
 import CoursePage from "../views/CoursePage";
 import GroupPage from "../views/GroupPage";
 import Requester from "./network/Requester";
+import QuizEditorPage from "../views/edit_quiz/QuizEditorPage";
 
 export default class Router {
     constructor() {
@@ -26,6 +27,7 @@ export default class Router {
         globalBus().officePage = new OfficePage();
         globalBus().coursePage = new CoursePage();
         globalBus().groupPage = new GroupPage();
+        globalBus().quizEditor = new QuizEditorPage();
 
         // pagePath
         const registerPagePath = RegisterPage.pagePath();
@@ -57,6 +59,8 @@ export default class Router {
         const pathname = window.location.pathname;
         Requester.whoami((err) => {
             if (err) {
+                document.getElementById("nav-signout-btn").hidden =true;
+                document.getElementById("nav-login-btn").hidden =false;
                 switch (pathname) {
 
                     case "/main":
@@ -79,6 +83,10 @@ export default class Router {
                         PagePresenter.showOnlyOnePage("info-page");
                         break;
 
+                    case "/teacher":
+                        PagePresenter.showOnlyOnePage("play-page-manage");
+                        break;
+
                     default:
                         PagePresenter.showOnlyOnePage("main-page");
                         break;
@@ -88,6 +96,8 @@ export default class Router {
 
             return console.log("NORM AUTH");
         });
+        document.getElementById("nav-signout-btn").hidden = false;
+        document.getElementById("nav-login-btn").hidden = true;
         switch (pathname) {
 
             case "/main":
@@ -124,6 +134,10 @@ export default class Router {
 
             case "/edit":
                 PagePresenter.showOnlyOnePage("edit-page");
+                break;
+
+            case "/teacher":
+                PagePresenter.showOnlyOnePage("play-page-manage");
                 break;
 
             default:
