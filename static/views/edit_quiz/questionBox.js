@@ -5,7 +5,7 @@ export default function questionBox(index) {
         `<div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_${index}">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">Вопрос ${index} </span>
+                    <span class="input-group-text">Вопрос ${index + 1} </span>
                 </div>
                 <textarea class="edit-question form-control" aria-label="Описание..."></textarea>
             </div>
@@ -86,7 +86,7 @@ export default function questionBox(index) {
                 <div class="col">
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text bg-success text-white">Правильный варианта</span>
+                            <span class="input-group-text bg-success text-white">Правильный вариант</span>
                         </div>
                         <input maxlength="1" type="text" class="edit-answer form-control" placeholder="1" aria-label="" aria-describedby="basic-addon2">
                     </div>

@@ -11,13 +11,13 @@ import questionBox from "./questionBox";
 export default class QuizEditorPage extends Page {
     constructor() {
         super();
-        this.index = 2; // номер вопроса
+        this.index = 1; // номер вопроса
         console.log("Quiz editor");
         this.quiz = {};
-        this.editQuiz();
+        this.resetQuiz();
     }
 
-    editQuiz() {
+    resetQuiz() {
         this.quiz = {
             title: "",
             description: "",
@@ -64,12 +64,19 @@ export default class QuizEditorPage extends Page {
         console.log(this.quiz);
     }
 
-    static validate() {
-
+    validate() {
+        let errors = FormValidator.correctQuiz(this.quiz);
+        console.log("err = " + errors);
+        return true;
     }
 
     sendRequest() {
-
+        Requester.quizEdit(this.quiz, (err, resp) => {
+            if (err) {
+                return console.log("err in quiz");
+            }
+            return console.log("ok in quiz" + resp);
+        });
     }
 
     addEventsOnButtons() {
@@ -80,10 +87,10 @@ export default class QuizEditorPage extends Page {
         document.getElementById("edit-quiz-form__send-btn").onclick = () => {
 
             this.pushToQuiz();
-            QuizEditorPage.validate();
 
-            if (QuizEditorPage.validate()) {
+            if (this.validate()) {
                 this.sendRequest();
+                this.resetQuiz();
             }
         }
     }

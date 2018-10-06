@@ -88,4 +88,8 @@ export default class Requester {
     static whoami(callback) {
         Requester.requestToHost("GET", "api/users/me/", null, callback);
     }
+
+    static quizEdit(quiz, callback) {
+        Requester.requestToHost("POST", "api/quizzes/", quiz, callback);
+    }
 }
