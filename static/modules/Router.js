@@ -5,7 +5,7 @@ import RegisterPage from "../views/registion/RegisterPage.js";
 import LoginPage from "../views/login/LoginPage.js";
 import PagePresenter from "./PagePresenter.js";
 import linkOnButtons from "./linkOnButtons.js";
-import OfficePage from "../views/OfficePage";
+import OfficePage from "../views/office/OfficePage";
 import CoursePage from "../views/CoursePage";
 import GroupPage from "../views/GroupPage";
 import Requester from "./network/Requester";

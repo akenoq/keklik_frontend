@@ -19,7 +19,8 @@ export default class Requester {
      * @returns {string}
      */
     static baseUrl() {
-        return  "https://keklik-api.herokuapp.com/";
+        // return  "https://keklik-api.herokuapp.com/";
+        return "http://46.229.213.75:8000/"
     }
 
     /**
@@ -91,5 +92,9 @@ export default class Requester {
 
     static quizEdit(quiz, callback) {
         Requester.requestToHost("POST", "api/quizzes/", quiz, callback);
+    }
+
+    static quizzesOfUser(callback) {
+        Requester.requestToHost("GET", "api/quizzes/", null, callback);
     }
 }

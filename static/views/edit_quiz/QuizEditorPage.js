@@ -39,7 +39,7 @@ export default class QuizEditorPage extends Page {
         this.quiz.description =
             document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__description").value;
         this.quiz.tags =
-            document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__tags").value;
+            document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__tags").value.split(",");
 
         let qBoxes = document.getElementsByClassName("edit-quiz-form__question-box");
         for (let i = 0; i < qBoxes.length; i++) {
@@ -47,16 +47,18 @@ export default class QuizEditorPage extends Page {
             let qVariants = qBoxes[i].getElementsByClassName("edit-variant");
             let variantsNum = qVariants.length;
             for (let k = 0; k < variantsNum; k++) {
-                variants.push({
-                    variant: qVariants[k].value.toString()
-                });
+                let variantContent = qVariants[k].value.toString();
+                if (variantContent !== "") {
+                    variants.push({
+                        variant: variantContent
+                    });
+                }
             }
             this.quiz.questions.push({
-                number: i + 1,
                 type: "single",
                 question: qBoxes[i].querySelector(".edit-question").value.toString(),
                 variants: variants,
-                answer: parseInt(qBoxes[i].querySelector(".edit-answer").value),
+                answer: [parseInt(qBoxes[i].querySelector(".edit-answer").value)],
                 points: parseInt(qBoxes[i].querySelector(".edit-points").value),
             });
         }
@@ -75,7 +77,8 @@ export default class QuizEditorPage extends Page {
             if (err) {
                 return console.log("err in quiz");
             }
-            return console.log("ok in quiz" + resp);
+            console.log("ok in quiz" + resp);
+            document.getElementById("nav-office-btn").click();
         });
     }
 
@@ -92,6 +95,6 @@ export default class QuizEditorPage extends Page {
                 this.sendRequest();
                 this.resetQuiz();
             }
-        }
+        };
     }
 }
