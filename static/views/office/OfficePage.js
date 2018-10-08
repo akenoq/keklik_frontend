@@ -5,7 +5,7 @@ import PagePresenter from "../../modules/PagePresenter";
 import globalBus from "../../modules/globalBus";
 import Requester from "../../modules/network/Requester";
 import QuizzesDesk from "./QuizzesDesk";
-// import ProfileForm from "./ProfileForm";
+import ProfileForm from "./ProfileForm";
 
 export default class OfficePage extends Page {
 
@@ -18,6 +18,7 @@ export default class OfficePage extends Page {
         this.addEventsOnButtons();
         console.log("office");
         globalBus().user = {};
+        this.profileForm = new ProfileForm();
     }
 
     static pagePath() {
@@ -35,7 +36,7 @@ export default class OfficePage extends Page {
             }
             globalBus().user = resp;
             document.getElementById("office-header-username").innerHTML = globalBus().user.username;
-            // ProfileForm.render(resp);
+            this.profileForm.setFormValues(resp);
             QuizzesDesk.render();
             return console.log("office norm");
         });

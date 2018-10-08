@@ -97,4 +97,14 @@ export default class Requester {
     static quizzesOfUser(callback) {
         Requester.requestToHost("GET", "api/quizzes/", null, callback);
     }
+
+    static changeUserData(last_name, email, callback) {
+        const userData = {last_name, email};
+        Requester.requestToHost("PATCH", "api/users/me/", userData, callback);
+    }
+
+    static changePassword(old_password, new_password, callback) {
+        const data = {old_password, new_password};
+        Requester.requestToHost("POST", "api/users/me/password/", data, callback);
+    }
 }

@@ -265,28 +265,30 @@
                                 <div class="regform col col-md-auto">
                                     <form>
                                         <div id="profile-form-name" class="form-group">
-                                            <label for="exampleInputName1">Полное имя</label>
-                                            <input type="email" class="form-control" id="exampleInputName1"
-                                                   aria-describedby="emailHelp" placeholder="Enter email"
+                                            <label for="profile-name">Полное имя</label>
+                                            <input type="text" class="form-control" id="profile-name"
+                                                   aria-describedby="emailHelp" placeholder="ФИО"
                                                    value="Анастасия Калугина">
                                         </div>
                                         <div id="profile-form-email" class="form-group">
                                             <label for="profile-email">Email адрес</label>
-                                            <input type="email" class="form-control" id="profile-email" aria-describedby="emailHelp" placeholder="Enter email" value="kaluginana@mail.ru">
+                                            <input type="email" class="form-control" id="profile-email" aria-describedby="emailHelp" placeholder="email@mail.ru">
                                         </div>
                                         <div id="profile-form-old-password" class="form-group">
                                             <label for="profile-form-old-password">Старый пароль</label>
-                                            <input type="password" class="form-control" id="profile-old-password" aria-describedby="emailHelp" placeholder="Enter email" value="kaluginana@mail.ru">
+                                            <input type="password" class="form-control" id="profile-old-password" aria-describedby="emailHelp" placeholder="*********">
                                         </div>
                                         <div id="profile-form-new-password" class="form-group">
                                             <label for="profile-form-new-password">Новый пароль</label>
-                                            <input type="password" class="form-control" id="profile-new-password" aria-describedby="emailHelp" placeholder="Enter email" value="kaluginana@mail.ru">
+                                            <input type="password" class="form-control" id="profile-new-password" aria-describedby="emailHelp" placeholder="*********">
                                         </div>
                                         <div id="profile-form-repeat-password" class="form-group">
                                             <label for="profile-form-repeat-password">Повторите пароль</label>
-                                            <input type="password" class="form-control" id="profile-repeat-password" aria-describedby="emailHelp" placeholder="Enter email" value="kaluginana@mail.ru">
+                                            <input type="password" class="form-control" id="profile-repeat-password" aria-describedby="emailHelp" placeholder="*********">
                                         </div>
-                                        <button class="btn btn-primary">Подтвердить изменения</button>
+                                        <div id="profile-form-ok" class="form-group ok-box"></div>
+                                        <div id="profile-form-error" class="form-group error-box"></div>
+                                        <button id="profile-form-btn" class="btn btn-primary">Подтвердить изменения</button>
                                     </form>
                                 </div>
                             </div>

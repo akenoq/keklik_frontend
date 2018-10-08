@@ -189,3 +189,13 @@ body {
     -moz-user-select: none;
     user-select: none;
 }
+
+.error-box {
+    color: red;
+    font-style: italic;
+}
+
+.ok-box {
+    color: #28a745;
+    font-style: italic;
+}
