@@ -4,6 +4,7 @@ import Page from "../Page";
 import Requester from "../../modules/network/Requester.js";
 import quizCard from "./quizCard";
 import linkOnButtons from "../../modules/linkOnButtons";
+import globalBus from "../../modules/globalBus.js";
 
 export default class QuizzesDesk extends Page {
 
@@ -19,6 +20,18 @@ export default class QuizzesDesk extends Page {
                                 </div>`
     }
 
+    static redirectToQuiz(id) {
+        console.log(id);
+        Requester.getQuizById(id, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("quiz " + id + " rendering");
+                globalBus().quizEditorPage.render(id, resp);
+            }
+        });
+    }
+
     static render() {
         let quizzesDesk = document.getElementById("quizzes-desk");
         quizzesDesk.innerHTML = "";
@@ -26,6 +39,9 @@ export default class QuizzesDesk extends Page {
         linkOnButtons(
             {button: "new-quiz", nextPage: "edit-page", pagePath: "/edit"}
         );
+        document.getElementById("new-quiz").addEventListener("click", () => {
+            globalBus().quizEditorPage.clearForm();
+        });
 
         console.log("Quiz Desk");
         QuizzesDesk.quizzesReq((resp) => {
@@ -45,6 +61,9 @@ export default class QuizzesDesk extends Page {
                     caBox.setAttribute("class", "card quizzes-desk__quiz-card");
                     caBox.innerHTML = quizCard(resp[i].title, resp[i].description);
                     document.getElementById("card-row-1").appendChild(caBox);
+                    document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
+                        QuizzesDesk.redirectToQuiz(resp[i].id)
+                    };
                     cardsInRow++;
                 } else {
                     if (cardsInRow === 0) {
@@ -60,6 +79,9 @@ export default class QuizzesDesk extends Page {
                     caBox.setAttribute("class", "card quizzes-desk__quiz-card");
                     caBox.innerHTML = quizCard(resp[i].title, resp[i].description);
                     document.getElementById(`card-row-${rowCount}`).appendChild(caBox);
+                    document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
+                        QuizzesDesk.redirectToQuiz(resp[i].id)
+                    };
                     cardsInRow++;
                 }
             }

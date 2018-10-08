@@ -7,6 +7,7 @@ import fieldsCleaner from "./../../modules/fieldsCleaner.js";
 import PagePresenter from "../../modules/PagePresenter";
 import Page from "../Page";
 import questionBox from "./questionBox";
+import emptyQuizForm from "./emptyQuizForm";
 
 export default class QuizEditorPage extends Page {
     constructor() {
@@ -15,6 +16,9 @@ export default class QuizEditorPage extends Page {
         console.log("Quiz editor");
         this.quiz = {};
         this.resetQuiz();
+        globalBus().quizEditorPage = this;
+
+        this.editQuizById = false;
     }
 
     resetQuiz() {
@@ -73,13 +77,63 @@ export default class QuizEditorPage extends Page {
     }
 
     sendRequest() {
-        Requester.quizEdit(this.quiz, (err, resp) => {
-            if (err) {
-                return console.log("err in quiz");
+        if (this.editQuizById !== false) {
+            Requester.quizEdit(this.editQuizById, this.quiz, (err, resp) => {
+                if (err) {
+                    return console.log("err in quiz");
+                } else {
+                    console.log("ok in quiz edit" + resp);
+                    document.getElementById("nav-office-btn").click();
+                    this.editQuizById = false;
+                }
+            });
+        } else {
+            Requester.quizNew(this.quiz, (err, resp) => {
+                if (err) {
+                    return console.log("err in quiz");
+                }
+                console.log("ok in quiz" + resp);
+                document.getElementById("nav-office-btn").click();
+            });
+        }
+    }
+
+    render(id, resp) {
+        document.getElementById("new-quiz").click();
+        document.getElementById("quiz-editor-h3").innerHTML = `Викторина ${id}`;
+
+        console.log("ID = " + id);
+
+        this.editQuizById = id;
+        // добавить id викторины в заголовок
+        document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__title").value =
+            resp.title;
+        document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__description").value =
+            resp.description;
+        document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__tags").value =
+            resp.tags.join();
+        // количество вопросов
+        let questionsCount = resp.questions.length;
+        console.log("questionsCount" + questionsCount);
+        // генерирую под них боксы
+        for (let i = 0; i < questionsCount - 1; i++) {
+            this.index = i;
+            this.addQuestion();
+        }
+        // коллекция боксов
+        let qBoxes = document.getElementsByClassName("edit-quiz-form__question-box");
+        // бежим по ней
+        for (let i = 0; i < questionsCount; i++) {
+            qBoxes[i].querySelector(".edit-question").value = resp.questions[i].question;
+            let variantsResp = resp.questions[i].variants;
+            let variantsNum = resp.questions[i].variants.length;
+            let variantEdit = qBoxes[i].getElementsByClassName("edit-variant");
+            for (let k = 0; k < variantsNum; k++) {
+                variantEdit[k].value = variantsResp[k].variant;
             }
-            console.log("ok in quiz" + resp);
-            document.getElementById("nav-office-btn").click();
-        });
+            document.querySelector(".edit-answer").value = resp.questions[i].answer;
+            document.querySelector(".edit-points").value = resp.questions[i].points;
+        }
     }
 
     addEventsOnButtons() {
@@ -96,5 +150,13 @@ export default class QuizEditorPage extends Page {
                 this.resetQuiz();
             }
         };
+    }
+
+    clearForm() {
+        console.log("clear form");
+        this.editQuizById = false;
+        console.log(this.editQuizById);
+        document.querySelector(".edit-page__form").innerHTML = "";
+        document.querySelector(".edit-page__form").innerHTML = emptyQuizForm();
     }
 }

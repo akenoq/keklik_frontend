@@ -90,8 +90,13 @@ export default class Requester {
         Requester.requestToHost("GET", "api/users/me/", null, callback);
     }
 
-    static quizEdit(quiz, callback) {
+    static quizNew(quiz, callback) {
         Requester.requestToHost("POST", "api/quizzes/", quiz, callback);
+    }
+
+    static quizEdit(id, quiz, callback) {
+        console.log("id = " + id);
+        Requester.requestToHost("PUT", `api/quizzes/${id}/`, quiz, callback);
     }
 
     static quizzesOfUser(callback) {
@@ -106,5 +111,9 @@ export default class Requester {
     static changePassword(old_password, new_password, callback) {
         const data = {old_password, new_password};
         Requester.requestToHost("POST", "api/users/me/password/", data, callback);
+    }
+
+    static getQuizById(id, callback) {
+        Requester.requestToHost("GET", `api/quizzes/${id}/`, null, callback);
     }
 }
