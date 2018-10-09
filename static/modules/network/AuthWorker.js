@@ -37,4 +37,9 @@ export default class AuthWorker {
         AuthWorker.setToken(resp);
         AuthWorker.setUser(resp);
     }
+
+    deleteToken() {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+    }
 }

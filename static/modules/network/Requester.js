@@ -51,6 +51,9 @@ export default class Requester {
                 return;
             }
             if (parseInt(+xhr.status/100) !== messagesFromHost.HTTP_OK) {
+                if (JSON.parse(xhr.responseText).message === "Invalid token.") {
+                    globalBus().authWorker.deleteToken();
+                }
                 return callback(xhr, null);
             }
 
