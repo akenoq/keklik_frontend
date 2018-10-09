@@ -16,7 +16,7 @@ export default class Router {
 
         this.addRedirectOnNavBtn(
             {button: "nav-main-btn", nextPage: "main-page", pagePath: "/main"},
-            {button: "nav-login-btn", nextPage: "register-page", pagePath: "/register"},
+            {button: "nav-login-btn", nextPage: "login-page", pagePath: "/login"},
             {button: "nav-info-btn", nextPage: "info-page", pagePath: "/info"},
             {button: "nav-office-btn", nextPage: "office-page", pagePath: "/office"}
         );
@@ -37,6 +37,11 @@ export default class Router {
             {button: "regform-to-login-link", nextPage: "login-page", pagePath: "/login"},
             {button: "login-form-to-register-link", nextPage: "register-page", pagePath: "/register"},
         );
+
+        document.getElementById("nav-signout-btn").onclick = () => {
+            globalBus().authWorker.deleteToken();
+            document.getElementById("nav-login-btn").click();
+        };
 
         Router.redirect();
 
