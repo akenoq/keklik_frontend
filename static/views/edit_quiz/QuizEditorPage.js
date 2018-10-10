@@ -27,7 +27,8 @@ export default class QuizEditorPage extends Page {
             description: "",
             tags: "",
             questions: []
-        }
+        };
+        this.index = 1;
     }
 
     addQuestion() {
@@ -117,7 +118,7 @@ export default class QuizEditorPage extends Page {
         console.log("questionsCount" + questionsCount);
         // генерирую под них боксы
         for (let i = 0; i < questionsCount - 1; i++) {
-            this.index = i;
+            this.index = i + 1;
             this.addQuestion();
         }
         // коллекция боксов
@@ -131,8 +132,8 @@ export default class QuizEditorPage extends Page {
             for (let k = 0; k < variantsNum; k++) {
                 variantEdit[k].value = variantsResp[k].variant;
             }
-            document.querySelector(".edit-answer").value = resp.questions[i].answer;
-            document.querySelector(".edit-points").value = resp.questions[i].points;
+            qBoxes[i].querySelector(".edit-answer").value = resp.questions[i].answer;
+            qBoxes[i].querySelector(".edit-points").value = resp.questions[i].points;
         }
     }
 
@@ -158,5 +159,6 @@ export default class QuizEditorPage extends Page {
         console.log(this.editQuizById);
         document.querySelector(".edit-page__form").innerHTML = "";
         document.querySelector(".edit-page__form").innerHTML = emptyQuizForm();
+        this.index = 1;
     }
 }
