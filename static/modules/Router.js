@@ -10,6 +10,8 @@ import CoursePage from "../views/CoursePage";
 import GroupPage from "../views/GroupPage";
 import Requester from "./network/Requester";
 import QuizEditorPage from "../views/edit_quiz/QuizEditorPage";
+import GameManager from "./GameManager";
+import GameTeacherPage from "../views/GameTeacherPage";
 
 export default class Router {
     constructor() {
@@ -28,6 +30,9 @@ export default class Router {
         globalBus().coursePage = new CoursePage();
         globalBus().groupPage = new GroupPage();
         globalBus().quizEditor = new QuizEditorPage();
+
+        globalBus().gameTeacherPage = new GameTeacherPage();
+        new GameManager();
 
         // pagePath
         const registerPagePath = RegisterPage.pagePath();
@@ -86,10 +91,6 @@ export default class Router {
 
                     case "/info":
                         PagePresenter.showOnlyOnePage("info-page");
-                        break;
-
-                    case "/teacher":
-                        PagePresenter.showOnlyOnePage("play-page-manage");
                         break;
 
                     default:

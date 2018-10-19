@@ -7,7 +7,7 @@
 export default class AuthWorker {
 
     /**
-     * Возвращает токен
+     * Возвращает token
      * @returns {string}
      */
     getToken() {
@@ -15,13 +15,31 @@ export default class AuthWorker {
     }
 
     /**
-     * Сохраняет токен
+     * Возвращает session_key
+     * @returns {string}
+     */
+    getSessionKey() {
+        return localStorage.getItem("session_key") !== null ? localStorage.getItem("session_key") : "no";
+    }
+
+    /**
+     * Сохраняет token
      * @param resp
      */
     static setToken(resp) {
         let token = "Token " + resp.token.toString();
         localStorage.setItem("token", token);
         console.log("TOKEN = " + localStorage.getItem("token"));
+    }
+
+    /**
+     * Сохраняет session_key
+     * @param resp
+     */
+    static setSessionKey(resp) {
+        let session_key = resp.session_key.toString();
+        localStorage.setItem("session_key", session_key);
+        console.log("session_key = " + localStorage.getItem("session_key"));
     }
 
     /**
@@ -35,11 +53,13 @@ export default class AuthWorker {
 
     autharization(resp) {
         AuthWorker.setToken(resp);
+        AuthWorker.setSessionKey(resp);
         AuthWorker.setUser(resp);
     }
 
     deleteToken() {
         localStorage.removeItem("token");
+        localStorage.removeItem("session_key");
         localStorage.removeItem("user");
     }
 }

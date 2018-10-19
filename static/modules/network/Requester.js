@@ -20,7 +20,7 @@ export default class Requester {
      */
     static baseUrl() {
         // return  "https://keklik-api.herokuapp.com/";
-        return "http://46.229.213.75:8000/"
+        return "http://46.229.213.75:8000/";
     }
 
     /**
