@@ -26,6 +26,19 @@ export default class GameStudentPage extends Page {
         console.log("add redirect");
     }
 
+    renderQuestion(ws_dataObj) {
+        document.getElementById("play-page-header").innerHTML = ws_dataObj.payload.data.quiz.title;
+        document.getElementById("play-page-question").innerHTML =
+            "Вопрос "+
+            ws_dataObj.payload.data.current_question.number + ": " +
+            ws_dataObj.payload.data.current_question.question;
+    }
+
+    renderFinish() {
+        document.getElementById("play-page-header").innerHTML = "ВИКТОРИНА ЗАВЕРШЕНА";
+        document.getElementById("play-page-question").innerHTML = "ВИКТОРИНА ЗАВЕРШЕНА";
+    }
+
     addEventsOnButtons() {
 
     }

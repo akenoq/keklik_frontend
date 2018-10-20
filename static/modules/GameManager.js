@@ -31,6 +31,7 @@ export default class GameManager {
 
     join(game_id) {
         document.getElementById("focus-btn").focus();
+        this.game_id = game_id;
         this.ws_controller = new WsController("student");
     }
 

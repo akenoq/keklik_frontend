@@ -41,9 +41,10 @@ export default class WsController {
             debugLog("Соединение установлено");
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             if (this.role === TEACHER_ROLE) {
-                this.subscribeTeacher();
+                this.subscribeTeacher(globalBus().gameManager.game_id);
             } else if (this.role === STUDENT_ROLE) {
-                debugLog("Subscribe STUDENT");
+                this.joinStudent(globalBus().gameManager.game_id);
+                this.subscribeStudent(globalBus().gameManager.game_id);
             }
         };
 
@@ -60,17 +61,24 @@ export default class WsController {
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             const ws_dataObj = JSON.parse(event.data);
             if (this.role === TEACHER_ROLE) {
-                // рендерить только экшн next question и потом экшн aswer
+                // рендерить только экшн next question и потом экшн answer
                 if (ws_dataObj.payload.action === ACTIONS.next_question &&
                     ws_dataObj.payload.data.state !== STATE.finish) {
-                    debugLog(ws_dataObj.payload.data.current_question + "______________________________");
+                    debugLog(ws_dataObj.payload.data.current_question + "_TEACHER_____________________________");
                     globalBus().gameTeacherPage.renderQuestion(ws_dataObj);
                 } else if (ws_dataObj.payload.data.state === STATE.finish) {
                     debugLog("_________________FINISH___________________");
                     globalBus().gameTeacherPage.renderFinish(ws_dataObj);
                 }
             } else if (this.role === STUDENT_ROLE) {
-                debugLog("RENDER STUDENT");
+                if (ws_dataObj.payload.action === ACTIONS.next_question &&
+                ws_dataObj.payload.data.state !== STATE.finish) {
+                    debugLog(ws_dataObj.payload.data.current_question + "_STUDENT_____________________________");
+                    globalBus().gameStudentPage.renderQuestion(ws_dataObj);
+                } else if (ws_dataObj.payload.action === ACTIONS.finish) {
+                    debugLog("_________________FINISH___________________");
+                    globalBus().gameStudentPage.renderFinish(ws_dataObj);
+                }
             }
         };
 
@@ -80,6 +88,18 @@ export default class WsController {
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             // reload
         };
+    }
+
+    joinStudent(game_id) {
+        debugLog("SEND JOIN STUDENT");
+        this.socket.send(JSON.stringify(
+            {
+                "stream": "games",
+                "payload": {
+                    "action": "join",
+                    "pk": game_id
+                }
+            }));
     }
 
     subscribeTeacher(game_id) {
@@ -103,6 +123,32 @@ export default class WsController {
                     "pk": game_id,
                 "data": {
                     "action": "answer"
+                    }
+                }
+            }));
+    }
+
+    subscribeStudent(game_id) {
+        debugLog("Subscribe STUDENT");
+        this.socket.send(JSON.stringify(
+            {
+                "stream": "games",
+                "payload": {
+                    "action": "subscribe",
+                    "pk": game_id,
+                    "data": {
+                        "action": "next_question"
+                    }
+                }
+            }));
+        this.socket.send(JSON.stringify(
+            {
+                "stream": "games",
+                "payload": {
+                    "action": "subscribe",
+                    "pk": game_id,
+                    "data": {
+                        "action": "finish"
                     }
                 }
             }));
