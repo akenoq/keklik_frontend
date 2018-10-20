@@ -6,6 +6,7 @@ import globalBus from "../../modules/globalBus";
 import Requester from "../../modules/network/Requester";
 import QuizzesDesk from "./QuizzesDesk";
 import ProfileForm from "./ProfileForm";
+import GameManager from "../../modules/GameManager";
 
 export default class OfficePage extends Page {
 
@@ -19,6 +20,8 @@ export default class OfficePage extends Page {
         console.log("office");
         globalBus().user = {};
         this.profileForm = new ProfileForm();
+
+        globalBus().count_ws = 0;
     }
 
     static pagePath() {
@@ -27,6 +30,17 @@ export default class OfficePage extends Page {
 
     static pageBoxName() {
         return "office-page";
+    }
+
+    joinGameBtn() {
+        // join to game btn
+        globalBus().gameStudentPage.attachRedirect();
+        document.getElementById("join-game-btn").addEventListener("click", () => {
+            const game_id = parseInt(document.getElementById("game-pin-input").value);
+            globalBus().gameManager.join(game_id);
+            globalBus().count_ws += 1;
+            console.log("HJGJGHJGJHGJGHJGJGJJG WS COUNT = " + globalBus().count_ws);
+        });
     }
 
     render() {
@@ -38,6 +52,7 @@ export default class OfficePage extends Page {
             document.getElementById("office-header-username").innerHTML = globalBus().user.username;
             this.profileForm.setFormValues(resp);
             QuizzesDesk.render();
+            this.joinGameBtn();
             return console.log("office norm");
         });
     }

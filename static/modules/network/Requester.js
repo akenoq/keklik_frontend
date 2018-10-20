@@ -119,4 +119,13 @@ export default class Requester {
     static getQuizById(id, callback) {
         Requester.requestToHost("GET", `api/quizzes/${id}/`, null, callback);
     }
+
+    static createGame(id, label = "", callback) {
+        const quiz = {
+            quiz: id,
+            label: label,
+            online: true
+        };
+        Requester.requestToHost("POST", "api/games/", quiz, callback);
+    }
 }

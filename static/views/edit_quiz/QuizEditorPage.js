@@ -99,7 +99,7 @@ export default class QuizEditorPage extends Page {
         }
     }
 
-    startQuizBtn() {
+    startQuizBtn(resp) {
         let startGameBtn = document.createElement('button');
         startGameBtn.innerHTML = "Запуcтить";
         startGameBtn.setAttribute("id", "start-game-btn");
@@ -107,7 +107,7 @@ export default class QuizEditorPage extends Page {
         document.getElementById("quiz-editor-h3").appendChild(startGameBtn);
         globalBus().gameTeacherPage.attachRedirect();
         startGameBtn.addEventListener("click", () => {
-            globalBus().gameManager.start(this.editQuizById);
+            globalBus().gameManager.start(this.editQuizById, resp.title);
         });
     }
 
@@ -118,7 +118,7 @@ export default class QuizEditorPage extends Page {
         // добавить id викторины в заголовок
         document.getElementById("quiz-editor-h3").innerHTML = `Викторина ${this.editQuizById}`;
         // кнопка запуска викторины
-        this.startQuizBtn();
+        this.startQuizBtn(resp);
         document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__title").value =
             resp.title;
         document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__description").value =

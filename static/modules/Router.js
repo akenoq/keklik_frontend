@@ -12,6 +12,7 @@ import Requester from "./network/Requester";
 import QuizEditorPage from "../views/edit_quiz/QuizEditorPage";
 import GameManager from "./GameManager";
 import GameTeacherPage from "../views/GameTeacherPage";
+import GameStudentPage from "../views/GameStudentPage";
 
 export default class Router {
     constructor() {
@@ -32,7 +33,8 @@ export default class Router {
         globalBus().quizEditor = new QuizEditorPage();
 
         globalBus().gameTeacherPage = new GameTeacherPage();
-        new GameManager();
+        globalBus().gameStudentPage = new GameStudentPage();
+        globalBus().gameManager = new GameManager();
 
         // pagePath
         const registerPagePath = RegisterPage.pagePath();

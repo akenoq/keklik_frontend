@@ -2,6 +2,7 @@
 
 import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
+import globalBus from "../modules/globalBus";
 
 export default class GameTeacherPage extends Page {
 
@@ -27,6 +28,21 @@ export default class GameTeacherPage extends Page {
     }
 
     addEventsOnButtons() {
+        document.getElementById("next-question-btn").onclick = () => {
+            globalBus().gameManager.switchNext();
+        };
+    }
 
+    renderQuestion(ws_dataObj) {
+        document.getElementById("question-preview").innerHTML = ws_dataObj
+            .payload
+            .data
+            .current_question
+            .question;
+    }
+
+    renderFinish(ws_dataObj) {
+        document.getElementById("question-preview").innerHTML = "Викторина завершена";
+        // печать результатов
     }
 }

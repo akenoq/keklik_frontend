@@ -131,6 +131,8 @@
                 <img src="img/ava_teacher.png" class="ava rounded-circle border border-danger" width="75px" height="75px">
                 <span id="office-header-username">Login of user</span>
             </h1>
+            <input id="game-pin-input" type="text">
+            <button id="join-game-btn" class="btn btn-success start-btn" >Присоединиться по PIN</button>
             <div class="card text-center">
                 <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
@@ -598,9 +600,12 @@
             </h1>
             <br>
             <div class="page-content">
-            <br>
-            <button type="button" class="btn btn-primary btn-lg btn-block">Следующий вопрос >></button>
-            <br>
+                <br>
+            <button id="next-question-btn" type="button" class="btn btn-primary btn-lg btn-block">Следующий вопрос >></button>
+
+                <br>
+                <div id="question-preview"></div>
+                <br>
             <h3>
                 <span class="text-right">Ответили 5/15</span>
             </h3>
@@ -650,6 +655,7 @@
             </div>
         </div>
     </div>
+    <button id="focus-btn" hidden onclick="console.log('RESET FOCUS')"></button>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

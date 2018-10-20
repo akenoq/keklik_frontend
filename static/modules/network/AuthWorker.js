@@ -18,7 +18,7 @@ export default class AuthWorker {
      * Возвращает session_key
      * @returns {string}
      */
-    getSessionKey() {
+    static getSessionKey() {
         return localStorage.getItem("session_key") !== null ? localStorage.getItem("session_key") : "no";
     }
 
