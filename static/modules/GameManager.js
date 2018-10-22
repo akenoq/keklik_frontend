@@ -52,6 +52,7 @@ export default class GameManager {
 
     sendAnswer(var_index, cur_question_id) {
         this.ws_controller.sendAnswerMessage(this.game_id, var_index, cur_question_id);
+        globalBus().gameStudentPage.renderWaitingNext();
     }
 
     reset() {

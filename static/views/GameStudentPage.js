@@ -51,9 +51,16 @@ export default class GameStudentPage extends Page {
         }
     }
 
+    renderWaitingNext() {
+        document.getElementById("play-page-header").innerHTML = "Следующий вопрос...";
+        document.getElementById("play-page-question").innerHTML = "";
+        document.getElementById("play-page-ans-list").innerHTML = "";
+    }
+
     renderFinish() {
         document.getElementById("play-page-header").innerHTML = "ВИКТОРИНА ЗАВЕРШЕНА";
         document.getElementById("play-page-question").innerHTML = "ВИКТОРИНА ЗАВЕРШЕНА";
+        document.getElementById("play-page-ans-list").innerHTML = "";
     }
 
     addEventsOnButtons() {
