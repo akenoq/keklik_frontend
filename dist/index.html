@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
 
+    <head>
+        <link rel="shortcut icon" href="./img/favicon-32x32.png" type="image/png">
+    </head>
+
     <title>Keklik</title>
 </head>
 <body>
@@ -596,7 +600,7 @@
 
         <div class="play-page-manage  page container" hidden>
             <h1 class="content-logo">
-                <span id="game-num" class="text-center">Ход викторины</span>
+                <span id="game-num" class="text-center">Ход соревнования</span>
             </h1>
             <br>
             <div class="page-content">
@@ -607,11 +611,14 @@
                 <div id="question-preview"></div>
                 <br>
             <h3>
-                <span class="text-right">Ответили 5/15</span>
+                <span id="answered-counter" class="text-right">
+                    Ответили <ans>0</ans> из <all>0</all></span>
+                <span id="joined-counter" class="text-right">
+                    Присоединились <all>0</all></span>
             </h3>
             <br>
 
-            <table class="table bg-white">
+            <table id="game-table" class="table bg-white">
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>

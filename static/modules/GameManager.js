@@ -11,6 +11,9 @@ export default class GameManager {
         console.log("GAME MANAGER START");
         this.ws_controller = null;
         this.game_id = null;
+        this.joined_counter = 0;
+        this.answered_counter = 0;
+        this.game_started = false;
     }
 
     start(quiz_id, game_title) {
@@ -38,11 +41,25 @@ export default class GameManager {
 
 
     switchNext(){
+        if (this.game_started === false) {
+            globalBus().gameTeacherPage.prepareGameMode();
+            this.game_started = true;
+        }
+        this.answered_counter = 0;
+        globalBus().gameTeacherPage.renderAnsweredCounter();
         this.ws_controller.sendNextMessage(this.game_id);
     }
 
     sendAnswer(var_index, cur_question_id) {
         this.ws_controller.sendAnswerMessage(this.game_id, var_index, cur_question_id);
+    }
+
+    reset() {
+        this.ws_controller = null;
+        this.game_id = null;
+        this.joined_counter = 0;
+        this.answered_counter = 0;
+        this.game_started = false;
     }
 
     stop() {

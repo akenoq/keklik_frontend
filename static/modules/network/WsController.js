@@ -68,9 +68,15 @@ export default class WsController {
                     globalBus().gameTeacherPage.renderQuestion(ws_dataObj);
                 } else if (ws_dataObj.payload.data.state === STATE.finish) {
                     debugLog("_________________FINISH___________________");
+                    globalBus().gameManager.reset();
                     globalBus().gameTeacherPage.renderFinish(ws_dataObj);
                 } else if (ws_dataObj.payload.action === ACTIONS.answer) {
                     globalBus().gameTeacherPage.renderGameTable(ws_dataObj);
+                } else if (ws_dataObj.payload.action === ACTIONS.join) {
+                    globalBus().gameManager.joined_counter += 1;
+                    debugLog("JOINED________________" + globalBus().gameManager.joined_counter);
+                    globalBus().gameTeacherPage.renderAnsweredCounter();
+                    globalBus().gameTeacherPage.renderJoinedCounter();
                 }
             } else if (this.role === STUDENT_ROLE) {
                 if (ws_dataObj.payload.action === ACTIONS.next_question &&

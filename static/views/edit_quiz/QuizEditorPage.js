@@ -105,6 +105,7 @@ export default class QuizEditorPage extends Page {
         startGameBtn.setAttribute("id", "start-game-btn");
         startGameBtn.setAttribute("class", "btn btn-success start-btn");
         document.getElementById("quiz-editor-h3").appendChild(startGameBtn);
+        globalBus().gameManager.joined_counter = 0;
         globalBus().gameTeacherPage.attachRedirect();
         startGameBtn.addEventListener("click", () => {
             globalBus().gameManager.start(this.editQuizById, resp.title);
