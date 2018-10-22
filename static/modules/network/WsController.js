@@ -69,6 +69,8 @@ export default class WsController {
                 } else if (ws_dataObj.payload.data.state === STATE.finish) {
                     debugLog("_________________FINISH___________________");
                     globalBus().gameTeacherPage.renderFinish(ws_dataObj);
+                } else if (ws_dataObj.payload.action === ACTIONS.answer) {
+                    globalBus().gameTeacherPage.renderGameTable(ws_dataObj);
                 }
             } else if (this.role === STUDENT_ROLE) {
                 if (ws_dataObj.payload.action === ACTIONS.next_question &&
@@ -164,5 +166,21 @@ export default class WsController {
                 "pk": game_id
             }
         }));
+    }
+
+    sendAnswerMessage(game_id, ans_var_index, cur_question_id) {
+        debugLog("GAME ID in ANSWERING = " + game_id);
+        this.socket.send(
+            JSON.stringify({
+                "stream": "games",
+                "payload": {
+                    "action": "answer",
+                    "data": {
+                        "answer": [ans_var_index],
+                        "question": cur_question_id
+                    },
+                    "pk": game_id
+                }
+            }));
     }
 }

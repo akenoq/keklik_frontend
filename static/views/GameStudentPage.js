@@ -2,6 +2,7 @@
 
 import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
+import globalBus from "../modules/globalBus";
 
 export default class GameStudentPage extends Page {
 
@@ -32,6 +33,22 @@ export default class GameStudentPage extends Page {
             "Вопрос "+
             ws_dataObj.payload.data.current_question.number + ": " +
             ws_dataObj.payload.data.current_question.question;
+        let cur_question_id = ws_dataObj.payload.data.current_question.id;
+        let answersLen = ws_dataObj.payload.data.current_question.variants.length;
+        document.getElementById("play-page-ans-list").innerHTML = "";
+        for (let i = 0; i < answersLen; i++){
+            let variant_id = ws_dataObj.payload.data.current_question.variants[i].id;
+            let varientInList = document.createElement('a');
+            varientInList.setAttribute("class", "ans-variant list-group-item list-group-item-action list-group-item-info");
+            varientInList.setAttribute("id", `ans-btn-${variant_id}`);
+            document.getElementById("play-page-ans-list").appendChild(varientInList);
+            document.getElementById(`ans-btn-${variant_id}`).innerHTML =
+                ws_dataObj.payload.data.current_question.variants[i].variant;
+            document.getElementById(`ans-btn-${variant_id}`).onclick = () => {
+                console.log("______________click______________");
+                globalBus().gameManager.sendAnswer(variant_id, cur_question_id);
+            }
+        }
     }
 
     renderFinish() {

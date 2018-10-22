@@ -23,6 +23,7 @@ export default class GameManager {
                 return;
             }
             this.game_id = resp.id;
+            globalBus().gameTeacherPage.renderQuizNum(this.game_id);
             console.log("GAME ID = " + this.game_id);
             this.ws_controller = new WsController("teacher");
             console.log("WS");
@@ -38,6 +39,10 @@ export default class GameManager {
 
     switchNext(){
         this.ws_controller.sendNextMessage(this.game_id);
+    }
+
+    sendAnswer(var_index, cur_question_id) {
+        this.ws_controller.sendAnswerMessage(this.game_id, var_index, cur_question_id);
     }
 
     stop() {

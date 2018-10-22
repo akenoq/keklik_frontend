@@ -30,6 +30,7 @@ export default class GameTeacherPage extends Page {
     addEventsOnButtons() {
         document.getElementById("next-question-btn").onclick = () => {
             globalBus().gameManager.switchNext();
+            document.getElementById("game-table-question").innerHTML = "";
         };
     }
 
@@ -41,8 +42,30 @@ export default class GameTeacherPage extends Page {
             .question;
     }
 
+    renderQuizNum(game_id) {
+        document.getElementById("game-num").innerHTML = `Ход викторины ${game_id}`;
+        document.getElementById("next-question-btn").disabled = false;
+    }
+
+    renderGameTable(ws_gameObj) {
+        let data = ws_gameObj.payload.data;
+        console.log("DATA = " + data);
+        let ansUser = data.player.user.username;
+        if (data.player.user.last_name !== "") {
+            ansUser = data.player.user.last_name;
+        }
+        console.log("ОТВЕТИЛ " + ansUser);
+        document.getElementById("game-table-question").innerHTML +=
+            `<tr class="table-group-line right-ans">
+                    <th scope="row">1</th>
+                    <td>${ansUser}</td>
+                    <td>${data.answer[0]}</td>
+            </tr>`
+    }
+
     renderFinish(ws_dataObj) {
         document.getElementById("question-preview").innerHTML = "Викторина завершена";
+        document.getElementById("next-question-btn").disabled = true;
         // печать результатов
     }
 }

@@ -209,3 +209,9 @@ body {
 .start-btn {
     margin-left: 5px;
 }
+
+.ans-variant {
+    cursor: pointer;
+    -moz-user-select: none;
+    user-select: none;
+}
