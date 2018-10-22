@@ -55,12 +55,21 @@ export default class GameTeacherPage extends Page {
             ansUser = data.player.user.last_name;
         }
         console.log("ОТВЕТИЛ " + ansUser);
-        document.getElementById("game-table-question").innerHTML +=
-            `<tr class="table-group-line right-ans">
+        if (data.correct === true) {
+            document.getElementById("game-table-question").innerHTML +=
+                `<tr class="table-group-line right-ans">
                     <th scope="row">1</th>
                     <td>${ansUser}</td>
-                    <td>${data.answer[0]}</td>
+                    <td>${data.answer[0].variant}</td>
             </tr>`
+        } else {
+            document.getElementById("game-table-question").innerHTML +=
+                `<tr class="table-group-line">
+                    <th scope="row">1</th>
+                    <td>${ansUser}</td>
+                    <td>${data.answer[0].variant}</td>
+            </tr>`
+        }
     }
 
     renderFinish(ws_dataObj) {
