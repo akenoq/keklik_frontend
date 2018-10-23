@@ -52,11 +52,11 @@ export default class GameTeacherPage extends Page {
     }
 
     renderQuestion(ws_dataObj) {
-        document.getElementById("question-preview").innerHTML = ws_dataObj
-            .payload
-            .data
-            .current_question
-            .question;
+        document.getElementById("question-preview").innerHTML =
+            "Вопрос "+
+            ws_dataObj.payload.data.current_question.number + "/<b>" +
+            ws_dataObj.payload.data.quiz.questions.length + "</b>" + ": " +
+            ws_dataObj.payload.data.current_question.question;
     }
 
     renderQuizNum(game_id) {
