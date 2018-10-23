@@ -22,7 +22,8 @@ export default class GameTeacherPage extends Page {
 
     attachRedirect() {
         this.addRedirectOnButtons(
-            {button: "start-game-btn", nextPage: "play-page-manage", pagePath: "/teacher"}
+            {button: "start-game-btn", nextPage: "play-page-manage", pagePath: "/teacher"},
+            {button: "exit-game-btn", nextPage: "office-page", pagePath: "/office"}
         );
         this.prepareWaitingPlayers();
         console.log("add redirect");
@@ -36,6 +37,9 @@ export default class GameTeacherPage extends Page {
     }
 
     prepareWaitingPlayers() {
+        document.getElementById("game-diagram").hidden = true;
+        document.getElementById("exit-game-btn").hidden = true;
+
         document.getElementById("next-question-btn").innerHTML = "Запустить соревнование >>";
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = false;
@@ -61,7 +65,7 @@ export default class GameTeacherPage extends Page {
 
     renderQuizNum(game_id) {
         document.getElementById("game-num").innerHTML = `Ход соревнования ${game_id}`;
-        document.getElementById("next-question-btn").disabled = false;
+        document.getElementById("next-question-btn").hidden = false;
     }
 
     renderAnsweredCounter() {
@@ -105,12 +109,76 @@ export default class GameTeacherPage extends Page {
         }
     }
 
+    countAllAnswers(ws_dataObj){
+        let answers_count = {};
+        answers_count.all = 0;
+        answers_count.right = 0;
+        answers_count.all_points = 0;
+        answers_count.right_points = 0;
+
+        let data = ws_dataObj.payload.data;
+        let len_quiz = data.generated_questions.length;
+        for (let i = 0; i < len_quiz; i++) {
+            let gen_question = data.generated_questions[i];
+            let len_players_ans = gen_question.players_answers.length;
+            answers_count.all += len_players_ans;
+            for (let k = 0; k < len_players_ans; k++) {
+                answers_count.all_points += gen_question.points; // с каждым ответившим увеличиваем правильные очки
+                if (gen_question.players_answers[k].correct === true) {
+                    answers_count.right += 1;
+                    answers_count.right_points += gen_question.points;
+                }
+            }
+        }
+        console.log(answers_count);
+        return answers_count;
+    }
+
     renderFinish(ws_dataObj) {
+        // считаем соотношение ответов
+        let all_ans_countObj = this.countAllAnswers(ws_dataObj);
+        let all_ans_len = 0;
+        let right_ans_len = 0;
+        all_ans_len = all_ans_countObj.all;
+        right_ans_len = all_ans_countObj.right;
+
+        function okruglen_to_2(n) {
+            return parseFloat(n.toFixed(2));
+        }
+
+        let right_proc = 0;
+        right_proc = okruglen_to_2((right_ans_len/all_ans_len) * 100);
+        let fail_proc = 0;
+        fail_proc = 100 - right_proc;
+
+        document.getElementById("game-diagram").hidden = false;
+        document.getElementById("exit-game-btn").hidden = false;
+        let chart = new CanvasJS.Chart("game-diagram", {
+            theme: "light1",
+            exportEnabled: true,
+            animationEnabled: true,
+            title: {
+                text: "Общий итог"
+            },
+            data: [{
+                type: "pie",
+                startAngle: 25,
+                toolTipContent: "<b>{label}</b>: {y}%",
+                showInLegend: "true",
+                legendText: "{label}",
+                indexLabelFontSize: 16,
+                indexLabel: "{label} - {y}%",
+                dataPoints: [
+                    { y: right_proc, label: "Правильных ответов" },
+                    { y: fail_proc, label: "Неправильных ответов" },
+                ]
+            }]
+        });
+        chart.render();
         document.getElementById("question-preview").innerHTML = "Соревнование завершено";
-        document.getElementById("next-question-btn").disabled = true;
+        document.getElementById("next-question-btn").hidden = true;
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = true;
         document.getElementById("game-table").hidden = true;
-        // печать результатов
     }
 }
