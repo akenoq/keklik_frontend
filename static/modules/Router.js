@@ -24,6 +24,14 @@ export default class Router {
             {button: "nav-office-btn", nextPage: "office-page", pagePath: "/office"}
         );
 
+        // global nav
+        globalBus().btn = {};
+        globalBus().nav = {};
+        globalBus().btn.loginBtn = document.getElementById("nav-login-btn");
+        globalBus().btn.signoutBtn = document.getElementById("nav-signout-btn");
+        globalBus().nav.loginBox = document.getElementById("nav-login-box");
+        globalBus().btn.officeBtn = document.getElementById("nav-office-btn");
+
         // page
         globalBus().registerPage = new RegisterPage();
         globalBus().loginPage = new LoginPage();
@@ -45,9 +53,12 @@ export default class Router {
             {button: "login-form-to-register-link", nextPage: "register-page", pagePath: "/register"},
         );
 
-        document.getElementById("nav-signout-btn").onclick = () => {
+        globalBus().btn.signoutBtn.onclick = () => {
             globalBus().authWorker.deleteToken();
-            document.getElementById("nav-login-btn").click();
+            globalBus().btn.signoutBtn.hidden =true;
+            globalBus().btn.loginBtn.hidden =false;
+            globalBus().btn.loginBtn.click();
+            globalBus().nav.loginBox.innerHTML = "";
         };
 
         Router.redirect();
@@ -69,18 +80,23 @@ export default class Router {
 
     static redirect() {
         const pathname = window.location.pathname;
-        Requester.whoami((err) => {
+        Requester.whoami((err, resp) => {
             if (err) {
-                document.getElementById("nav-signout-btn").hidden =true;
-                document.getElementById("nav-login-btn").hidden =false;
+                globalBus().btn.signoutBtn.hidden =true;
+                globalBus().btn.loginBtn.hidden =false;
+                globalBus().nav.loginBox.innerHTML = "";
                 switch (pathname) {
+
+                    case "/":
+                        PagePresenter.showOnlyOnePage("main-page");
+                        break;
 
                     case "/main":
                         PagePresenter.showOnlyOnePage("main-page");
                         break;
 
                     case "/office":
-                        document.getElementById("nav-login-btn").click();
+                        globalBus().btn.loginBtn.click();
                         break;
 
                     case "/register":
@@ -96,61 +112,64 @@ export default class Router {
                         break;
 
                     default:
-                        PagePresenter.showOnlyOnePage("main-page");
+                        globalBus().btn.loginBtn.click();
                         break;
                 }
                 return console.log("NOT AUTH");
+            } else if (resp) {
+                globalBus().btn.signoutBtn.hidden = false;
+                globalBus().btn.loginBtn.hidden = true;
+                globalBus().nav.loginBox.innerHTML = resp.username;
+                switch (pathname) {
+
+                    case "/main":
+                        PagePresenter.showOnlyOnePage("main-page");
+                        break;
+
+                    case "/office":
+                        Requester.whoami((err, resp) => {
+                            if (err) {
+                                globalBus().btn.loginBtn.click();
+                                return console.log("office error router");
+                            }
+                            globalBus().officePage.render();
+                            PagePresenter.showOnlyOnePage("office-page");
+                            return console.log("office norm router");
+                        });
+                        break;
+
+                    case "/info":
+                        PagePresenter.showOnlyOnePage("info-page");
+                        break;
+
+                    case "/course":
+                        PagePresenter.showOnlyOnePage("course-page");
+                        break;
+
+                    case "/group":
+                        PagePresenter.showOnlyOnePage("group-page");
+                        break;
+
+                    case "/play":
+                        PagePresenter.showOnlyOnePage("play-page");
+                        break;
+
+                    case "/edit":
+                        PagePresenter.showOnlyOnePage("edit-page");
+                        break;
+
+                    case "/teacher":
+                        PagePresenter.showOnlyOnePage("play-page-manage");
+                        break;
+
+                    default:
+                        PagePresenter.showOnlyOnePage("office-page");
+                        globalBus().officePage.render();
+                        PagePresenter.showOnlyOnePage("office-page");
+                        break;
+                }
+                return console.log("NORM AUTH");
             }
-
-            return console.log("NORM AUTH");
         });
-        document.getElementById("nav-signout-btn").hidden = false;
-        document.getElementById("nav-login-btn").hidden = true;
-        switch (pathname) {
-
-            case "/main":
-                PagePresenter.showOnlyOnePage("main-page");
-                break;
-
-            case "/office":
-                Requester.whoami((err, resp) => {
-                    if (err) {
-                        document.getElementById("nav-login-btn").click();
-                        return console.log("office error router");
-                    }
-                    globalBus().officePage.render();
-                    PagePresenter.showOnlyOnePage("office-page");
-                    return console.log("office norm router");
-                });
-                break;
-
-            case "/info":
-                PagePresenter.showOnlyOnePage("info-page");
-                break;
-
-            case "/course":
-                PagePresenter.showOnlyOnePage("course-page");
-                break;
-
-            case "/group":
-                PagePresenter.showOnlyOnePage("group-page");
-                break;
-
-            case "/play":
-                PagePresenter.showOnlyOnePage("play-page");
-                break;
-
-            case "/edit":
-                PagePresenter.showOnlyOnePage("edit-page");
-                break;
-
-            case "/teacher":
-                PagePresenter.showOnlyOnePage("play-page-manage");
-                break;
-
-            default:
-                PagePresenter.showOnlyOnePage("office-page");
-                break;
-        }
     }
 }

@@ -84,7 +84,7 @@ export default class QuizEditorPage extends Page {
                     return console.log("err in quiz");
                 } else {
                     console.log("ok in quiz edit" + resp);
-                    document.getElementById("nav-office-btn").click();
+                    globalBus().btn.officeBtn.click();
                     this.editQuizById = false;
                 }
             });
@@ -94,7 +94,7 @@ export default class QuizEditorPage extends Page {
                     return console.log("err in quiz");
                 }
                 console.log("ok in quiz" + resp);
-                document.getElementById("nav-office-btn").click();
+                globalBus().btn.officeBtn.click();
             });
         }
     }

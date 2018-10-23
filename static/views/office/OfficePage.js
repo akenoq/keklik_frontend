@@ -41,7 +41,7 @@ export default class OfficePage extends Page {
             console.log("INPUT ID = " + game_id);
             globalBus().gameManager.join(game_id);
             globalBus().count_ws += 1;
-            console.log("HJGJGHJGJHGJGHJGJGJJG WS COUNT = " + globalBus().count_ws);
+            console.log("WS COUNT = " + globalBus().count_ws);
         });
     }
 
@@ -52,6 +52,7 @@ export default class OfficePage extends Page {
             }
             globalBus().user = resp;
             document.getElementById("office-header-username").innerHTML = globalBus().user.username;
+            globalBus().nav.loginBox.innerHTML = resp.username;
             this.profileForm.setFormValues(resp);
             QuizzesDesk.render();
             if (globalBus().joinBtnFlag === false) {
