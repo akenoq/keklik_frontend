@@ -37,7 +37,8 @@ export default class GameTeacherPage extends Page {
     }
 
     prepareWaitingPlayers() {
-        document.getElementById("game-diagram").hidden = true;
+        document.getElementById("game-diagram-1").hidden = true;
+        document.getElementById("game-diagram-2").hidden = true;
         document.getElementById("exit-game-btn").hidden = true;
 
         document.getElementById("next-question-btn").innerHTML = "Запустить соревнование >>";
@@ -151,9 +152,10 @@ export default class GameTeacherPage extends Page {
         let fail_proc = 0;
         fail_proc = 100 - right_proc;
 
-        document.getElementById("game-diagram").hidden = false;
+        document.getElementById("game-diagram-1").hidden = false;
+        document.getElementById("game-diagram-2").hidden = false;
         document.getElementById("exit-game-btn").hidden = false;
-        let chart = new CanvasJS.Chart("game-diagram", {
+        let chart_1 = new CanvasJS.Chart("game-diagram-1", {
             theme: "light1",
             exportEnabled: true,
             animationEnabled: true,
@@ -174,7 +176,35 @@ export default class GameTeacherPage extends Page {
                 ]
             }]
         });
-        chart.render();
+
+        let right_score = all_ans_countObj.right_points;
+        let all_score = all_ans_countObj.all_points;
+
+        let ok_score_proc = okruglen_to_2((right_score/all_score) * 100);
+        let fail_score_proc = 100 - ok_score_proc;
+        let chart_2 = new CanvasJS.Chart("game-diagram-2", {
+            theme: "light1",
+            exportEnabled: true,
+            animationEnabled: true,
+            title: {
+                text: "Статистика по баллам"
+            },
+            data: [{
+                type: "pie",
+                startAngle: 25,
+                toolTipContent: "<b>{label}</b>: {y}%",
+                showInLegend: "true",
+                legendText: "{label}",
+                indexLabelFontSize: 16,
+                indexLabel: "{label} - {y}%",
+                dataPoints: [
+                    { y: ok_score_proc, label: "Полученные баллы" },
+                    { y: fail_score_proc, label: "Потерянные баллы" },
+                ]
+            }]
+        });
+        chart_1.render();
+        chart_2.render();
         document.getElementById("question-preview").innerHTML = "Соревнование завершено";
         document.getElementById("next-question-btn").hidden = true;
         document.getElementById("answered-counter").hidden = true;
