@@ -51,6 +51,12 @@ export default class GameStudentPage extends Page {
         }
     }
 
+    renderWaitingStart() {
+        document.getElementById("play-page-header").innerHTML = "Ожидание старта...";
+        document.getElementById("play-page-question").innerHTML = "";
+        document.getElementById("play-page-ans-list").innerHTML = "";
+    }
+
     renderWaitingNext() {
         document.getElementById("play-page-header").innerHTML = "Следующий вопрос...";
         document.getElementById("play-page-question").innerHTML = "";
@@ -58,8 +64,8 @@ export default class GameStudentPage extends Page {
     }
 
     renderFinish() {
-        document.getElementById("play-page-header").innerHTML = "ВИКТОРИНА ЗАВЕРШЕНА";
-        document.getElementById("play-page-question").innerHTML = "ВИКТОРИНА ЗАВЕРШЕНА";
+        document.getElementById("play-page-header").innerHTML = "Соревнование завершено";
+        document.getElementById("play-page-question").innerHTML = "Соревнование завершено";
         document.getElementById("play-page-ans-list").innerHTML = "";
     }
 

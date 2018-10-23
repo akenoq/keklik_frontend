@@ -37,6 +37,7 @@ export default class GameManager {
         document.getElementById("focus-btn").focus();
         this.game_id = game_id;
         this.ws_controller = new WsController("student");
+        globalBus().gameStudentPage.renderWaitingStart();
     }
 
 
