@@ -57,6 +57,7 @@ export default class GameManager {
     }
 
     reset() {
+        globalBus().prev_game = this.game_id;
         this.ws_controller = null;
         this.game_id = null;
         this.joined_counter = 0;

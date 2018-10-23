@@ -68,8 +68,8 @@ export default class WsController {
                     globalBus().gameTeacherPage.renderQuestion(ws_dataObj);
                 } else if (ws_dataObj.payload.data.state === STATE.finish) {
                     debugLog("_________________FINISH___________________");
-                    globalBus().gameManager.reset();
                     globalBus().gameTeacherPage.renderFinish(ws_dataObj);
+                    globalBus().gameManager.reset();
                 } else if (ws_dataObj.payload.action === ACTIONS.answer) {
                     globalBus().gameTeacherPage.renderGameTable(ws_dataObj);
                 } else if (ws_dataObj.payload.action === ACTIONS.join) {

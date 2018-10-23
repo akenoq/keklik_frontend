@@ -142,10 +142,15 @@ export default class QuizEditorPage extends Page {
             let variantsResp = resp.questions[i].variants;
             let variantsNum = resp.questions[i].variants.length;
             let variantEdit = qBoxes[i].getElementsByClassName("edit-variant");
+            let ans_id = resp.questions[i].answer[0];
+            let ans_num = 0;
             for (let k = 0; k < variantsNum; k++) {
                 variantEdit[k].value = variantsResp[k].variant;
+                if (variantsResp[k].id === ans_id) {
+                    ans_num = k + 1;
+                }
             }
-            qBoxes[i].querySelector(".edit-answer").value = resp.questions[i].answer;
+            qBoxes[i].querySelector(".edit-answer").value = ans_num;
             qBoxes[i].querySelector(".edit-points").value = resp.questions[i].points;
         }
     }

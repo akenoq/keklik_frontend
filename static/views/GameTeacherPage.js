@@ -106,7 +106,7 @@ export default class GameTeacherPage extends Page {
     }
 
     renderFinish(ws_dataObj) {
-        document.getElementById("question-preview").innerHTML = "Викторина завершена";
+        document.getElementById("question-preview").innerHTML = "Соревнование завершено";
         document.getElementById("next-question-btn").disabled = true;
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = true;
