@@ -28,10 +28,14 @@ export default class GameStudentPage extends Page {
     }
 
     renderQuestion(ws_dataObj) {
-        document.getElementById("play-page-header").innerHTML = ws_dataObj.payload.data.quiz.title;
+        document.getElementById("play-page-header").innerHTML =
+            "Соревнование " +
+            ws_dataObj.payload.data.id + ": " +
+            ws_dataObj.payload.data.quiz.title;
         document.getElementById("play-page-question").innerHTML =
             "Вопрос "+
-            ws_dataObj.payload.data.current_question.number + ": " +
+            ws_dataObj.payload.data.current_question.number + "/<b>" +
+            ws_dataObj.payload.data.quiz.questions.length + "</b>" + ": " +
             ws_dataObj.payload.data.current_question.question;
         let cur_question_id = ws_dataObj.payload.data.current_question.id;
         let answersLen = ws_dataObj.payload.data.current_question.variants.length;
@@ -52,7 +56,8 @@ export default class GameStudentPage extends Page {
     }
 
     renderWaitingStart() {
-        document.getElementById("play-page-header").innerHTML = "Ожидание старта...";
+        document.getElementById("play-page-header").innerHTML = `Ожидание старта соревнования
+        ${globalBus().gameManager.game_id}...`;
         document.getElementById("play-page-question").innerHTML = "";
         document.getElementById("play-page-ans-list").innerHTML = "";
     }
