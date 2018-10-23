@@ -221,3 +221,11 @@ body {
     font-size: 19px;
     color: #9f0060;
 }
+
+.line-result-table {
+    cursor: default !important;
+}
+
+.office-content {
+    margin-top: 15px;
+}

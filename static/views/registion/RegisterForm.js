@@ -73,7 +73,7 @@ export default class RegisterForm extends FormValidator {
                 return this.errorBox.innerHTML = RegisterForm.msgResponseFromHost();
             }
             globalBus().authWorker.autharization(resp);
-            alert(RegisterForm.msgSignUpSuccess());
+            // alert(RegisterForm.msgSignUpSuccess());
             this.clearForm();
             globalBus().officePage.render();
             // PagePresenter.showOnlyOnePage("office-page");

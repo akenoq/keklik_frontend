@@ -73,7 +73,7 @@ export default class LoginForm extends FormValidator {
                 return this.errorBox.innerHTML = LoginForm.msgResponseFromHost();
             }
             globalBus().authWorker.autharization(resp);
-            alert(LoginForm.msgSignUpSuccess());
+            // alert(LoginForm.msgSignUpSuccess());
             this.clearForm();
             globalBus().officePage.render();
             // PagePresenter.showOnlyOnePage("office-page");

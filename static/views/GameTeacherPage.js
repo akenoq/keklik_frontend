@@ -90,14 +90,14 @@ export default class GameTeacherPage extends Page {
         console.log("ОТВЕТИЛ " + ansUser);
         if (data.correct === true) {
             document.getElementById("game-table-question").innerHTML +=
-                `<tr class="table-group-line right-ans">
+                `<tr class="line-result-table table-group-line right-ans">
                     <th scope="row">${globalBus().gameManager.answered_counter}</th>
                     <td>${ansUser}</td>
                     <td>${data.answer[0].variant}</td>
             </tr>`
         } else {
             document.getElementById("game-table-question").innerHTML +=
-                `<tr class="table-group-line">
+                `<tr class="line-result-table table-group-line">
                     <th scope="row">${globalBus().gameManager.answered_counter}</th>
                     <td>${ansUser}</td>
                     <td>${data.answer[0].variant}</td>
