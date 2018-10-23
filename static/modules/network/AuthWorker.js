@@ -23,6 +23,14 @@ export default class AuthWorker {
     }
 
     /**
+     * Возвращает username
+     * @returns {string}
+     */
+    static getUsername() {
+        return localStorage.getItem("user") !== null ? JSON.parse(localStorage.getItem("user")).username : "no";
+    }
+
+    /**
      * Сохраняет token
      * @param resp
      */
