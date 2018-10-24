@@ -42,6 +42,7 @@ export default class OfficePage extends Page {
             globalBus().gameManager.join(game_id);
             globalBus().count_ws += 1;
             console.log("WS COUNT = " + globalBus().count_ws);
+            document.getElementById("game-pin-input").value = "";
         });
     }
 

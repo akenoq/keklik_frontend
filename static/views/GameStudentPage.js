@@ -23,7 +23,8 @@ export default class GameStudentPage extends Page {
 
     attachRedirect() {
         this.addRedirectOnButtons(
-            {button: "join-game-btn", nextPage: "play-page", pagePath: "/play"}
+            {button: "join-game-btn", nextPage: "play-page", pagePath: "/play"},
+            {button: "exit-game-student-btn", nextPage: "office-page", pagePath: "/office"}
         );
         console.log("add redirect");
     }
@@ -57,6 +58,7 @@ export default class GameStudentPage extends Page {
     }
 
     renderWaitingStart() {
+        document.getElementById("exit-game-student-btn").hidden = true;
         document.getElementById("play-page-header").innerHTML = `Ожидание старта соревнования
         ${globalBus().gameManager.game_id}...`;
         document.getElementById("play-page-question").innerHTML = "";
@@ -71,6 +73,7 @@ export default class GameStudentPage extends Page {
     }
 
     renderFinish(ws_dataObj) {
+        document.getElementById("exit-game-student-btn").hidden = false;
         let data = ws_dataObj.payload.data;
         let max_score = 0;
         let person_score = 0;
