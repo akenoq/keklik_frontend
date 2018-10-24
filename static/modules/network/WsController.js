@@ -34,9 +34,7 @@ export default class WsController {
     }
 
     addEvents() {
-        const socket = this.socket;
-
-        socket.onopen = () => {
+        this.socket.onopen = () => {
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             debugLog("Соединение установлено");
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
@@ -48,14 +46,14 @@ export default class WsController {
             }
         };
 
-        socket.onclose = (event) => {
+        this.socket.onclose = (event) => {
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             debugLog("Соединение закрыто");
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             // reload
         };
 
-        socket.onmessage = (event) => {
+        this.socket.onmessage = (event) => {
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             debugLog("Получено сообщение: " + event.data);
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
@@ -86,11 +84,12 @@ export default class WsController {
                 } else if (ws_dataObj.payload.action === ACTIONS.finish) {
                     debugLog("_________________FINISH___________________");
                     globalBus().gameStudentPage.renderFinish(ws_dataObj);
+                    globalBus().gameManager.reset();
                 }
             }
         };
 
-        socket.onerror = (error) => {
+        this.socket.onerror = (error) => {
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             debugLog("Ошибка: " + error.message);
             debugLog("EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
@@ -188,5 +187,9 @@ export default class WsController {
                     "pk": game_id
                 }
             }));
+    }
+
+    disconnect() {
+        this.socket.close();
     }
 }
