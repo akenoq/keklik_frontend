@@ -1,6 +1,6 @@
 @font-face {
     font-family: ComicRu; /* Имя шрифта */
-    src: url(./comic.ttf); /* Путь к файлу со шрифтом */
+    src: url(./cr_b.ttf); /* Путь к файлу со шрифтом */
 }
 
 body {
