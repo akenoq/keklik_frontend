@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
 
+    <head>
+        <link rel="shortcut icon" href="./img/favicon-32x32.png" type="image/png">
+    </head>
+
     <title>Keklik</title>
 </head>
 <body>
@@ -33,7 +37,9 @@
                         <a class="btnLink nav-link" href="#" id="nav-office-btn">Кабинет</a>
                     </li>
                 </ul>
+                <span id="nav-login-box" class="login-in-nav"></span>
                 <button id="nav-login-btn" class="btn btn-primary">Войти</button>
+                <button id="nav-signout-btn" class="btn btn-outline-secondary" hidden>Выйти</button>
             </div>
         </nav>
 
@@ -130,14 +136,16 @@
                 <img src="img/ava_teacher.png" class="ava rounded-circle border border-danger" width="75px" height="75px">
                 <span id="office-header-username">Login of user</span>
             </h1>
-            <div class="card text-center">
+            <input id="game-pin-input" type="text">
+            <button id="join-game-btn" class="btn btn-success start-btn" >Присоединиться по PIN</button>
+            <div class="office-content card text-center">
                 <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item">
                                 <a id="to-courses-btn" class="nav-link active card-header-green-tab" href="#">Мои курсы</a>
                             </li>
                             <li class="nav-item">
-                                <a id="to-quizes-btn" class="nav-link card-header-green-tab" href="#">Мои викторины</a>
+                                <a id="to-quizzes-btn" class="nav-link card-header-green-tab" href="#">Мои викторины</a>
                             </li>
                             <li class="nav-item">
                                 <a id="to-profile-btn" class="nav-link card-header-green-tab" href="#">Мой профиль</a>
@@ -180,74 +188,83 @@
                             </div>
                         </div>
 
-                        <div id="quizes-desk" hidden>
-                            <div class="card-deck">
-                                <div class="card new-quiz">
-                                    <img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">
-                                    <div class="card-body text-white">
-                                        <h5 class="card-title">Новая викторина</h5>
-                                        <hr>
-                                        <p class="card-text">Создание нового набора вопросов</p>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Умножение</h5>
-                                        <p class="card-text">Викторина на тему умножения. </p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Последний запуск 3/9/2017</small>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Деление</h5>
-                                        <p class="card-text">Викторина на тему деления. Викторина на тему деления. </p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Последний запуск 3/9/2017</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-deck">
-                                <div class="card">
-                                    <img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Сложение</h5>
-                                        <p class="card-text">Равным образом сложившаяся структура организации в значительной степени
-                                            обуславливает создание позиций, занимаемых участниками в отношении поставленных задач.
-                                            Равным образом рамки и место обучения кадров представляет собой интересный эксперимент
-                                            проверки существенных финансовых и административных условий. </p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Последний запуск 3/9/2017</small>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Умножение</h5>
-                                        <p class="card-text">Викторина на тему умножения.Викторина на тему умножения.Викторина на тему умножения.
-                                            Викторина на тему умножения. Викторина на тему умножения. Викторина на тему умножения.</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Последний запуск 3/9/2017</small>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Деление</h5>
-                                        <p class="card-text">Викторина на тему деления. Викторина на тему деления. Викторина на тему деления.
-                                            Викторина на тему деления. Викторина на тему деления. Викторина на тему деления. </p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Последний запуск 3/9/2017</small>
-                                    </div>
-                                </div>
-                            </div>
+                        <div id="quizzes-desk" hidden>
+                            <!--<div id="card-row-1" class="card-deck">-->
+                                <!--<div class="card new-quiz">-->
+                                    <!--<img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">-->
+                                    <!--<div class="card-body text-white">-->
+                                        <!--<h5 class="card-title">Новая викторина</h5>-->
+                                        <!--<hr>-->
+                                        <!--<p class="card-text">Создание нового набора вопросов</p>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+
+
+                                <!--<div class="card">-->
+                                    <!--<img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">-->
+                                    <!--<div class="card-body">-->
+                                        <!--<h5 class="card-title">Умножение</h5>-->
+                                        <!--<p class="card-text">Викторина на тему умножения. </p>-->
+                                    <!--</div>-->
+                                    <!--<div class="card-footer">-->
+                                        <!--<small class="text-muted">Последний запуск 3/9/2017</small>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="card">-->
+                                    <!--<img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">-->
+                                    <!--<div class="card-body">-->
+                                        <!--<h5 class="card-title">Деление</h5>-->
+                                        <!--<p class="card-text">Викторина на тему деления. Викторина на тему деления. </p>-->
+                                    <!--</div>-->
+                                    <!--<div class="card-footer">-->
+                                        <!--<small class="text-muted">Последний запуск 3/9/2017</small>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+
+
+                            <!--</div>-->
+
+
+
+                            <!--<div class="card-deck">-->
+                                <!--<div class="card">-->
+                                    <!--<img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">-->
+                                    <!--<div class="card-body">-->
+                                        <!--<h5 class="card-title">Сложение</h5>-->
+                                        <!--<p class="card-text">Равным образом сложившаяся структура организации в значительной степени-->
+                                            <!--обуславливает создание позиций, занимаемых участниками в отношении поставленных задач.-->
+                                            <!--Равным образом рамки и место обучения кадров представляет собой интересный эксперимент-->
+                                            <!--проверки существенных финансовых и административных условий. </p>-->
+                                    <!--</div>-->
+                                    <!--<div class="card-footer">-->
+                                        <!--<small class="text-muted">Последний запуск 3/9/2017</small>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="card">-->
+                                    <!--<img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">-->
+                                    <!--<div class="card-body">-->
+                                        <!--<h5 class="card-title">Умножение</h5>-->
+                                        <!--<p class="card-text">Викторина на тему умножения.Викторина на тему умножения.Викторина на тему умножения.-->
+                                            <!--Викторина на тему умножения. Викторина на тему умножения. Викторина на тему умножения.</p>-->
+                                    <!--</div>-->
+                                    <!--<div class="card-footer">-->
+                                        <!--<small class="text-muted">Последний запуск 3/9/2017</small>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="card">-->
+                                    <!--<img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">-->
+                                    <!--<div class="card-body">-->
+                                        <!--<h5 class="card-title">Деление</h5>-->
+                                        <!--<p class="card-text">Викторина на тему деления. Викторина на тему деления. Викторина на тему деления.-->
+                                            <!--Викторина на тему деления. Викторина на тему деления. Викторина на тему деления. </p>-->
+                                    <!--</div>-->
+                                    <!--<div class="card-footer">-->
+                                        <!--<small class="text-muted">Последний запуск 3/9/2017</small>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
 
                         <div id="profile" hidden>
@@ -255,17 +272,30 @@
                                 <div class="regform col col-md-auto">
                                     <form>
                                         <div id="profile-form-name" class="form-group">
-                                            <label for="exampleInputName1">Полное имя</label>
-                                            <input type="email" class="form-control" id="exampleInputName1"
-                                                   aria-describedby="emailHelp" placeholder="Enter email"
+                                            <label for="profile-name">Полное имя</label>
+                                            <input type="text" class="form-control" id="profile-name"
+                                                   aria-describedby="emailHelp" placeholder="ФИО"
                                                    value="Анастасия Калугина">
                                         </div>
                                         <div id="profile-form-email" class="form-group">
-                                            <label for="exampleInputEmail1">Email адрес</label>
-                                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" value="kaluginana@mail.ru">
-                                            <small id="emailHelp" class="form-text text-muted">Email будет использоваться только Keklik`ом</small>
+                                            <label for="profile-email">Email адрес</label>
+                                            <input type="email" class="form-control" id="profile-email" aria-describedby="emailHelp" placeholder="email@mail.ru">
                                         </div>
-                                        <button class="btn btn-primary">Подтвердить изменения</button>
+                                        <div id="profile-form-old-password" class="form-group">
+                                            <label for="profile-form-old-password">Старый пароль</label>
+                                            <input type="password" class="form-control" id="profile-old-password" aria-describedby="emailHelp" placeholder="*********">
+                                        </div>
+                                        <div id="profile-form-new-password" class="form-group">
+                                            <label for="profile-form-new-password">Новый пароль</label>
+                                            <input type="password" class="form-control" id="profile-new-password" aria-describedby="emailHelp" placeholder="*********">
+                                        </div>
+                                        <div id="profile-form-repeat-password" class="form-group">
+                                            <label for="profile-form-repeat-password">Повторите пароль</label>
+                                            <input type="password" class="form-control" id="profile-repeat-password" aria-describedby="emailHelp" placeholder="*********">
+                                        </div>
+                                        <div id="profile-form-ok" class="form-group ok-box"></div>
+                                        <div id="profile-form-error" class="form-group error-box"></div>
+                                        <button id="profile-form-btn" class="btn btn-primary">Подтвердить изменения</button>
                                     </form>
                                 </div>
                             </div>
@@ -279,7 +309,7 @@
                 <img src="img/ava_course.jpg" class="ava rounded-circle border border-danger" width="75px" height="75px">
                 <span>Название курса</span>
             </h1>
-            <table class="table">
+            <table class="table bg-white">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
@@ -326,14 +356,13 @@
                 </select>
             </form>
 
-            <div id="group-quizes">
+            <div id="group-quizzes">
                 <div class="card-deck card-desk-play">
                     <div class="card">
                         <img class="card-img-top" src="img/quiz_logo.png" id="to-play-btn-1" alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">Сложение</h5>
-                            <p class="card-text">             Решайте примеры на сложение
-                            </p>
+                            <p class="card-text">Решайте примеры на сложение</p>
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">Последний запуск 3/9/2017</small>
@@ -403,26 +432,27 @@
             <!--<img src="img/q1.jpg" class="img-fluid question" alt="Question img">-->
             <div class="row justify-content-md-center">
                 <div class="col col-md-auto">
-                    <h3>Вопрос 1</h3>
+                    <h3 id="play-page-header">Вопрос 1</h3>
                     <figure class="figure">
-                        <img src="img/слон.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                        <img id="play-figure" src="img/pic.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
                         <figcaption class="figure-caption">
-                            <h5>
+                            <h5 id="play-page-question">
                                 Какое животное изображено на картинке?
                             </h5>
                         </figcaption>
-                        <div class="progress">
-                            <span class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></span>
-                            <span class="question-timer">00:30</span>
-                        </div>
+                        <!--<div class="progress">-->
+                            <!--<span class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></span>-->
+                            <!--<span class="question-timer">00:30</span>-->
+                        <!--</div>-->
+                        <button id="exit-game-student-btn" type="button" class="btn btn-primary btn-lg btn-block">Назад в кабинет</button>
                     </figure>
-                    <div class="list-group text-center">
+                    <div id="play-page-ans-list" class="list-group text-center">
                         <!--<a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>-->
-                        <a href="#" class="list-group-item list-group-item-action list-group-item-secondary">Жираф</a>
-                        <a href="#" class="list-group-item list-group-item-action list-group-item-success">Слон</a>
-                        <a href="#" class="list-group-item list-group-item-action list-group-item-danger">Мяч</a>
-                        <a href="#" class="list-group-item list-group-item-action list-group-item-warning">Море</a>
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-info">A simple info list group item</a>-->
+                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-secondary">Жираф</a>-->
+                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-success">Слон</a>-->
+                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-danger">Мяч</a>-->
+                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-warning">Море</a>-->
+                        <!--<a class="list-group-item list-group-item-action list-group-item-info"></a>-->
                         <!--<a href="#" class="list-group-item list-group-item-action list-group-item-light">A simple light list group item</a>-->
                         <!--<a href="#" class="list-group-item list-group-item-action list-group-item-dark">A simple dark list group item</a>-->
                     </div>
@@ -431,142 +461,218 @@
         </div>
 
         <div class="edit-page page container" hidden>
-            <h3>Создание викторины</h3>
-            <div class="edit-quiz-form">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Название </span>
+            <div class="edit-page__form">
+                <h3 id="quiz-editor-h3">Создание викторины</h3>
+                <div class="edit-quiz-box" id="edit-quiz-form">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Название </span>
+                        </div>
+                        <textarea id="edit-quiz-form__title" class="form-control" aria-label="Новая викторина..."></textarea>
                     </div>
-                    <textarea class="form-control" aria-label="Новая викторина..."></textarea>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Описание</span>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Описание</span>
+                        </div>
+                        <textarea id="edit-quiz-form__description" class="form-control" aria-label="Описание..."></textarea>
                     </div>
-                    <textarea class="form-control" aria-label="Описание..."></textarea>
-                </div>
 
-                <div class="input-group mb-3">
-                    <label>Метки викторины &nbsp;</label>
-                    <input class="form-control" type="text" placeholder="Математика, Физика">
-                </div>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="timer-check">
-                    <label class="custom-control-label" for="timer-check">Автоматический переход к следующему вопросу</label>
-                </div>
-                <hr>
-                <br>
-
-                <div class="input-group mb-3">
-                    <!--<div class="input-group-prepend">-->
-                        <!--<span class="input-group-text" id="inputGroupFileAddon01">Загрузить файл</span>-->
+                    <div class="input-group mb-3">
+                        <label>Метки викторины &nbsp;</label>
+                        <input id="edit-quiz-form__tags" class="form-control" type="text" placeholder="Математика, Физика">
+                    </div>
+                    <!--<div class="custom-control custom-checkbox">-->
+                        <!--<input type="checkbox" class="custom-control-input" id="timer-check">-->
+                        <!--<label class="custom-control-label" for="timer-check">Автоматический переход к следующему вопросу</label>-->
                     <!--</div>-->
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Вопрос 1</span>
-                    </div>
-                    <textarea class="form-control" aria-label="Описание..."></textarea>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                        <label class="custom-file-label" for="inputGroupFile01">Прикрепить картинку...</label>
-                    </div>
-                </div>
+                    <hr>
+                    <br>
+                    <div id="edit-quiz-form__questions">
+                        <div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_0">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Вопрос 1</span>
+                                </div>
+                                <textarea class="edit-question form-control" aria-label="Описание..."></textarea>
+                            </div>
 
+                            <div class="row edit-quiz-form-ans-row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Вариант 1</span>
+                                        </div>
+                                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Вариант 2</span>
+                                        </div>
+                                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row edit-quiz-form-ans-row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Вариант 3</span>
+                                        </div>
+                                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Вариант 4</span>
+                                        </div>
+                                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row edit-quiz-form-ans-row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Вариант 5</span>
+                                        </div>
+                                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Вариант 6</span>
+                                        </div>
+                                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row edit-quiz-form-ans-row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Вариант 7</span>
+                                        </div>
+                                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Вариант 8</span>
+                                        </div>
+                                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row edit-quiz-form-ans-row">
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-success text-white">Правильный вариант</span>
+                                        </div>
+                                        <input maxlength="1" type="text" class="edit-answer form-control" placeholder="1" aria-label="" aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text bg-info text-white">Максимум очков за ответ</span>
+                                        </div>
+                                        <input maxlength="3" type="text" class="edit-points form-control" placeholder="5" aria-label="" aria-describedby="basic-addon2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div><hr><br>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-toolbar" role="toolbar" aria-label="quiz-form-btn-add">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button id="edit-quiz-form__add-question-btn" type="button" class="btn btn-primary">Еще вопрос</button>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="quiz-form-btn-ok">
+                    <button id="edit-quiz-form__send-btn" type="button" class="btn btn-success">Готово</button>
+                </div>
+            </div>
+        </div>
 
-                <div class="row edit-quiz-form-ans-row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 1</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 2</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                </div>
-                <div class="row edit-quiz-form-ans-row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text bg-success text-white">Вариант 3</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 4</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                </div>
-                <div class="row edit-quiz-form-ans-row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 5</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 6</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                </div>
-                <div class="row edit-quiz-form-ans-row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 7</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <div class="input-group-append">
-                                <span class="input-group-text">Вариант 8</span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
-                        </div>
-                    </div>
-                </div>
+        <div class="play-page-manage  page container" hidden>
+            <h1 class="content-logo">
+                <span id="game-num" class="text-center">Ход соревнования</span>
+            </h1>
+            <br>
+            <div class="page-content">
+                <br>
+            <button id="next-question-btn" type="button" class="btn btn-primary btn-lg btn-block">Следующий вопрос >></button>
+            <button id="exit-game-btn" type="button" class="btn btn-primary btn-lg btn-block">К сприску викторин</button>
+                <br>
+                <div id="question-preview"></div>
+                <div id="game-diagram-1" style="height: 370px; width: 100%;" hidden></div>
+                <div id="game-diagram-2" style="height: 370px; width: 100%;" hidden></div>
+                <br>
+            <h3>
+                <span id="answered-counter" class="text-right">
+                    Ответили <ans>0</ans> из <all>0</all></span>
+                <span id="joined-counter" class="text-right">
+                    Присоединились <all>0</all></span>
+            </h3>
+            <br>
 
-                <hr>
-
-                <div class="btn-toolbar" role="toolbar" aria-label="quiz-form-btn-add">
-                    <div class="btn-group mr-2" role="group" aria-label="First group">
-                        <button type="button" class="btn btn-primary">Еще вопрос</button>
-                    </div>
-                    <div class="btn-group mr-2" role="group" aria-label="quiz-form-btn-ok">
-                        <button type="button" class="btn btn-success">Готово</button>
-                    </div>
-                </div>
-
+            <table id="game-table" class="table bg-white">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Имя участника</th>
+                    <th scope="col">Ответ</th>
+                </tr>
+                </thead>
+                <tbody id="game-table-question">
+                <!--<tr class="table-group-line right-ans">-->
+                    <!--<th scope="row">1</th>-->
+                    <!--<td>Иванова Анна</td>-->
+                    <!--<td>слон</td>-->
+                <!--</tr>-->
+                <!--<tr class="table-group-line right-ans">-->
+                    <!--<th scope="row">2</th>-->
+                    <!--<td>Кузнецов Максим</td>-->
+                    <!--<td>слон</td>-->
+                <!--</tr>-->
+                <!--<tr class="table-group-line">-->
+                    <!--<th scope="row">3</th>-->
+                    <!--<td>Самсонов Петр</td>-->
+                    <!--<td>баран</td>-->
+                <!--</tr>-->
+                <!--<tr class="table-group-line">-->
+                    <!--<th scope="row">4</th>-->
+                    <!--<td>Иванов Иван</td>-->
+                    <!--<td>баран</td>-->
+                <!--</tr>-->
+                <!--<tr class="table-group-line">-->
+                    <!--<th scope="row">5</th>-->
+                    <!--<td>Кузнецов Коля</td>-->
+                    <!--<td>жираф</td>-->
+                <!--</tr>-->
+                <!--<tr class="table-group-line">-->
+                    <!--<th scope="row">6</th>-->
+                    <!--<td>Мирный Никос</td>-->
+                    <!--<td>ленивец</td>-->
+                <!--</tr>-->
+                </tbody>
+            </table>
             </div>
         </div>
     </div>
+    <button id="focus-btn" hidden onclick="console.log('RESET FOCUS')"></button>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

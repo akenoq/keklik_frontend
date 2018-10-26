@@ -14,31 +14,13 @@ const WITH_CREDENTIALS = true;
 
 export default class Requester {
 
-    constructor() {
-        globalBus().requester = this;
-    }
-
     /**
      * Возвращает url backend сервера
      * @returns {string}
      */
     static baseUrl() {
-        return  "https://keklik-api.herokuapp.com/";
-    }
-
-    static getToken() {
-        return localStorage.getItem("token") !== null ? localStorage.getItem("token") : "no";
-    }
-
-    static setToken(resp) {
-        let token = "Token " + resp.token.toString();
-        localStorage.setItem("token", token);
-        console.log("TOKEN = " + localStorage.getItem("token"));
-    }
-
-    static setUser(resp) {
-        localStorage.setItem("user", JSON.stringify(resp));
-        console.log("USER = " + localStorage.getItem("user"));
+        // return  "https://keklik-api.herokuapp.com/";
+        return "http://46.229.213.75:8000/";
     }
 
     /**
@@ -56,7 +38,7 @@ export default class Requester {
         const body = JSON.stringify(data);
 
         xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
-        xhr.setRequestHeader("Authorization", Requester.getToken());
+        xhr.setRequestHeader("Authorization", globalBus().authWorker.getToken());
 
         if (method === "GET") {
             xhr.send(null);
@@ -69,16 +51,13 @@ export default class Requester {
                 return;
             }
             if (parseInt(+xhr.status/100) !== messagesFromHost.HTTP_OK) {
+                if (JSON.parse(xhr.responseText).message === "Invalid token.") {
+                    globalBus().authWorker.deleteToken();
+                }
                 return callback(xhr, null);
             }
 
             const response = JSON.parse(xhr.responseText);
-
-            if (method !== 'GET') {
-                // только при регистрации
-                Requester.setToken(response);
-                Requester.setUser(response);
-            }
 
             callback(null, response);
         };
@@ -112,5 +91,41 @@ export default class Requester {
      */
     static whoami(callback) {
         Requester.requestToHost("GET", "api/users/me/", null, callback);
+    }
+
+    static quizNew(quiz, callback) {
+        Requester.requestToHost("POST", "api/quizzes/", quiz, callback);
+    }
+
+    static quizEdit(id, quiz, callback) {
+        console.log("id = " + id);
+        Requester.requestToHost("PUT", `api/quizzes/${id}/`, quiz, callback);
+    }
+
+    static quizzesOfUser(callback) {
+        Requester.requestToHost("GET", "api/quizzes/", null, callback);
+    }
+
+    static changeUserData(last_name, email, callback) {
+        const userData = {last_name, email};
+        Requester.requestToHost("PATCH", "api/users/me/", userData, callback);
+    }
+
+    static changePassword(old_password, new_password, callback) {
+        const data = {old_password, new_password};
+        Requester.requestToHost("POST", "api/users/me/password/", data, callback);
+    }
+
+    static getQuizById(id, callback) {
+        Requester.requestToHost("GET", `api/quizzes/${id}/`, null, callback);
+    }
+
+    static createGame(id, label = "", callback) {
+        const quiz = {
+            quiz: id,
+            label: label,
+            online: true
+        };
+        Requester.requestToHost("POST", "api/games/", quiz, callback);
     }
 }

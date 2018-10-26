@@ -72,12 +72,12 @@ export default class RegisterForm extends FormValidator {
             if (err) {
                 return this.errorBox.innerHTML = RegisterForm.msgResponseFromHost();
             }
-
-            alert(RegisterForm.msgSignUpSuccess());
-
+            globalBus().authWorker.autharization(resp);
+            // alert(RegisterForm.msgSignUpSuccess());
             this.clearForm();
             globalBus().officePage.render();
-            PagePresenter.showOnlyOnePage("office-page");
+            // PagePresenter.showOnlyOnePage("office-page");
+            globalBus().btn.officeBtn.click();
         });
     }
 

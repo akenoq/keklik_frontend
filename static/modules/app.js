@@ -6,14 +6,16 @@ import RegisterPage from "../views/registion/RegisterPage.js";
 import RegisterForm from "../views/registion/RegisterForm.js";
 import LoginPage from "../views/login/LoginPage.js";
 import LoginForm from "../views/login/LoginForm.js";
-import OfficePage from "../views/OfficePage.js";
+import OfficePage from "../views/office/OfficePage.js";
 import CoursesPage from "../views/CoursePage.js";
 import GroupPage from "../views/GroupPage.js";
 import Requester from "./network/Requester.js";
+import AuthWorker from "./network/AuthWorker";
+import QuizEditorPage from "../views/edit_quiz/QuizEditorPage";
 
 function startApp() {
     console.log("HELLO APP");
-
+    globalBus().authWorker = new AuthWorker();
     globalBus().router = new Router();
     let router = globalBus().router;
     // router = router.getMe(router);
