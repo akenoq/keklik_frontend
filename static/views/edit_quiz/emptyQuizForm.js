@@ -121,7 +121,8 @@ export default function emptyQuizForm() {
                             </div>
                         </div>
                     </div>
-                </div><hr><br>
+                    <hr>
+                </div>
             </div>
         </div>`
 }

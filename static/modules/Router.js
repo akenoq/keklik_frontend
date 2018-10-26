@@ -13,6 +13,7 @@ import QuizEditorPage from "../views/edit_quiz/QuizEditorPage";
 import GameManager from "./GameManager";
 import GameTeacherPage from "../views/GameTeacherPage";
 import GameStudentPage from "../views/GameStudentPage";
+import ModalWindow from "../views/ModalWindow";
 
 export default class Router {
     constructor() {
@@ -31,6 +32,8 @@ export default class Router {
         globalBus().btn.signoutBtn = document.getElementById("nav-signout-btn");
         globalBus().nav.loginBox = document.getElementById("nav-login-box");
         globalBus().btn.officeBtn = document.getElementById("nav-office-btn");
+
+        new ModalWindow();
 
         // page
         globalBus().registerPage = new RegisterPage();

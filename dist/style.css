@@ -235,3 +235,11 @@ body {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
+.delete-question-box {
+    font-size: 33px;
+}
+
+.modal-content {
+    box-shadow: 0 0 50px #9680b9;
+}

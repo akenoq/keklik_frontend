@@ -8,6 +8,7 @@ import PagePresenter from "../../modules/PagePresenter";
 import Page from "../Page";
 import questionBox from "./questionBox";
 import emptyQuizForm from "./emptyQuizForm";
+import debugLog from "../../modules/debugLog";
 
 export default class QuizEditorPage extends Page {
     constructor() {
@@ -31,10 +32,14 @@ export default class QuizEditorPage extends Page {
         this.index = 1;
     }
 
-    addQuestion() {
+    addQuestion(i) {
         let qBox = document.createElement('div');
-        qBox.innerHTML = questionBox(this.index);
+        qBox.innerHTML = questionBox(i);
         document.getElementById("edit-quiz-form__questions").appendChild(qBox);
+        document.getElementById(`delete-question-box_${i}`).onclick = () => {
+            this.deleteQuestion(i);
+            console.log(i);
+        };
         this.index++;
     }
 
@@ -130,9 +135,9 @@ export default class QuizEditorPage extends Page {
         let questionsCount = resp.questions.length;
         console.log("questionsCount" + questionsCount);
         // генерирую под них боксы
-        for (let i = 0; i < questionsCount - 1; i++) {
-            this.index = i + 1;
-            this.addQuestion();
+        for (let i = 1; i < questionsCount; i++) {
+            this.index = i;
+            this.addQuestion(i);
         }
         // коллекция боксов
         let qBoxes = document.getElementsByClassName("edit-quiz-form__question-box");
@@ -152,12 +157,15 @@ export default class QuizEditorPage extends Page {
             }
             qBoxes[i].querySelector(".edit-answer").value = ans_num;
             qBoxes[i].querySelector(".edit-points").value = resp.questions[i].points;
+            // document.getElementById(`delete-question-box_${i}`).onclick = () => {
+            //     this.deleteQuestion(i);
+            // };
         }
     }
 
     addEventsOnButtons() {
         document.getElementById("edit-quiz-form__add-question-btn").onclick = () => {
-            this.addQuestion();
+            this.addQuestion(this.index);
         };
 
         document.getElementById("edit-quiz-form__send-btn").onclick = () => {
@@ -178,5 +186,31 @@ export default class QuizEditorPage extends Page {
         document.querySelector(".edit-page__form").innerHTML = "";
         document.querySelector(".edit-page__form").innerHTML = emptyQuizForm();
         this.index = 1;
+    }
+
+    deleteQuestion(i) {
+        globalBus().modalWindow.setHeader("Удаление вопроса");
+        globalBus().modalWindow.setBody(`Вы уверены, что хотите удалить ${i+1} вопрос?`);
+        globalBus().modalWindow.show();
+        globalBus().modalWindow.addEventsOnButtons(() => {
+            debugLog("func for OK");
+            let el = document.getElementById(`edit-quiz-form__question-box_${i}`).parentNode;
+            el.parentNode.removeChild(el);
+            this.index -= 1;
+            let qBoxes = document.getElementsByClassName("edit-quiz-form__question-box");
+            for (let i = 1; i < qBoxes.length; i++) {
+                qBoxes[i].setAttribute('id', `edit-quiz-form__question-box_${i}`);
+                qBoxes[i].querySelector('.delete-question-box').setAttribute('id', `delete-question-box_${i}`);
+                qBoxes[i].querySelector('.q_num_span').setAttribute('id', `q_num_${i}`);
+                qBoxes[i].querySelector('.q_num_span').innerHTML = `Вопрос ${i + 1}`;
+                document.getElementById(`delete-question-box_${i}`).onclick = () => {
+                    this.deleteQuestion(i);
+                    console.log(i);
+                };
+            }
+            // edit-quiz-form__question-box_${index}
+            // delete-question-box_${index}
+            // <span id=q_num_${index} class="input-group-text">Вопрос ${index + 1} </span>
+        });
     }
 }

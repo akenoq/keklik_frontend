@@ -3,9 +3,12 @@
 export default function questionBox(index) {
     return (
         `<div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_${index}">
+             <button id="delete-question-box_${index}" type="button" class="delete-question-box close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+             </button>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">Вопрос ${index + 1} </span>
+                    <span id=q_num_${index} class="q_num_span input-group-text">Вопрос ${index + 1} </span>
                 </div>
                 <textarea class="edit-question form-control" aria-label="Описание..."></textarea>
             </div>
@@ -100,6 +103,7 @@ export default function questionBox(index) {
                     </div>
                 </div>
             </div>
-        </div><hr><br>`
+            <hr>
+        </div>`
     );
 }
