@@ -13,7 +13,8 @@ const messagesRegisterForm = {
     RESPONSE_MESSAGE : "Некорректный ввод или логин уже существует",
     UNIQUE_MESSAGE: "Пользователь с таким логином<br>уже существует",
     TOO_SHORT_LOGIN: "Пароль должен содержать<br>не менее 4х символов",
-    SUCCESS_SIGN_UP_MESSAGE : "Вы успешо зарегистрировались!"
+    SUCCESS_SIGN_UP_MESSAGE : "Вы успешо зарегистрировались!",
+    CONTENT_SHOULD_BE: "Логин и пароль должны состоять<br>из латинских букв и цифр"
 };
 
 export default class RegisterForm extends FormValidator {
@@ -33,7 +34,7 @@ export default class RegisterForm extends FormValidator {
     }
 
     static msgIncorrectInput() {
-        return messagesRegisterForm.INCORRECT_MESSAGE;
+        return messagesRegisterForm.CONTENT_SHOULD_BE;
     }
 
     static msgTooShortPassword() {

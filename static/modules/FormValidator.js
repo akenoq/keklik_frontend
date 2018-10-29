@@ -32,7 +32,8 @@ export default class FormValidator {
         if (!password) {
             return FormValidator.responseEmpty();
         }
-        const passwordRegexp = /\S{3,16}$/;
+        // const passwordRegexp = /\S{3,16}$/;
+        const passwordRegexp = /^[\w\d]{3,10}$/;
         return (passwordRegexp.test(password)) ? FormValidator.responseOk() : FormValidator.responseIncorrect();
     }
 
