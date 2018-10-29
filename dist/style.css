@@ -211,6 +211,7 @@ body {
     background: white;
     padding: 0 5% 5% 5%;
     border-radius: 10px;
+    max-width: 700px;
 }
 
 .start-btn {
@@ -251,3 +252,8 @@ body {
 .modal-content {
     box-shadow: 0 0 50px #9680b9;
 }
+
+.form-control::-webkit-input-placeholder {color: #e3aeec; opacity:1;}/* webkit */
+.form-control::-moz-placeholder          {color: #e3aeec; opacity:1;}/* Firefox 19+ */
+.form-control:-moz-placeholder           {color: #e3aeec; opacity:1;}/* Firefox 18- */
+.form-control:-ms-input-placeholder      {color: #e3aeec; opacity:1;}/* IE */

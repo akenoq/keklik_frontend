@@ -14,6 +14,7 @@ import GameManager from "./GameManager";
 import GameTeacherPage from "../views/GameTeacherPage";
 import GameStudentPage from "../views/GameStudentPage";
 import ModalWindow from "../views/ModalWindow";
+import debugLog from "./debugLog";
 
 export default class Router {
     constructor() {
@@ -169,7 +170,14 @@ export default class Router {
                         break;
 
                     case "/play":
-                        PagePresenter.showOnlyOnePage("play-page");
+                        if (globalBus().gameManager.game_id === null) {
+                            globalBus().officePage.render();
+                            globalBus().btn.officeBtn.click();
+                            debugLog("NO GAME");
+                        } else {
+                            PagePresenter.showOnlyOnePage("play-page");
+                            debugLog("YES GAME");
+                        }
                         break;
 
                     case "/edit":
@@ -177,7 +185,14 @@ export default class Router {
                         break;
 
                     case "/teacher":
-                        PagePresenter.showOnlyOnePage("play-page-manage");
+                        if (globalBus().gameManager.game_id === null) {
+                            globalBus().officePage.render();
+                            globalBus().btn.officeBtn.click();
+                            debugLog("NO GAME");
+                        } else {
+                            PagePresenter.showOnlyOnePage("play-page-manage");
+                            debugLog("YES GAME");
+                        }
                         break;
 
                     default:
