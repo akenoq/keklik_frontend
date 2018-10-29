@@ -4,6 +4,7 @@
 "use strict";
 
 import globalBus from "../globalBus";
+import debugLog from "../debugLog";
 
 const messagesFromHost = {
     HTTP_OK : 2,
@@ -54,6 +55,7 @@ export default class Requester {
                 if (JSON.parse(xhr.responseText).message === "Invalid token.") {
                     globalBus().authWorker.deleteToken();
                 }
+                debugLog(xhr.status + ' from 400');
                 return callback(xhr, null);
             }
 

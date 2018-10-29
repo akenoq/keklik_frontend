@@ -5,11 +5,14 @@ import globalBus from "../../modules/globalBus.js";
 import Requester from "../../modules/network/Requester.js";
 import fieldsCleaner from "./../../modules/fieldsCleaner.js";
 import PagePresenter from "../../modules/PagePresenter";
+import debugLog from "../../modules/debugLog";
 
 const messagesRegisterForm = {
     EMPTY_MESSAGE : "Заполнены не все поля",
     INCORRECT_MESSAGE : "Использованы недопустимые символы",
     RESPONSE_MESSAGE : "Некорректный ввод или логин уже существует",
+    UNIQUE_MESSAGE: "Пользователь с таким логином<br>уже существует",
+    TOO_SHORT_LOGIN: "Пароль должен содержать<br>не менее 4х символов",
     SUCCESS_SIGN_UP_MESSAGE : "Вы успешо зарегистрировались!"
 };
 
@@ -31,6 +34,14 @@ export default class RegisterForm extends FormValidator {
 
     static msgIncorrectInput() {
         return messagesRegisterForm.INCORRECT_MESSAGE;
+    }
+
+    static msgTooShortPassword() {
+        return messagesRegisterForm.TOO_SHORT_LOGIN;
+    }
+
+    static msgNotUniqueLogin() {
+        return messagesRegisterForm.UNIQUE_MESSAGE;
     }
 
     static msgResponseFromHost() {
@@ -68,9 +79,23 @@ export default class RegisterForm extends FormValidator {
     }
 
     sendRequest() {
+        let msg = "";
         Requester.register(this.loginValue, this.passwordValue, (err, resp) => {
             if (err) {
-                return this.errorBox.innerHTML = RegisterForm.msgResponseFromHost();
+                err = JSON.parse(err.responseText);
+                console.log(JSON.stringify(err));
+                if (err.username !== undefined) {
+                    if (err.username[0].code === "unique") {
+                        debugLog("UNIQ = ");
+                        msg = RegisterForm.msgNotUniqueLogin();
+                    }
+                } else if (err.password !== undefined) {
+                    if (err.password[0].code === "invalid") {
+                        debugLog("INV = ");
+                        msg = RegisterForm.msgTooShortPassword();
+                    }
+                }
+                return this.errorBox.innerHTML = msg;
             }
             globalBus().authWorker.autharization(resp);
             // alert(RegisterForm.msgSignUpSuccess());

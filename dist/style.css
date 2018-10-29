@@ -78,6 +78,7 @@ body {
 
 #regform-err {
     color: #C9007A;
+    margin-top: 15px;
 }
 
 .card-deck {
@@ -209,6 +210,8 @@ body {
 
 .start-btn {
     margin-left: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .ans-variant {
