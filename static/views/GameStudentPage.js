@@ -4,6 +4,7 @@ import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
 import globalBus from "../modules/globalBus";
 import authWorker from "../modules/network/AuthWorker";
+import htmlEntities from "../modules/htmlEntities";
 
 export default class GameStudentPage extends Page {
 
@@ -38,7 +39,7 @@ export default class GameStudentPage extends Page {
             "Вопрос "+
             ws_dataObj.payload.data.current_question.number + "/<b>" +
             ws_dataObj.payload.data.quiz.questions.length + "</b>" + ": " +
-            ws_dataObj.payload.data.current_question.question;
+            htmlEntities(ws_dataObj.payload.data.current_question.question);
         let cur_question_id = ws_dataObj.payload.data.current_question.id;
         let answersLen = ws_dataObj.payload.data.current_question.variants.length;
         document.getElementById("play-page-ans-list").innerHTML = "";

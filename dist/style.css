@@ -81,6 +81,11 @@ body {
     margin-top: 15px;
 }
 
+#login-form-err {
+    color: #C9007A;
+    margin-top: 15px;
+}
+
 .card-deck {
     margin-top: 15px;
 }
