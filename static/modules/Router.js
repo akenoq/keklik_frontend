@@ -67,6 +67,7 @@ export default class Router {
         Router.redirect();
 
         window.addEventListener("popstate", () => {
+            globalBus().modalWindow.hide();
             Router.redirect();
             // registerPage.getForm().clearForm();
             // this.loginPage.getForm().clearForm();
