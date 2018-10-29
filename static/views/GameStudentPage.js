@@ -50,7 +50,7 @@ export default class GameStudentPage extends Page {
             varientInList.setAttribute("id", `ans-btn-${variant_id}`);
             document.getElementById("play-page-ans-list").appendChild(varientInList);
             document.getElementById(`ans-btn-${variant_id}`).innerHTML =
-                ws_dataObj.payload.data.current_question.variants[i].variant;
+                htmlEntities(ws_dataObj.payload.data.current_question.variants[i].variant);
             document.getElementById(`ans-btn-${variant_id}`).onclick = () => {
                 console.log("______________click______________");
                 globalBus().gameManager.sendAnswer(variant_id, cur_question_id);
