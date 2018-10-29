@@ -94,7 +94,7 @@ export default class GameStudentPage extends Page {
         document.getElementById("play-page-header").innerHTML = "Соревнование завершено";
         document.getElementById("play-page-question").innerHTML = "Ваш результат " + person_score + " из " + max_score;
         document.getElementById("play-page-ans-list").innerHTML = "";
-        document.getElementById("play-figure").setAttribute("src", "img/finish_flag.jpg");
+        document.getElementById("play-figure").setAttribute("src", "img/finish_flag_700.jpg");
     }
 
     addEventsOnButtons() {
