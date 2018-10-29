@@ -63,7 +63,7 @@ export default class QuizzesDesk extends Page {
                     // <div id="quiz-card-${id}" class="card quizzes-desk__quiz-card">
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
                     caBox.setAttribute("class", "card quizzes-desk__quiz-card");
-                    caBox.innerHTML = quizCard(resp[i].title, resp[i].description);
+                    caBox.innerHTML = quizCard(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
                     document.getElementById("card-row-1").appendChild(caBox);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
                         QuizzesDesk.redirectToQuiz(resp[i].id)
@@ -81,7 +81,7 @@ export default class QuizzesDesk extends Page {
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
                     caBox.setAttribute("class", "card quizzes-desk__quiz-card");
-                    caBox.innerHTML = quizCard(resp[i].title, resp[i].description);
+                    caBox.innerHTML = quizCard(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
                     document.getElementById(`card-row-${rowCount}`).appendChild(caBox);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
                         QuizzesDesk.redirectToQuiz(resp[i].id)
