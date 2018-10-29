@@ -33,6 +33,16 @@ export default class Router {
         globalBus().nav.loginBox = document.getElementById("nav-login-box");
         globalBus().btn.officeBtn = document.getElementById("nav-office-btn");
 
+        let navBtnArr = document.getElementsByClassName('btnLink');
+        for (let i = 0; i < navBtnArr.length; i++) {
+            navBtnArr[i].addEventListener('click',() => {
+                for (let j = 0; j < navBtnArr.length; j++) {
+                    navBtnArr[j].parentNode.setAttribute('class', 'nav-item');
+                }
+                navBtnArr[i].parentNode.setAttribute('class', 'nav-item active');
+            });
+        }
+
         new ModalWindow();
 
         // page
