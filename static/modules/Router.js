@@ -56,6 +56,10 @@ export default class Router {
             {button: "login-form-to-register-link", nextPage: "register-page", pagePath: "/register"},
         );
 
+        document.getElementById("participate-btn").onclick = () => {
+            globalBus().btn.officeBtn.click();
+        };
+
         globalBus().btn.signoutBtn.onclick = () => {
             globalBus().authWorker.deleteToken();
             globalBus().btn.signoutBtn.hidden =true;
