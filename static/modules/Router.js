@@ -6,7 +6,7 @@ import LoginPage from "../views/login/LoginPage.js";
 import PagePresenter from "./PagePresenter.js";
 import linkOnButtons from "./linkOnButtons.js";
 import OfficePage from "../views/office/OfficePage";
-import CoursePage from "../views/CoursePage";
+import CoursePage from "../views/course/CoursePage";
 import GroupPage from "../views/GroupPage";
 import Requester from "./network/Requester";
 import QuizEditorPage from "../views/edit_quiz/QuizEditorPage";
@@ -162,7 +162,14 @@ export default class Router {
                         break;
 
                     case "/course":
-                        PagePresenter.showOnlyOnePage("course-page");
+                        Requester.whoami((err, resp) => {
+                            if (err) {
+                                globalBus().btn.loginBtn.click();
+                                return console.log("office error router");
+                            }
+                            PagePresenter.showOnlyOnePage("course-page");
+                            return console.log("office norm router");
+                        });
                         break;
 
                     case "/group":
