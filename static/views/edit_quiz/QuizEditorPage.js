@@ -33,9 +33,9 @@ export default class QuizEditorPage extends Page {
     }
 
     addQuestion(i) {
-        console.log("INDEX = " + i);
+        debugLog("INDEX = " + i);
         i = document.getElementsByClassName("edit-quiz-form__question-box").length;
-        console.log("INDEX+ = " + i);
+        debugLog("INDEX+ = " + i);
         let qBox = document.createElement('div');
         qBox.innerHTML = questionBox(i);
         document.getElementById("edit-quiz-form__questions").appendChild(qBox);
