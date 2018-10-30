@@ -33,6 +33,9 @@ export default class QuizEditorPage extends Page {
     }
 
     addQuestion(i) {
+        console.log("INDEX = " + i);
+        i = document.getElementsByClassName("edit-quiz-form__question-box").length;
+        console.log("INDEX+ = " + i);
         let qBox = document.createElement('div');
         qBox.innerHTML = questionBox(i);
         document.getElementById("edit-quiz-form__questions").appendChild(qBox);
@@ -213,7 +216,7 @@ export default class QuizEditorPage extends Page {
                 qBoxes[i].setAttribute('id', `edit-quiz-form__question-box_${i}`);
                 qBoxes[i].querySelector('.delete-question-box').setAttribute('id', `delete-question-box_${i}`);
                 qBoxes[i].querySelector('.q_num_span').setAttribute('id', `q_num_${i}`);
-                qBoxes[i].querySelector('.q_num_span').innerHTML = `Вопрос ${i + 1}`;
+                qBoxes[i].querySelector('.q_num_span').innerHTML = `Вопрос ${i + 1}<red>&nbsp;*</red>`;
                 document.getElementById(`delete-question-box_${i}`).onclick = () => {
                     this.deleteQuestion(i);
                     debugLog(i);
