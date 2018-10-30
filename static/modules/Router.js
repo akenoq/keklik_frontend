@@ -13,6 +13,8 @@ import QuizEditorPage from "../views/edit_quiz/QuizEditorPage";
 import GameManager from "./GameManager";
 import GameTeacherPage from "../views/GameTeacherPage";
 import GameStudentPage from "../views/GameStudentPage";
+import ModalWindow from "../views/ModalWindow";
+import debugLog from "./debugLog";
 
 export default class Router {
     constructor() {
@@ -31,6 +33,18 @@ export default class Router {
         globalBus().btn.signoutBtn = document.getElementById("nav-signout-btn");
         globalBus().nav.loginBox = document.getElementById("nav-login-box");
         globalBus().btn.officeBtn = document.getElementById("nav-office-btn");
+
+        let navBtnArr = document.getElementsByClassName('btnLink');
+        for (let i = 0; i < navBtnArr.length; i++) {
+            navBtnArr[i].addEventListener('click',() => {
+                for (let j = 0; j < navBtnArr.length; j++) {
+                    navBtnArr[j].parentNode.setAttribute('class', 'nav-item');
+                }
+                navBtnArr[i].parentNode.setAttribute('class', 'nav-item active');
+            });
+        }
+
+        new ModalWindow();
 
         // page
         globalBus().registerPage = new RegisterPage();
@@ -53,6 +67,10 @@ export default class Router {
             {button: "login-form-to-register-link", nextPage: "register-page", pagePath: "/register"},
         );
 
+        document.getElementById("participate-btn").onclick = () => {
+            globalBus().btn.officeBtn.click();
+        };
+
         globalBus().btn.signoutBtn.onclick = () => {
             globalBus().authWorker.deleteToken();
             globalBus().btn.signoutBtn.hidden =true;
@@ -64,6 +82,7 @@ export default class Router {
         Router.redirect();
 
         window.addEventListener("popstate", () => {
+            globalBus().modalWindow.hide();
             Router.redirect();
             // registerPage.getForm().clearForm();
             // this.loginPage.getForm().clearForm();
@@ -151,7 +170,14 @@ export default class Router {
                         break;
 
                     case "/play":
-                        PagePresenter.showOnlyOnePage("play-page");
+                        if (globalBus().gameManager.game_id === null) {
+                            globalBus().officePage.render();
+                            globalBus().btn.officeBtn.click();
+                            debugLog("NO GAME");
+                        } else {
+                            PagePresenter.showOnlyOnePage("play-page");
+                            debugLog("YES GAME");
+                        }
                         break;
 
                     case "/edit":
@@ -159,7 +185,14 @@ export default class Router {
                         break;
 
                     case "/teacher":
-                        PagePresenter.showOnlyOnePage("play-page-manage");
+                        if (globalBus().gameManager.game_id === null) {
+                            globalBus().officePage.render();
+                            globalBus().btn.officeBtn.click();
+                            debugLog("NO GAME");
+                        } else {
+                            PagePresenter.showOnlyOnePage("play-page-manage");
+                            debugLog("YES GAME");
+                        }
                         break;
 
                     default:

@@ -1,6 +1,6 @@
 @font-face {
     font-family: ComicRu; /* Имя шрифта */
-    src: url(./comic.ttf); /* Путь к файлу со шрифтом */
+    src: url(./cr_b.ttf); /* Путь к файлу со шрифтом */
 }
 
 body {
@@ -78,6 +78,12 @@ body {
 
 #regform-err {
     color: #C9007A;
+    margin-top: 15px;
+}
+
+#login-form-err {
+    color: #C9007A;
+    margin-top: 15px;
 }
 
 .card-deck {
@@ -205,10 +211,13 @@ body {
     background: white;
     padding: 0 5% 5% 5%;
     border-radius: 10px;
+    max-width: 700px;
 }
 
 .start-btn {
     margin-left: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .ans-variant {
@@ -234,4 +243,41 @@ body {
 #game-diagram {
     margin-top: 15px;
     margin-bottom: 15px;
+}
+
+.delete-question-box {
+    font-size: 33px;
+}
+
+.modal-content {
+    box-shadow: 0 0 50px #9680b9;
+}
+
+.form-control::-webkit-input-placeholder {color: #e3aeec; opacity:1;}/* webkit */
+.form-control::-moz-placeholder          {color: #e3aeec; opacity:1;}/* Firefox 19+ */
+.form-control:-moz-placeholder           {color: #e3aeec; opacity:1;}/* Firefox 18- */
+.form-control:-ms-input-placeholder      {color: #e3aeec; opacity:1;}/* IE */
+
+red {
+    color: #ee4545;
+    font-weight: bold;
+}
+
+[data-nec="empty"] {
+    border: solid 2px #ff00005e;
+    border-left: solid 5px #ff00005e;
+}
+
+[data-nec="not-numeric"] {
+    border: solid 2px #ff00005e;
+    border-left: solid 5px #ff00005e;
+}
+
+[data-nec="big"] {
+    border: solid 2px #ff00005e;
+    border-left: solid 5px #ff00005e;
+}
+
+#edit-quiz-form__tags {
+    margin-left: 5px;
 }

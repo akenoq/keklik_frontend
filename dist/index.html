@@ -43,6 +43,25 @@
             </div>
         </nav>
 
+        <div class="modal fade" id="modal-window" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-header-box"></h5>
+                        <button id="close-delete-btn" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id="modal-body-box" class="modal-body">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="cancel-delete-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button id="ok-delete-btn" type="button" class="btn btn-primary">ОК</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="main-page page container" hidden>
             <div id="carousel-main" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
@@ -79,7 +98,7 @@
                 <br>
                 GameToEdu-интегратор <strong>Keklik!</strong>
                 <br><br>
-                <button class="btn btn-success">Участвовать!</button>
+                <button id="participate-btn" class="btn btn-success">Участвовать!</button>
             </div>
         </div>
 
@@ -466,20 +485,20 @@
                 <div class="edit-quiz-box" id="edit-quiz-form">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">Название </span>
+                            <span class="input-group-text">Название <red>&nbsp;*</red></span>
                         </div>
-                        <textarea id="edit-quiz-form__title" class="form-control" aria-label="Новая викторина..."></textarea>
+                        <textarea id="edit-quiz-form__title" class="form-control necessary-field" data-nec="true" aria-label="Новая викторина..."></textarea>
                     </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">Описание</span>
+                            <span class="input-group-text">Описание <red>&nbsp;*</red></span>
                         </div>
-                        <textarea id="edit-quiz-form__description" class="form-control" aria-label="Описание..."></textarea>
+                        <textarea id="edit-quiz-form__description" class="form-control necessary-field" data-nec="true" aria-label="Описание..."></textarea>
                     </div>
 
                     <div class="input-group mb-3">
-                        <label>Метки викторины &nbsp;</label>
-                        <input id="edit-quiz-form__tags" class="form-control" type="text" placeholder="Математика, Физика">
+                        <label>Метки викторины <red>&nbsp;*</red></label>
+                        <input id="edit-quiz-form__tags" class="form-control necessary-field" type="text" placeholder="Математика, Физика">
                     </div>
                     <!--<div class="custom-control custom-checkbox">-->
                         <!--<input type="checkbox" class="custom-control-input" id="timer-check">-->
@@ -491,26 +510,26 @@
                         <div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_0">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Вопрос 1</span>
+                                    <span class="input-group-text">Вопрос 1<red>&nbsp;*</red></span>
                                 </div>
-                                <textarea class="edit-question form-control" aria-label="Описание..."></textarea>
+                                <textarea class="edit-question form-control necessary-field" aria-label="Описание..."></textarea>
                             </div>
 
                             <div class="row edit-quiz-form-ans-row">
                                 <div class="col">
                                     <div class="input-group mb-3">
                                         <div class="input-group-append">
-                                            <span class="input-group-text">Вариант 1</span>
+                                            <span class="input-group-text">Вариант 1<red>&nbsp;*</red></span>
                                         </div>
-                                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                        <input type="text" class="edit-variant form-control necessary-field" placeholder="" aria-label="" aria-describedby="basic-addon2">
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="input-group mb-3">
                                         <div class="input-group-append">
-                                            <span class="input-group-text">Вариант 2</span>
+                                            <span class="input-group-text">Вариант 2<red>&nbsp;*</red></span>
                                         </div>
-                                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                                        <input type="text" class="edit-variant form-control necessary-field" placeholder="" aria-label="" aria-describedby="basic-addon2">
                                     </div>
                                 </div>
                             </div>
@@ -572,22 +591,23 @@
                                 <div class="col">
                                     <div class="input-group mb-3">
                                         <div class="input-group-append">
-                                            <span class="input-group-text bg-success text-white">Правильный вариант</span>
+                                            <span class="input-group-text bg-success text-white">Правильный вариант<red>&nbsp;*</red></span>
                                         </div>
-                                        <input maxlength="1" type="text" class="edit-answer form-control" placeholder="1" aria-label="" aria-describedby="basic-addon2">
+                                        <input maxlength="1" type="number" min="1" max="8" class="true-var edit-answer form-control necessary-field numeric-field" placeholder="1" aria-label="" aria-describedby="basic-addon2">
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="input-group mb-3">
                                         <div class="input-group-append">
-                                            <span class="input-group-text bg-info text-white">Максимум очков за ответ</span>
+                                            <span class="input-group-text bg-info text-white">Очки за ответ<red>&nbsp;*</red></span>
                                         </div>
-                                        <input maxlength="3" type="text" class="edit-points form-control" placeholder="5" aria-label="" aria-describedby="basic-addon2">
+                                        <input maxlength="3" min="1" max="999" type="number" class="edit-points form-control necessary-field numeric-field" placeholder="5" aria-label="" aria-describedby="basic-addon2">
                                     </div>
                                 </div>
                             </div>
                         </div><hr><br>
                     </div>
+                    <red id="edit-quiz-err"></red>
                 </div>
             </div>
             <div class="btn-toolbar" role="toolbar" aria-label="quiz-form-btn-add">

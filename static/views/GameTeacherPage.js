@@ -3,6 +3,7 @@
 import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
 import globalBus from "../modules/globalBus";
+import htmlEntities from "../modules/htmlEntities";
 
 export default class GameTeacherPage extends Page {
 
@@ -61,7 +62,7 @@ export default class GameTeacherPage extends Page {
             "Вопрос "+
             ws_dataObj.payload.data.current_question.number + "/<b>" +
             ws_dataObj.payload.data.quiz.questions.length + "</b>" + ": " +
-            ws_dataObj.payload.data.current_question.question;
+            htmlEntities(ws_dataObj.payload.data.current_question.question);
     }
 
     renderQuizNum(game_id) {
@@ -97,15 +98,15 @@ export default class GameTeacherPage extends Page {
             document.getElementById("game-table-question").innerHTML +=
                 `<tr class="line-result-table table-group-line right-ans">
                     <th scope="row">${globalBus().gameManager.answered_counter}</th>
-                    <td>${ansUser}</td>
-                    <td>${data.answer[0].variant}</td>
+                    <td>${htmlEntities(ansUser)}</td>
+                    <td>${htmlEntities(data.answer[0].variant)}</td>
             </tr>`
         } else {
             document.getElementById("game-table-question").innerHTML +=
                 `<tr class="line-result-table table-group-line">
                     <th scope="row">${globalBus().gameManager.answered_counter}</th>
-                    <td>${ansUser}</td>
-                    <td>${data.answer[0].variant}</td>
+                    <td>${htmlEntities(ansUser)}</td>
+                    <td>${htmlEntities(data.answer[0].variant)}</td>
             </tr>`
         }
     }

@@ -32,9 +32,7 @@ export default class QuizzesDesk extends Page {
         });
     }
 
-    static render() {
-        let quizzesDesk = document.getElementById("quizzes-desk");
-        quizzesDesk.innerHTML = "";
+    static renderNewQuizCard(quizzesDesk) {
         quizzesDesk.innerHTML = QuizzesDesk.newQuizCard();
         linkOnButtons(
             {button: "new-quiz", nextPage: "edit-page", pagePath: "/edit"}
@@ -42,8 +40,14 @@ export default class QuizzesDesk extends Page {
         document.getElementById("new-quiz").addEventListener("click", () => {
             globalBus().quizEditorPage.clearForm();
         });
+        document.getElementById("new-quiz").hidden = true;
+    }
 
+    static render() {
         console.log("Quiz Desk");
+        let quizzesDesk = document.getElementById("quizzes-desk");
+        quizzesDesk.innerHTML = "";
+        QuizzesDesk.renderNewQuizCard(quizzesDesk);
         QuizzesDesk.quizzesReq((resp) => {
             console.log(resp);
             let cardsInRow = 1;
@@ -59,7 +63,7 @@ export default class QuizzesDesk extends Page {
                     // <div id="quiz-card-${id}" class="card quizzes-desk__quiz-card">
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
                     caBox.setAttribute("class", "card quizzes-desk__quiz-card");
-                    caBox.innerHTML = quizCard(resp[i].title, resp[i].description);
+                    caBox.innerHTML = quizCard(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
                     document.getElementById("card-row-1").appendChild(caBox);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
                         QuizzesDesk.redirectToQuiz(resp[i].id)
@@ -77,7 +81,7 @@ export default class QuizzesDesk extends Page {
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
                     caBox.setAttribute("class", "card quizzes-desk__quiz-card");
-                    caBox.innerHTML = quizCard(resp[i].title, resp[i].description);
+                    caBox.innerHTML = quizCard(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
                     document.getElementById(`card-row-${rowCount}`).appendChild(caBox);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
                         QuizzesDesk.redirectToQuiz(resp[i].id)
@@ -85,6 +89,7 @@ export default class QuizzesDesk extends Page {
                     cardsInRow++;
                 }
             }
+            document.getElementById("new-quiz").hidden = false;
         });
     }
 

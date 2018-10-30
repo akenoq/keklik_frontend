@@ -8,12 +8,13 @@ import PagePresenter from "../../modules/PagePresenter";
 import Page from "../Page";
 import questionBox from "./questionBox";
 import emptyQuizForm from "./emptyQuizForm";
+import debugLog from "../../modules/debugLog";
 
 export default class QuizEditorPage extends Page {
     constructor() {
         super();
         this.index = 1; // номер вопроса
-        console.log("Quiz editor");
+        debugLog("Quiz editor");
         this.quiz = {};
         this.resetQuiz();
         globalBus().quizEditorPage = this;
@@ -31,10 +32,17 @@ export default class QuizEditorPage extends Page {
         this.index = 1;
     }
 
-    addQuestion() {
+    addQuestion(i) {
+        debugLog("INDEX = " + i);
+        i = document.getElementsByClassName("edit-quiz-form__question-box").length;
+        debugLog("INDEX+ = " + i);
         let qBox = document.createElement('div');
-        qBox.innerHTML = questionBox(this.index);
+        qBox.innerHTML = questionBox(i);
         document.getElementById("edit-quiz-form__questions").appendChild(qBox);
+        document.getElementById(`delete-question-box_${i}`).onclick = () => {
+            this.deleteQuestion(i);
+            debugLog(i);
+        };
         this.index++;
     }
 
@@ -68,12 +76,18 @@ export default class QuizEditorPage extends Page {
             });
         }
 
-        console.log(this.quiz);
+        debugLog(this.quiz);
     }
 
     validate() {
         let errors = FormValidator.correctQuiz(this.quiz);
-        console.log("err = " + errors);
+        debugLog("err = " + errors);
+        if (errors.length !== 0) {
+            debugLog("__________________________________");
+            // document.getElementById("edit-quiz-err").innerHTML = "Обязательные поля не заполнены или заполнены с ошибками";
+            document.getElementById("edit-quiz-err").innerHTML = errors.join('<br>');
+            return false;
+        }
         return true;
     }
 
@@ -81,9 +95,10 @@ export default class QuizEditorPage extends Page {
         if (this.editQuizById !== false) {
             Requester.quizEdit(this.editQuizById, this.quiz, (err, resp) => {
                 if (err) {
-                    return console.log("err in quiz");
+                    document.getElementById("edit-quiz-err").innerHTML = "&#9888; Обязательные поля не заполнены или заполнены с ошибками";
+                    return debugLog("err in quiz");
                 } else {
-                    console.log("ok in quiz edit" + resp);
+                    debugLog("ok in quiz edit" + resp);
                     globalBus().btn.officeBtn.click();
                     this.editQuizById = false;
                 }
@@ -91,9 +106,10 @@ export default class QuizEditorPage extends Page {
         } else {
             Requester.quizNew(this.quiz, (err, resp) => {
                 if (err) {
-                    return console.log("err in quiz");
+                    document.getElementById("edit-quiz-err").innerHTML = "Обязательные поля не заполнены или заполнены с ошибками";
+                    return debugLog("err in quiz");
                 }
-                console.log("ok in quiz" + resp);
+                debugLog("ok in quiz" + resp);
                 globalBus().btn.officeBtn.click();
             });
         }
@@ -114,7 +130,7 @@ export default class QuizEditorPage extends Page {
 
     render(id, resp) {
         document.getElementById("new-quiz").click();
-        console.log("ID = " + id);
+        debugLog("ID = " + id);
         this.editQuizById = id;
         // добавить id викторины в заголовок
         document.getElementById("quiz-editor-h3").innerHTML = `Викторина ${this.editQuizById}`;
@@ -128,11 +144,11 @@ export default class QuizEditorPage extends Page {
             resp.tags.join();
         // количество вопросов
         let questionsCount = resp.questions.length;
-        console.log("questionsCount" + questionsCount);
+        debugLog("questionsCount" + questionsCount);
         // генерирую под них боксы
-        for (let i = 0; i < questionsCount - 1; i++) {
-            this.index = i + 1;
-            this.addQuestion();
+        for (let i = 1; i < questionsCount; i++) {
+            this.index = i;
+            this.addQuestion(i);
         }
         // коллекция боксов
         let qBoxes = document.getElementsByClassName("edit-quiz-form__question-box");
@@ -152,12 +168,15 @@ export default class QuizEditorPage extends Page {
             }
             qBoxes[i].querySelector(".edit-answer").value = ans_num;
             qBoxes[i].querySelector(".edit-points").value = resp.questions[i].points;
+            // document.getElementById(`delete-question-box_${i}`).onclick = () => {
+            //     this.deleteQuestion(i);
+            // };
         }
     }
 
     addEventsOnButtons() {
         document.getElementById("edit-quiz-form__add-question-btn").onclick = () => {
-            this.addQuestion();
+            this.addQuestion(this.index);
         };
 
         document.getElementById("edit-quiz-form__send-btn").onclick = () => {
@@ -167,16 +186,45 @@ export default class QuizEditorPage extends Page {
             if (this.validate()) {
                 this.sendRequest();
                 this.resetQuiz();
+                document.getElementById("edit-quiz-err").innerHTML = "";
+            } else {
+                this.resetQuiz();
             }
         };
     }
 
     clearForm() {
-        console.log("clear form");
+        debugLog("clear form");
         this.editQuizById = false;
-        console.log(this.editQuizById);
+        debugLog(this.editQuizById);
         document.querySelector(".edit-page__form").innerHTML = "";
         document.querySelector(".edit-page__form").innerHTML = emptyQuizForm();
         this.index = 1;
+    }
+
+    deleteQuestion(i) {
+        globalBus().modalWindow.setHeader("Удаление вопроса");
+        globalBus().modalWindow.setBody(`Вы уверены, что хотите удалить ${i+1} вопрос?`);
+        globalBus().modalWindow.show();
+        globalBus().modalWindow.addEventsOnButtons(() => {
+            debugLog("func for OK");
+            let el = document.getElementById(`edit-quiz-form__question-box_${i}`).parentNode;
+            el.parentNode.removeChild(el);
+            this.index -= 1;
+            let qBoxes = document.getElementsByClassName("edit-quiz-form__question-box");
+            for (let i = 1; i < qBoxes.length; i++) {
+                qBoxes[i].setAttribute('id', `edit-quiz-form__question-box_${i}`);
+                qBoxes[i].querySelector('.delete-question-box').setAttribute('id', `delete-question-box_${i}`);
+                qBoxes[i].querySelector('.q_num_span').setAttribute('id', `q_num_${i}`);
+                qBoxes[i].querySelector('.q_num_span').innerHTML = `Вопрос ${i + 1}<red>&nbsp;*</red>`;
+                document.getElementById(`delete-question-box_${i}`).onclick = () => {
+                    this.deleteQuestion(i);
+                    debugLog(i);
+                };
+            }
+            // edit-quiz-form__question-box_${index}
+            // delete-question-box_${index}
+            // <span id=q_num_${index} class="input-group-text">Вопрос ${index + 1} </span>
+        });
     }
 }

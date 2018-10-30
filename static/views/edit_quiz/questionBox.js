@@ -3,28 +3,31 @@
 export default function questionBox(index) {
     return (
         `<div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_${index}">
+             <button id="delete-question-box_${index}" type="button" class="delete-question-box close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+             </button>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text">Вопрос ${index + 1} </span>
+                    <span id=q_num_${index} class="q_num_span input-group-text">Вопрос ${index + 1} <red>&nbsp;*</red></span>
                 </div>
-                <textarea class="edit-question form-control" aria-label="Описание..."></textarea>
+                <textarea class="edit-question form-control necessary-field" data-nec="true" aria-label="Описание..."></textarea>
             </div>
 
             <div class="row edit-quiz-form-ans-row">
                 <div class="col">
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text">Вариант 1</span>
+                            <span class="input-group-text">Вариант 1<red>&nbsp;*</red></span>
                         </div>
-                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                        <input type="text" class="edit-variant form-control necessary-field" data-nec="true" placeholder="" aria-label="" aria-describedby="basic-addon2">
                     </div>
                 </div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text">Вариант 2</span>
+                            <span class="input-group-text">Вариант 2<red>&nbsp;*</red></span>
                         </div>
-                        <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
+                        <input type="text" class="edit-variant form-control necessary-field" data-nec="true" placeholder="" aria-label="" aria-describedby="basic-addon2">
                     </div>
                 </div>
             </div>
@@ -86,20 +89,21 @@ export default function questionBox(index) {
                 <div class="col">
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text bg-success text-white">Правильный вариант</span>
+                            <span class="input-group-text bg-success text-white">Правильный вариант<red>&nbsp;*</red></span>
                         </div>
-                        <input maxlength="1" type="text" class="edit-answer form-control" placeholder="1" aria-label="" aria-describedby="basic-addon2">
+                        <input maxlength="1" type="number"  min="1" max="8" class="true-var edit-answer form-control necessary-field numeric-field" data-nec="true" placeholder="1" aria-label="" aria-describedby="basic-addon2">
                     </div>
                 </div>
                 <div class="col">
                     <div class="input-group mb-3">
                         <div class="input-group-append">
-                            <span class="input-group-text bg-info text-white">Максимум очков за ответ</span>
+                            <span class="input-group-text bg-info text-white">Очки за ответ<red>&nbsp;*</red></span>
                         </div>
-                        <input maxlength="3" type="text" class="edit-points form-control" placeholder="5" aria-label="" aria-describedby="basic-addon2">
+                        <input maxlength="3" type="number" min="1" max="999" class="edit-points form-control necessary-field numeric-field" data-nec="true" placeholder="5" aria-label="" aria-describedby="basic-addon2">
                     </div>
                 </div>
             </div>
-        </div><hr><br>`
+            <hr>
+        </div>`
     );
 }

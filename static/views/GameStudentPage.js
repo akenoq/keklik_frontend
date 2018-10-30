@@ -4,6 +4,7 @@ import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
 import globalBus from "../modules/globalBus";
 import authWorker from "../modules/network/AuthWorker";
+import htmlEntities from "../modules/htmlEntities";
 
 export default class GameStudentPage extends Page {
 
@@ -38,7 +39,7 @@ export default class GameStudentPage extends Page {
             "Вопрос "+
             ws_dataObj.payload.data.current_question.number + "/<b>" +
             ws_dataObj.payload.data.quiz.questions.length + "</b>" + ": " +
-            ws_dataObj.payload.data.current_question.question;
+            htmlEntities(ws_dataObj.payload.data.current_question.question);
         let cur_question_id = ws_dataObj.payload.data.current_question.id;
         let answersLen = ws_dataObj.payload.data.current_question.variants.length;
         document.getElementById("play-page-ans-list").innerHTML = "";
@@ -49,7 +50,7 @@ export default class GameStudentPage extends Page {
             varientInList.setAttribute("id", `ans-btn-${variant_id}`);
             document.getElementById("play-page-ans-list").appendChild(varientInList);
             document.getElementById(`ans-btn-${variant_id}`).innerHTML =
-                ws_dataObj.payload.data.current_question.variants[i].variant;
+                htmlEntities(ws_dataObj.payload.data.current_question.variants[i].variant);
             document.getElementById(`ans-btn-${variant_id}`).onclick = () => {
                 console.log("______________click______________");
                 globalBus().gameManager.sendAnswer(variant_id, cur_question_id);
@@ -94,7 +95,7 @@ export default class GameStudentPage extends Page {
         document.getElementById("play-page-header").innerHTML = "Соревнование завершено";
         document.getElementById("play-page-question").innerHTML = "Ваш результат " + person_score + " из " + max_score;
         document.getElementById("play-page-ans-list").innerHTML = "";
-        document.getElementById("play-figure").setAttribute("src", "img/finish_flag.jpg");
+        document.getElementById("play-figure").setAttribute("src", "img/finish_flag_700.jpg");
     }
 
     addEventsOnButtons() {
