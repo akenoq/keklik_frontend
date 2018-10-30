@@ -1,3 +1,4 @@
+import debugLog from "./debugLog";
 "use strict";
 
 const messagesToForm = {
@@ -37,21 +38,64 @@ export default class FormValidator {
         return (passwordRegexp.test(password)) ? FormValidator.responseOk() : FormValidator.responseIncorrect();
     }
 
+    static hasDuplicates(array) {
+        console.log(array);
+        for (let i = 0; i < array.length; ++i) {
+            for (let j = i + 1; j < array.length; j++) {
+                console.log("i = " + i + "; " + j + " = " + array[i].variant + "; " + array[j].variant);
+                if (array[i].variant === array[j].variant) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     static correctQuiz(quiz) {
         console.log(quiz);
         let errors = [];
-        if (quiz.title === "") errors.push("title_empty");
-        if (quiz.description === "") errors.push("description_empty");
-        if (quiz.tags === "") errors.push("tags_empty");
+        let empty_flag = false;
+        let necessary_fields = document.getElementsByClassName("necessary-field");
+
+        if (quiz.title === "")
+            empty_flag = true;
+        if (quiz.description === "")
+            empty_flag = true;
+        if (quiz.tags === "")
+            empty_flag = true;
+
+        for (let i = 0; i < necessary_fields.length; i++) {
+            necessary_fields[i].setAttribute('data-nec', 'true');
+            debugLog(necessary_fields[i]);
+            if (necessary_fields[i].value === "") {
+                empty_flag = true;
+                necessary_fields[i].setAttribute('data-nec', 'empty');
+            }
+        }
         quiz.questions.forEach((elem, i) => {
-            if (elem.question === "") errors.push(i + "_question_empty");
-            if (elem.answer.toString() === "NaN") errors.push(i + "_answer_empty");
-            if (elem.points.toString === "NaN") errors.push(i + "_points_empty");
+            if (elem.question === "")
+                empty_flag = true;
+            if (elem.answer.toString() === "NaN")
+                empty_flag = true;
+            if (elem.points.toString === "NaN")
+                empty_flag = true;
             let variants = elem.variants.filter((variant) => {
                 return variant !== ""
             });
-            if (variants < 2) errors.push(i + "_variants_empty");
+            if (this.hasDuplicates(variants)) {
+                errors.push(`&#9888; В вопросе ${i+1} есть повторяющиеся варианты ответа`);
+            }
+            if (variants < 2)
+                empty_flag = true;
+                // errors.push(i + "_variants_empty");
+            if (parseInt(document.getElementById(`edit-quiz-form__question-box_${i}`)
+                    .querySelector(".true-var").value) > variants.length) {
+                document.getElementById(`edit-quiz-form__question-box_${i}`)
+                    .querySelector(".true-var").setAttribute('data-nec', 'big');
+                errors.push(`&#9888; Номер правильного варианта в вопосе ${i+1} превышает количество вариантов`);
+            }
         });
+        if (empty_flag) errors.push("&#9888; Заполните обязательные поля");
         return errors;
     }
 }

@@ -257,3 +257,27 @@ body {
 .form-control::-moz-placeholder          {color: #e3aeec; opacity:1;}/* Firefox 19+ */
 .form-control:-moz-placeholder           {color: #e3aeec; opacity:1;}/* Firefox 18- */
 .form-control:-ms-input-placeholder      {color: #e3aeec; opacity:1;}/* IE */
+
+red {
+    color: #ee4545;
+    font-weight: bold;
+}
+
+[data-nec="empty"] {
+    border: solid 2px #ff00005e;
+    border-left: solid 5px #ff00005e;
+}
+
+[data-nec="not-numeric"] {
+    border: solid 2px #ff00005e;
+    border-left: solid 5px #ff00005e;
+}
+
+[data-nec="big"] {
+    border: solid 2px #ff00005e;
+    border-left: solid 5px #ff00005e;
+}
+
+#edit-quiz-form__tags {
+    margin-left: 5px;
+}
