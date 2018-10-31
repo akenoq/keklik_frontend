@@ -134,4 +134,8 @@ export default class Requester {
         };
         Requester.requestToHost("POST", "api/games/", quiz, callback);
     }
+
+    static organizationsAll(callback) {
+        Requester.requestToHost("GET", "api/organizations/", null, callback);
+    }
 }

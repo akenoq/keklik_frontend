@@ -1,10 +1,10 @@
 "use strict";
 
-import Page from "../Page";
-import Requester from "../../modules/network/Requester.js";
+import Page from "../../Page";
+import Requester from "../../../modules/network/Requester.js";
 import quizCard from "./quizCard";
-import linkOnButtons from "../../modules/linkOnButtons";
-import globalBus from "../../modules/globalBus.js";
+import linkOnButtons from "../../../modules/linkOnButtons";
+import globalBus from "../../../modules/globalBus.js";
 
 export default class QuizzesDesk extends Page {
 

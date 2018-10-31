@@ -4,18 +4,20 @@ import Page from "../Page.js";
 import PagePresenter from "../../modules/PagePresenter";
 import globalBus from "../../modules/globalBus";
 import Requester from "../../modules/network/Requester";
-import QuizzesDesk from "./QuizzesDesk";
+import QuizzesDesk from "./quizzes/QuizzesDesk";
 import ProfileForm from "./ProfileForm";
 import GameManager from "../../modules/GameManager";
+import OrganizationDesk from "./organizations/OrganizationDesk";
+import debugLog from "../../modules/debugLog";
 
 export default class OfficePage extends Page {
 
     constructor() {
         super();
         // щелчок по карточке курса
-        this.addRedirectOnButtons(
-            {button: "course-card-1", nextPage: "course-page", pagePath: "/course"}
-        );
+        // this.addRedirectOnButtons(
+        //     {button: "course-card-1", nextPage: "course-page", pagePath: "/course"}
+        // );
         this.addEventsOnButtons();
         console.log("office");
         globalBus().user = {};
@@ -55,6 +57,7 @@ export default class OfficePage extends Page {
             document.getElementById("office-header-username").innerHTML = globalBus().user.username;
             globalBus().nav.loginBox.innerHTML = resp.username;
             this.profileForm.setFormValues(resp);
+            OrganizationDesk.render();
             QuizzesDesk.render();
             if (globalBus().joinBtnFlag === false) {
                 this.joinGameBtn();
@@ -67,7 +70,7 @@ export default class OfficePage extends Page {
     addEventsOnButtons() {
         document.getElementById("to-courses-btn").onclick = () => {
             console.log("C1");
-            document.getElementById("courses-desk").hidden = false;
+            document.getElementById("org-desk").hidden = false;
             document.getElementById("to-quizzes-btn").classList.remove("active");
             document.getElementById("quizzes-desk").hidden = true;
             document.getElementById("to-courses-btn").classList.add("active");
@@ -77,7 +80,7 @@ export default class OfficePage extends Page {
 
         document.getElementById("to-quizzes-btn").onclick = () => {
             console.log("C2");
-            document.getElementById("courses-desk").hidden = true;
+            document.getElementById("org-desk").hidden = true;
             document.getElementById("to-quizzes-btn").classList.add("active");
             document.getElementById("quizzes-desk").hidden = false;
             document.getElementById("to-courses-btn").classList.remove("active");
@@ -87,7 +90,7 @@ export default class OfficePage extends Page {
 
         document.getElementById("to-profile-btn").onclick = () => {
             console.log("C3");
-            document.getElementById("courses-desk").hidden = true;
+            document.getElementById("org-desk").hidden = true;
             document.getElementById("to-quizzes-btn").classList.remove("active");
             document.getElementById("quizzes-desk").hidden = true;
             document.getElementById("to-courses-btn").classList.remove("active");
