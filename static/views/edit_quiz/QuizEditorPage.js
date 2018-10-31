@@ -132,15 +132,16 @@ export default class QuizEditorPage extends Page {
     selectTargetGroupBtn(organizations) {
         let targetBox = document.getElementById("target-group-box");
         targetBox.innerHTML =
-            `<button id="selected-org" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Выберите организацию...
-            </button>
-                
-            <div id="list-org-btn" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
-                <!--<a class="dropdown-item" href="#">Школа 444</a>-->
+            `<div class="btn-group org-btn-group list-btn">
+                <button id="selected-org" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Выберите организацию...
+                </button>
+                    
+                <div id="list-org-btn" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <!--<a class="dropdown-item" href="#">Школа 444</a>-->
+                </div>
             </div>
-            <br>
-            <div class="btn-group group-btn-group">
+            <div class="btn-group group-btn-group list-btn">
                 <button id="selected-group" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Выберите группу...
                 </button>
@@ -189,7 +190,7 @@ export default class QuizEditorPage extends Page {
             debugLog(groups[i].name);
             a.setAttribute('id', `select-group-by-id-${groups[i].id}`);
             a.onclick = () => {
-                debugLog("change selected-group text");
+                debugLog("change selected-group text " + groups[i].id);
                 document.getElementById("selected-group").innerHTML = groups[i].name;
             }
         }
