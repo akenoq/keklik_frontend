@@ -9,6 +9,7 @@ import Page from "../Page";
 import questionBox from "./questionBox";
 import emptyQuizForm from "./emptyQuizForm";
 import debugLog from "../../modules/debugLog";
+import OrganizationDesk from "../office/organizations/OrganizationDesk";
 
 export default class QuizEditorPage extends Page {
     constructor() {
@@ -128,6 +129,72 @@ export default class QuizEditorPage extends Page {
         });
     }
 
+    selectTargetGroupBtn(organizations) {
+        let targetBox = document.getElementById("target-group-box");
+        targetBox.innerHTML =
+            `<button id="selected-org" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Выберите организацию...
+            </button>
+                
+            <div id="list-org-btn" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                <!--<a class="dropdown-item" href="#">Школа 444</a>-->
+            </div>
+            <br>
+            <div class="btn-group group-btn-group">
+                <button id="selected-group" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Выберите группу...
+                </button>
+
+                <div id="list-group-btn" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <!--<a class="dropdown-item" href="#">Класс 5Б</a>-->
+                </div>
+            </div>`;
+        let org_len = organizations.length;
+        let listOrgBtn = document.getElementById("list-org-btn");
+        listOrgBtn.innerHTML = "";
+        let listGroupBtn = document.getElementById("list-group-btn");
+        listGroupBtn.innerHTML = "";
+        document.getElementById("selected-org").innerHTML = "Выберете организацию...";
+        document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        for (let i = 0; i < org_len; i++) {
+            let a = document.createElement('a');
+            a.setAttribute('class', 'dropdown-item');
+            listOrgBtn.appendChild(a);
+            a.innerHTML = organizations[i].name;
+            a.setAttribute('id', `select-org-by-id-${organizations[i].id}`);
+            a.onclick = () => {
+                debugLog("change selected-org text");
+                document.getElementById("selected-org").innerHTML = organizations[i].name;
+                this.renderListGroupByOrg(organizations[i]);
+            }
+        }
+    }
+
+    renderListGroupByOrg(organization) {
+        debugLog("render list group");
+        debugLog(organization.groups);
+        let groups = organization.groups;
+        let groups_len = groups.length;
+        let listGroupBtn = document.getElementById("list-group-btn");
+        listGroupBtn.innerHTML = "";
+        document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        for (let i = 0; i < groups_len; i++) {
+            debugLog(groups[i]);
+            debugLog("________________________");
+            debugLog(listGroupBtn);
+            let a = document.createElement('a');
+            a.setAttribute('class', 'dropdown-item');
+            listGroupBtn.appendChild(a);
+            a.innerHTML = groups[i].name;
+            debugLog(groups[i].name);
+            a.setAttribute('id', `select-group-by-id-${groups[i].id}`);
+            a.onclick = () => {
+                debugLog("change selected-group text");
+                document.getElementById("selected-group").innerHTML = groups[i].name;
+            }
+        }
+    }
+
     render(id, resp) {
         document.getElementById("new-quiz").click();
         debugLog("ID = " + id);
@@ -136,6 +203,10 @@ export default class QuizEditorPage extends Page {
         document.getElementById("quiz-editor-h3").innerHTML = `Викторина ${this.editQuizById}`;
         // кнопка запуска викторины
         this.startQuizBtn(resp);
+        // this.selectTargetGroupBtn(OrganizationDesk.organizationReq());
+        OrganizationDesk.organizationReq((resp) => {
+            this.selectTargetGroupBtn(resp);
+        });
         document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__title").value =
             resp.title;
         document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__description").value =
