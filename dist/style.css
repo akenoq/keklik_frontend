@@ -281,3 +281,12 @@ red {
 #edit-quiz-form__tags {
     margin-left: 5px;
 }
+
+#table-groups-in-org {
+    max-width: 700px;
+}
+
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
