@@ -138,4 +138,8 @@ export default class Requester {
     static organizationsAll(callback) {
         Requester.requestToHost("GET", "api/organizations/", null, callback);
     }
+
+    static getOrganizationsById(id, callback) {
+        Requester.requestToHost("GET", `api/organizations/${id}/`, null, callback);
+    }
 }

@@ -15,9 +15,14 @@ export default class OfficePage extends Page {
     constructor() {
         super();
         // щелчок по карточке курса
-        // this.addRedirectOnButtons(
-        //     {button: "course-card-1", nextPage: "course-page", pagePath: "/course"}
-        // );
+        let btnToCourse = document.createElement('button');
+        btnToCourse.setAttribute('id', 'to-course-btn-redirect');
+        btnToCourse.hidden = true;
+        document.body.appendChild(btnToCourse);
+        this.addRedirectOnButtons(
+            {button: "to-course-btn-redirect", nextPage: "course-page", pagePath: "/course"}
+        );
+
         this.addEventsOnButtons();
         console.log("office");
         globalBus().user = {};

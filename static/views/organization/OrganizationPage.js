@@ -8,7 +8,7 @@ import AuthWorker from "../../modules/network/AuthWorker";
 import debugLog from "../../modules/debugLog";
 import organizationCard from "../office/organizations/organizationCard";
 
-export default class CoursePage extends Page {
+export default class OrganizationPage extends Page {
 
     constructor() {
         super();
@@ -25,6 +25,12 @@ export default class CoursePage extends Page {
 
     static pageBoxName() {
         return "course-page";
+    }
+
+    render(id, resp) {
+        document.getElementById("to-course-btn-redirect").click();
+        debugLog("ID ORGANIZATION = " + id);
+        document.querySelector("#org-title span").innerHTML = resp.name;
     }
 
     addEventsOnButtons() {

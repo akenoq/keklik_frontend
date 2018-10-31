@@ -42,15 +42,23 @@ export default class OrganizationDesk extends Page {
                 debugLog(organizationCard(resp[i].name, resp[i].groups.length, resp[i].updated_at.split("T")[0]));
                 document.getElementById(`org-card-row-${rowCount}`).appendChild(caBox);
                 document.getElementById(`org-card-${resp[i].id}`).onclick = () => {
-                    OrganizationDesk.redirectToCourse(resp[i].id)
+                    OrganizationDesk.redirectToOrganization(resp[i].id)
                 };
                 cardsInRow++;
             }
         });
     }
 
-    static redirectToCourse(id) {
-        console.log("redirect to course " + id);
+    static redirectToOrganization(id) {
+        debugLog("redirect to course " + id);
+        Requester.getOrganizationsById(id, (err, resp) => {
+            if (err) {
+                console.log(err);
+            } else {
+                debugLog("organozation " + id + " rendering");
+                globalBus().organizationPage.render(id, resp);
+            }
+        })
     }
 
     static organizationReq(callback) {

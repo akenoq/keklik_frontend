@@ -6,7 +6,7 @@ import LoginPage from "../views/login/LoginPage.js";
 import PagePresenter from "./PagePresenter.js";
 import linkOnButtons from "./linkOnButtons.js";
 import OfficePage from "../views/office/OfficePage";
-import CoursePage from "../views/course/CoursePage";
+import OrganizationPage from "../views/organization/OrganizationPage";
 import GroupPage from "../views/GroupPage";
 import Requester from "./network/Requester";
 import QuizEditorPage from "../views/edit_quiz/QuizEditorPage";
@@ -50,7 +50,7 @@ export default class Router {
         globalBus().registerPage = new RegisterPage();
         globalBus().loginPage = new LoginPage();
         globalBus().officePage = new OfficePage();
-        globalBus().coursePage = new CoursePage();
+        globalBus().organizationPage = new OrganizationPage();
         globalBus().groupPage = new GroupPage();
         globalBus().quizEditor = new QuizEditorPage();
 
