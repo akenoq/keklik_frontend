@@ -7,6 +7,7 @@ import globalBus from "../../../modules/globalBus.js";
 import organizationCard from "./organizationCard";
 import debugLog from "../../../modules/debugLog";
 import AuthWorker from "../../../modules/network/AuthWorker";
+import userGroupsByOrgId from "../../userGroupsByOrgId";
 
 export default class OrganizationDesk extends Page {
 
@@ -14,51 +15,46 @@ export default class OrganizationDesk extends Page {
         console.log("Quiz Desk");
         let orgDesk = document.getElementById("org-desk");
         orgDesk.innerHTML = "";
-        OrganizationDesk.organizationReq((resp) => {
-            console.log(resp);
-            console.log("len of courses = " + resp.length);
-            let cardsInRow = 0;
-            let rowCount = 1;
-            if (resp.length === 0) {
-                orgDesk.innerHTML = "<h3>Вы не состоите ни в одной организации</h3>";
+        let cardsInRow = 0;
+        let rowCount = 1;
+        let resp = globalBus().saver.userOrg;
+
+        if (resp.length === 0) {
+            orgDesk.innerHTML = "<h3>Вы не состоите ни в одной организации</h3>";
+        }
+        for (let i = 0; i < resp.length; i++) {
+            if (cardsInRow === 3) {
+                cardsInRow = 0;
+                rowCount++;
             }
-            for (let i = 0; i < resp.length; i++) {
-                if (cardsInRow === 3) {
-                    cardsInRow = 0;
-                    rowCount++;
-                }
-                if (cardsInRow === 0) {
-                    let newRow = document.createElement('div');
-                    newRow.setAttribute("id", `org-card-row-${rowCount}`);
-                    newRow.setAttribute("class", "card-deck");
-                    orgDesk.appendChild(newRow);
-                    console.log("new row = ");
-                    console.log(newRow);
-                }
-                let caBox = document.createElement('div');
-                caBox.setAttribute("id", `org-card-${resp[i].id}`);
-                caBox.setAttribute("class", "card org-desk__org-card");
-                caBox.innerHTML = organizationCard(resp[i].name, resp[i].groups.length, resp[i].updated_at.split("T")[0]);
-                debugLog(organizationCard(resp[i].name, resp[i].groups.length, resp[i].updated_at.split("T")[0]));
-                document.getElementById(`org-card-row-${rowCount}`).appendChild(caBox);
-                document.getElementById(`org-card-${resp[i].id}`).onclick = () => {
-                    OrganizationDesk.redirectToOrganization(resp[i].id)
-                };
-                cardsInRow++;
+            if (cardsInRow === 0) {
+                let newRow = document.createElement('div');
+                newRow.setAttribute("id", `org-card-row-${rowCount}`);
+                newRow.setAttribute("class", "card-deck");
+                orgDesk.appendChild(newRow);
+                console.log("new row = ");
+                console.log(newRow);
             }
-        });
+            let caBox = document.createElement('div');
+            caBox.setAttribute("id", `org-card-${resp[i].id}`);
+            caBox.setAttribute("class", "card org-desk__org-card");
+            let groups = [];
+            let org_id = resp[i].id;
+            groups = userGroupsByOrgId(org_id);
+
+            caBox.innerHTML = organizationCard(resp[i].name, groups.length, resp[i].updated_at.split("T")[0]);
+
+            document.getElementById(`org-card-row-${rowCount}`).appendChild(caBox);
+            document.getElementById(`org-card-${resp[i].id}`).onclick = () => {
+                OrganizationDesk.redirectToOrganization(resp[i].id, resp[i].name)
+            };
+            cardsInRow++;
+        }
     }
 
-    static redirectToOrganization(id) {
-        debugLog("redirect to course " + id);
-        Requester.getOrganizationsById(id, (err, resp) => {
-            if (err) {
-                console.log(err);
-            } else {
-                debugLog("organozation " + id + " rendering");
-                globalBus().organizationPage.render(id, resp);
-            }
-        })
+    static redirectToOrganization(id, name) {
+        debugLog("redirect to course " + id + " with name " + name);
+        globalBus().organizationPage.render(id, name);
     }
 
     static organizationReq(callback) {

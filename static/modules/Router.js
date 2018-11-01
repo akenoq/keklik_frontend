@@ -15,6 +15,7 @@ import GameTeacherPage from "../views/GameTeacherPage";
 import GameStudentPage from "../views/GameStudentPage";
 import ModalWindow from "../views/ModalWindow";
 import debugLog from "./debugLog";
+import saveUserMembership from "./saveUserMembership";
 
 export default class Router {
     constructor() {
@@ -139,6 +140,11 @@ export default class Router {
                 globalBus().btn.signoutBtn.hidden = false;
                 globalBus().btn.loginBtn.hidden = true;
                 globalBus().nav.loginBox.innerHTML = resp.username;
+
+                // user org + group
+                globalBus().saver = {};
+                saveUserMembership(resp.member_of_groups);
+
                 switch (pathname) {
 
                     case "/main":

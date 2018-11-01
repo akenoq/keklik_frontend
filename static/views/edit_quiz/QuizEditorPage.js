@@ -166,15 +166,21 @@ export default class QuizEditorPage extends Page {
             a.onclick = () => {
                 debugLog("change selected-org text");
                 document.getElementById("selected-org").innerHTML = organizations[i].name;
-                this.renderListGroupByOrg(organizations[i]);
+                this.renderListGroupByOrg(organizations[i].id);
             }
         }
     }
 
-    renderListGroupByOrg(organization) {
-        debugLog("render list group");
-        debugLog(organization.groups);
-        let groups = organization.groups;
+    renderListGroupByOrg(org_id) {
+        let groups = [];
+        let len_groups = globalBus().saver.userTeacherGroups.length;
+        for (let i = 0; i < len_groups; i++) {
+            if (globalBus().saver.userTeacherGroups[i].organization.id === org_id) {
+                groups.push(globalBus().saver.userTeacherGroups[i]);
+            }
+        }
+        debugLog(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        debugLog(groups);
         let groups_len = groups.length;
         let listGroupBtn = document.getElementById("list-group-btn");
         listGroupBtn.innerHTML = "";
@@ -204,10 +210,7 @@ export default class QuizEditorPage extends Page {
         document.getElementById("quiz-editor-h3").innerHTML = `Викторина ${this.editQuizById}`;
         // кнопка запуска викторины
         this.startQuizBtn(resp);
-        // this.selectTargetGroupBtn(OrganizationDesk.organizationReq());
-        OrganizationDesk.organizationReq((resp) => {
-            this.selectTargetGroupBtn(resp);
-        });
+        this.selectTargetGroupBtn(globalBus().saver.userTeacherOrg);
         document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__title").value =
             resp.title;
         document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__description").value =
