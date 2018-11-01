@@ -306,3 +306,7 @@ td {
 .btn-success{
     color: #fff !important;
 }
+
+.card-header {
+    color: white;
+}
