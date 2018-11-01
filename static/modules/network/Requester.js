@@ -142,4 +142,8 @@ export default class Requester {
     static getOrganizationsById(id, callback) {
         Requester.requestToHost("GET", `api/organizations/${id}/`, null, callback);
     }
+
+    static getRunningGameByGroupId(id, callback) {
+        Requester.requestToHost("GET", `api/groups/${id}/games/running/`, null, callback);
+    }
 }

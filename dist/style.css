@@ -283,7 +283,7 @@ red {
 }
 
 #table-groups-in-org {
-    max-width: 700px;
+    /*max-width: 700px;*/
 }
 
 td {
@@ -301,4 +301,8 @@ td {
 
 .game-card-in-group {
     margin: 15px;
+}
+
+.btn-success{
+    color: #fff !important;
 }
