@@ -2825,7 +2825,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
         document.getElementById("game-diagram-1").hidden = true;
         document.getElementById("game-diagram-2").hidden = true;
         document.getElementById("exit-game-btn").hidden = true;
-
+        document.getElementById("question-preview").innerHTML = "";
         document.getElementById("next-question-btn").innerHTML = "Запустить соревнование >>";
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = false;
