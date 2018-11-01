@@ -126,12 +126,22 @@ export default class Requester {
         Requester.requestToHost("GET", `api/quizzes/${id}/`, null, callback);
     }
 
-    static createGame(id, label = "", callback) {
-        const quiz = {
-            quiz: id,
-            label: label,
-            online: true
-        };
+    static createGame(id, label = "", group_id, callback) {
+        let quiz = null;
+        if (group_id === null) {
+            quiz = {
+                quiz: id,
+                label: label,
+                online: true
+            };
+        } else {
+            quiz = {
+                quiz: id,
+                label: label,
+                online: true,
+                group: group_id
+            };
+        }
         Requester.requestToHost("POST", "api/games/", quiz, callback);
     }
 

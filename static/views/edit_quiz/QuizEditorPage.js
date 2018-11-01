@@ -21,6 +21,7 @@ export default class QuizEditorPage extends Page {
         globalBus().quizEditorPage = this;
 
         this.editQuizById = false;
+        this.target_group_id = null;
     }
 
     resetQuiz() {
@@ -125,7 +126,8 @@ export default class QuizEditorPage extends Page {
         globalBus().gameManager.joined_counter = 0;
         globalBus().gameTeacherPage.attachRedirect();
         startGameBtn.addEventListener("click", () => {
-            globalBus().gameManager.start(this.editQuizById, resp.title);
+            debugLog("ID = " + this.target_group_id);
+            globalBus().gameManager.start(this.editQuizById, resp.title, this.target_group_id);
         });
     }
 
@@ -185,6 +187,8 @@ export default class QuizEditorPage extends Page {
         let listGroupBtn = document.getElementById("list-group-btn");
         listGroupBtn.innerHTML = "";
         document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        this.target_group_id = null;
+
         for (let i = 0; i < groups_len; i++) {
             debugLog(groups[i]);
             debugLog("________________________");
@@ -198,6 +202,7 @@ export default class QuizEditorPage extends Page {
             a.onclick = () => {
                 debugLog("change selected-group text " + groups[i].id);
                 document.getElementById("selected-group").innerHTML = groups[i].name;
+                this.target_group_id = groups[i].id;
             }
         }
     }

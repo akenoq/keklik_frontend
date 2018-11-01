@@ -16,11 +16,11 @@ export default class GameManager {
         this.game_started = false;
     }
 
-    start(quiz_id, game_title) {
+    start(quiz_id, game_title, group_id) {
         document.getElementById("focus-btn").focus();
         // запрос на создание игры /games/
         console.log("Переход на страницу с игрой " + quiz_id);
-        Requester.createGame(quiz_id, game_title, (err, resp) => {
+        Requester.createGame(quiz_id, game_title, group_id, (err, resp) => {
             if (err) {
                 console.log(err);
                 return;
