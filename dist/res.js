@@ -254,6 +254,10 @@ class Requester {
     static getRunningGameByGroupId(id, callback) {
         Requester.requestToHost("GET", `api/groups/${id}/games/running/`, null, callback);
     }
+
+    static getRunningGameOfUser(callback) {
+        Requester.requestToHost("GET", "api/games/current_player/running/", null, callback);
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Requester;
 
@@ -3194,6 +3198,10 @@ class ModalWindow {
 /* harmony export (immutable) */ __webpack_exports__["a"] = saveUserMembership;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__network_Requester__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__network_AuthWorker__ = __webpack_require__(5);
+
+
 
 
 
@@ -3234,6 +3242,24 @@ function saveUserMembership(member_of_groups) {
             }
         }
     }
+
+    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userRunningGames = [];
+    __WEBPACK_IMPORTED_MODULE_2__network_Requester__["a" /* default */].getRunningGameOfUser((err,resp) => {
+        if (err) {
+            Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("err load user running games");
+        } else {
+            Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("RESP");
+            Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(resp);
+            let games = resp;
+            let len_games = games.length;
+            for (let i = 0; i < len_games; i++) {
+                if (games[i].user.username === __WEBPACK_IMPORTED_MODULE_3__network_AuthWorker__["a" /* default */].getUsername()) {
+                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userRunningGames.push(games[i]);
+                }
+            }
+        }
+    });
+
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("__________________ORG =");
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userOrg);
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("__________________TEACHER ORG =");
@@ -3242,6 +3268,8 @@ function saveUserMembership(member_of_groups) {
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups);
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("__________________TEACHER GROUP =");
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherGroups);
+    Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("__________________RUNNING GAMES =");
+    Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userRunningGames);
 }
 
 /***/ })
