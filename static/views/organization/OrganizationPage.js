@@ -58,43 +58,6 @@ export default class OrganizationPage extends Page {
         }
     }
 
-
-    // render(id, resp) {
-    //     document.getElementById("to-course-btn-redirect").click();
-    //     debugLog("ID ORGANIZATION = " + id);
-    //     console.log(resp);
-    //     document.querySelector("#org-title span").innerHTML = resp.name;
-    //     let groups = resp.groups;
-    //     console.log(groups);
-    //     let groups_len = groups.length;
-    //     let table_groups = document.getElementById("table-groups-in-org");
-    //     table_groups.innerHTML = "";
-    //     // for (let i = 0; i < groups_len; i++) {
-    //     //     table_groups.innerHTML += `<tr id="group-card-${groups[i].id}" class="table-group-line">
-    //     //         <th scope="row">${i+1}</th>
-    //     //         <td>${groups[i].name}</td>
-    //     //         <td>${groups[i].created_at.split("T")[0]}</td>
-    //     //     </tr>`
-    //     // }
-    //     for (let i = 0; i < groups_len; i++) {
-    //         table_groups.innerHTML += `<div class="card game-card-in-group">
-    //           <div id="group-card-${groups[i].id}" class="card-header">
-    //             ${groups[i].name}
-    //           </div>
-    //           <div class="card-body">
-    //             <h5 class="card-title">Актуальные соревнования</h5>
-    //             <!--<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
-    //             <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
-    //           </div>
-    //         </div>`;
-    //         // table_groups.innerHTML += `<tr id="group-card-${groups[i].id}" class="table-group-line">
-    //         //     <th scope="row">${i+1}</th>
-    //         //     <td>${groups[i].name}</td>
-    //         //     <td>${groups[i].created_at.split("T")[0]}</td>
-    //         // </tr>`
-    //     }
-    // }
-
     addEventsOnButtons() {
 
     }
