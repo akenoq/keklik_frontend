@@ -45,11 +45,17 @@ export default class OfficePage extends Page {
         globalBus().gameStudentPage.attachRedirect();
         document.getElementById("join-game-btn").addEventListener("click", () => {
             const game_id = parseInt(document.getElementById("game-pin-input").value);
-            console.log("INPUT ID = " + game_id);
-            globalBus().gameManager.join(game_id);
-            globalBus().count_ws += 1;
-            console.log("WS COUNT = " + globalBus().count_ws);
-            document.getElementById("game-pin-input").value = "";
+            debugLog("INPUT ID = " + game_id);
+            if (!isNaN(game_id)) {
+                document.getElementById("join-game-btn_clicker").click(); // redirect
+                document.getElementById("game-pin-input").setAttribute('data-nec', 'true');
+                globalBus().gameManager.join(game_id);
+                globalBus().count_ws += 1;
+                console.log("WS COUNT = " + globalBus().count_ws);
+                document.getElementById("game-pin-input").value = "";
+            } else {
+                document.getElementById("game-pin-input").setAttribute('data-nec', 'empty');
+            }
         });
     }
 

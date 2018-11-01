@@ -24,7 +24,7 @@ export default class GameStudentPage extends Page {
 
     attachRedirect() {
         this.addRedirectOnButtons(
-            {button: "join-game-btn", nextPage: "play-page", pagePath: "/play"},
+            {button: "join-game-btn_clicker", nextPage: "play-page", pagePath: "/play"},
             {button: "exit-game-student-btn", nextPage: "office-page", pagePath: "/office"}
         );
         console.log("add redirect");
