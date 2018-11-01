@@ -76,6 +76,15 @@ export default class OrganizationPage extends Page {
                                 <a id="to-group-game-btn-${running_games[i].id}" class="btn btn-success">Присоединиться</a>
                               </div>
                               <hr>`;
+                            let to_game_by_id_btn = document.getElementById(`to-group-game-btn-${running_games[i].id}`);
+                            to_game_by_id_btn.onclick = () => {
+                                // можно добавить проверку роли
+                                // задаем PIN в поле ввода
+                                debugLog("пишу ПИН = "+ running_games[i].id.toString());
+                                document.getElementById("game-pin-input").value = running_games[i].id.toString();
+                                // нажимаем на кнопку join и присоедин как ученик
+                                document.getElementById("join-game-btn").click();
+                            }
                         }
                     } else {
                         let group_card = document.getElementById(`group-card-${groups[i].group.id}`);
