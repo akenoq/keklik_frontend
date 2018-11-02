@@ -21,6 +21,7 @@ export default class GameTeacherPage extends Page {
             globalBus().btn.officeBtn.click();
         };
         this.game_table_answered = [];
+        this.game_table_joined = [];
     }
 
     static pagePath() {
@@ -45,6 +46,8 @@ export default class GameTeacherPage extends Page {
     }
 
     prepareWaitingPlayers() {
+        this.game_table_answered = [];
+        this.game_table_joined = [];
         document.getElementById("game-diagram-1").hidden = true;
         document.getElementById("game-diagram-2").hidden = true;
         document.getElementById("exit-game-btn").hidden = true;
@@ -127,6 +130,13 @@ export default class GameTeacherPage extends Page {
                     <td>${htmlEntities(data.answer[0].variant)}</td>
             </tr>`
             }
+        }
+    }
+
+    newJoin(username) {
+        if (this.game_table_joined.indexOf(username.toString()) === -1) {
+            this.game_table_joined.push(username);
+            globalBus().gameManager.joined_counter += 1;
         }
     }
 

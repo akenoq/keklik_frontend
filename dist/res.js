@@ -2502,7 +2502,7 @@ class WsController {
                 } else if (ws_dataObj.payload.action === ACTIONS.answer) {
                     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderGameTable(ws_dataObj);
                 } else if (ws_dataObj.payload.action === ACTIONS.join) {
-                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameManager.joined_counter += 1;
+                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.newJoin(ws_dataObj.payload.data.user.username);
                     Object(__WEBPACK_IMPORTED_MODULE_2__debugLog__["a" /* default */])("JOINED________________" + Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameManager.joined_counter);
                     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderAnsweredCounter();
                     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderJoinedCounter();
@@ -2916,6 +2916,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().btn.officeBtn.click();
         };
         this.game_table_answered = [];
+        this.game_table_joined = [];
     }
 
     static pagePath() {
@@ -2940,6 +2941,8 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     }
 
     prepareWaitingPlayers() {
+        this.game_table_answered = [];
+        this.game_table_joined = [];
         document.getElementById("game-diagram-1").hidden = true;
         document.getElementById("game-diagram-2").hidden = true;
         document.getElementById("exit-game-btn").hidden = true;
@@ -3022,6 +3025,13 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
                     <td>${Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(data.answer[0].variant)}</td>
             </tr>`
             }
+        }
+    }
+
+    newJoin(username) {
+        if (this.game_table_joined.indexOf(username.toString()) === -1) {
+            this.game_table_joined.push(username);
+            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.joined_counter += 1;
         }
     }
 
