@@ -79,7 +79,7 @@ export default class OfficePage extends Page {
                 if (globalBus().saver.userRunningGames.length !== 0) {
                     let managed_game = globalBus().saver.userRunningGames;
                     let managed_game_len = managed_game.length;
-                    document.getElementById("selected-managed-game").innerHTML = "Продолжить по PIN...";
+                    document.getElementById("selected-managed-game").innerHTML = "Управляемые PIN...";
                     for (let i = 0; i < managed_game_len; i++) {
                         debugLog("render a");
                         let a = document.createElement('a');
@@ -108,7 +108,7 @@ export default class OfficePage extends Page {
                 globalBus().gameTeacherPage.attachRedirect();
                 globalBus().gameManager.restart_manage(this.target_pin);
                 document.getElementById("start-game-btn_clicker").click(); // redirect
-                document.getElementById("selected-managed-game").innerHTML = "Продолжить по PIN...";
+                document.getElementById("selected-managed-game").innerHTML = "Управляемые PIN...";
                 debugLog("REDIRECT TO RESTART");
             }
         }

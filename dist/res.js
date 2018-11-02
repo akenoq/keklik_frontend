@@ -989,7 +989,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames.length !== 0) {
                     let managed_game = Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames;
                     let managed_game_len = managed_game.length;
-                    document.getElementById("selected-managed-game").innerHTML = "Продолжить по PIN...";
+                    document.getElementById("selected-managed-game").innerHTML = "Управляемые PIN...";
                     for (let i = 0; i < managed_game_len; i++) {
                         Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("render a");
                         let a = document.createElement('a');
@@ -1020,7 +1020,6 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 document.getElementById("start-game-btn_clicker").click(); // redirect
                 document.getElementById("selected-managed-game").innerHTML = "Продолжить по PIN...";
                 Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("REDIRECT TO RESTART");
-                // в зависимости от игрового состояния редерить разное
             }
         }
     }
@@ -2899,7 +2898,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             {button: "exit-game-btn", nextPage: "office-page", pagePath: "/office"}
         );
         document.getElementById("exit-game-btn").onclick = () => {
-            Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("TO OFFFFFFFFFFFFFFFFFFIICE rerender");
+            Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("OFFICE rerender");
             Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().btn.officeBtn.click();
         };
     }
@@ -3343,22 +3342,6 @@ function saveUserMembership(member_of_groups) {
     }
 
     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userRunningGames = [];
-    // Requester.getRunningGameByUser((err, resp) => {
-    //     if (err) {
-    //         debugLog("err load user running games");
-    //     } else {
-    //         debugLog("RESP");
-    //         debugLog(resp);
-    //         let games = resp;
-    //         let len_games = games.length;
-    //         for (let i = 0; i < len_games; i++) {
-    //             globalBus().saver.userRunningGames.push(games[i]);
-    //             // if (games[i].user.username === AuthWorker.getUsername()) {
-    //             //     globalBus().saver.userRunningGames.push(games[i]);
-    //             // }
-    //         }
-    //     }
-    // });
 
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("__________________ORG =");
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userOrg);
@@ -3368,8 +3351,6 @@ function saveUserMembership(member_of_groups) {
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups);
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("__________________TEACHER GROUP =");
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherGroups);
-    // debugLog("__________________RUNNING GAMES =");
-    // debugLog(globalBus().saver.userRunningGames);
 }
 
 /***/ })
