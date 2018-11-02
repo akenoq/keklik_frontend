@@ -20,6 +20,7 @@ export default class GameTeacherPage extends Page {
             debugLog("OFFICE rerender");
             globalBus().btn.officeBtn.click();
         };
+        this.game_table_answered = [];
     }
 
     static pagePath() {
@@ -39,6 +40,7 @@ export default class GameTeacherPage extends Page {
         document.getElementById("next-question-btn").onclick = () => {
             globalBus().gameManager.switchNext();
             document.getElementById("game-table-question").innerHTML = "";
+            this.game_table_answered = [];
         };
     }
 
@@ -88,8 +90,6 @@ export default class GameTeacherPage extends Page {
     }
 
     renderGameTable(ws_gameObj) {
-        // индикатор сколько ответило
-        globalBus().gameManager.answered_counter += 1;
         this.renderAnsweredCounter();
 
         let data = ws_gameObj.payload.data;
@@ -99,20 +99,34 @@ export default class GameTeacherPage extends Page {
             ansUser = data.player.user.last_name;
         }
         debugLog("ОТВЕТИЛ " + ansUser);
-        if (data.correct === true) {
-            document.getElementById("game-table-question").innerHTML +=
-                `<tr class="line-result-table table-group-line right-ans">
+
+        debugLog(this.game_table_answered);
+        debugLog(this.game_table_answered.indexOf(ansUser.toString()));
+
+        debugLog("answered_counter до if =>" + globalBus().gameManager.answered_counter);
+
+        if (this.game_table_answered.indexOf(ansUser.toString()) === -1) {
+            // индикатор сколько ответило
+            globalBus().gameManager.answered_counter += 1;
+            debugLog("answered_counter += 1 =>" + globalBus().gameManager.answered_counter);
+
+            this.game_table_answered.push(ansUser.toString());
+
+            if (data.correct === true) {
+                document.getElementById("game-table-question").innerHTML +=
+                    `<tr class="line-result-table table-group-line right-ans">
                     <th scope="row">${globalBus().gameManager.answered_counter}</th>
                     <td>${htmlEntities(ansUser)}</td>
                     <td>${htmlEntities(data.answer[0].variant)}</td>
             </tr>`
-        } else {
-            document.getElementById("game-table-question").innerHTML +=
-                `<tr class="line-result-table table-group-line">
+            } else {
+                document.getElementById("game-table-question").innerHTML +=
+                    `<tr class="line-result-table table-group-line">
                     <th scope="row">${globalBus().gameManager.answered_counter}</th>
                     <td>${htmlEntities(ansUser)}</td>
                     <td>${htmlEntities(data.answer[0].variant)}</td>
             </tr>`
+            }
         }
     }
 

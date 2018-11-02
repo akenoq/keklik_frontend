@@ -72,7 +72,7 @@
 
 
 function debugLog(s) {
-    console.log(s);
+    // console.log(s);
 }
 
 /***/ }),
@@ -2915,6 +2915,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("OFFICE rerender");
             Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().btn.officeBtn.click();
         };
+        this.game_table_answered = [];
     }
 
     static pagePath() {
@@ -2934,6 +2935,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
         document.getElementById("next-question-btn").onclick = () => {
             Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.switchNext();
             document.getElementById("game-table-question").innerHTML = "";
+            this.game_table_answered = [];
         };
     }
 
@@ -2983,8 +2985,6 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     }
 
     renderGameTable(ws_gameObj) {
-        // индикатор сколько ответило
-        Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter += 1;
         this.renderAnsweredCounter();
 
         let data = ws_gameObj.payload.data;
@@ -2994,20 +2994,34 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             ansUser = data.player.user.last_name;
         }
         Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("ОТВЕТИЛ " + ansUser);
-        if (data.correct === true) {
-            document.getElementById("game-table-question").innerHTML +=
-                `<tr class="line-result-table table-group-line right-ans">
+
+        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])(this.game_table_answered);
+        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])(this.game_table_answered.indexOf(ansUser.toString()));
+
+        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("answered_counter до if =>" + Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter);
+
+        if (this.game_table_answered.indexOf(ansUser.toString()) === -1) {
+            // индикатор сколько ответило
+            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter += 1;
+            Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("answered_counter += 1 =>" + Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter);
+
+            this.game_table_answered.push(ansUser.toString());
+
+            if (data.correct === true) {
+                document.getElementById("game-table-question").innerHTML +=
+                    `<tr class="line-result-table table-group-line right-ans">
                     <th scope="row">${Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter}</th>
                     <td>${Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(ansUser)}</td>
                     <td>${Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(data.answer[0].variant)}</td>
             </tr>`
-        } else {
-            document.getElementById("game-table-question").innerHTML +=
-                `<tr class="line-result-table table-group-line">
+            } else {
+                document.getElementById("game-table-question").innerHTML +=
+                    `<tr class="line-result-table table-group-line">
                     <th scope="row">${Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter}</th>
                     <td>${Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(ansUser)}</td>
                     <td>${Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(data.answer[0].variant)}</td>
             </tr>`
+            }
         }
     }
 
