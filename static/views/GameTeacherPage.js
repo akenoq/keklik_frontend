@@ -93,12 +93,12 @@ export default class GameTeacherPage extends Page {
         this.renderAnsweredCounter();
 
         let data = ws_gameObj.payload.data;
-        console.log("DATA = " + data);
+        debugLog("DATA = " + data);
         let ansUser = data.player.user.username;
         if (data.player.user.last_name !== "") {
             ansUser = data.player.user.last_name;
         }
-        console.log("ОТВЕТИЛ " + ansUser);
+        debugLog("ОТВЕТИЛ " + ansUser);
         if (data.correct === true) {
             document.getElementById("game-table-question").innerHTML +=
                 `<tr class="line-result-table table-group-line right-ans">
@@ -137,7 +137,7 @@ export default class GameTeacherPage extends Page {
                 }
             }
         }
-        console.log(answers_count);
+        debugLog(answers_count);
         return answers_count;
     }
 

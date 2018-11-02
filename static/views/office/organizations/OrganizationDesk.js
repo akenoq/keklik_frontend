@@ -12,7 +12,7 @@ import userGroupsByOrgId from "../../userGroupsByOrgId";
 export default class OrganizationDesk extends Page {
 
     static render() {
-        console.log("Quiz Desk");
+        debugLog("Quiz Desk");
         let orgDesk = document.getElementById("org-desk");
         orgDesk.innerHTML = "";
         let cardsInRow = 0;
@@ -32,8 +32,8 @@ export default class OrganizationDesk extends Page {
                 newRow.setAttribute("id", `org-card-row-${rowCount}`);
                 newRow.setAttribute("class", "card-deck");
                 orgDesk.appendChild(newRow);
-                console.log("new row = ");
-                console.log(newRow);
+                debugLog("new row = ");
+                debugLog(newRow);
             }
             let caBox = document.createElement('div');
             caBox.setAttribute("id", `org-card-${resp[i].id}`);

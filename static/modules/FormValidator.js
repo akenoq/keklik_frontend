@@ -39,10 +39,10 @@ export default class FormValidator {
     }
 
     static hasDuplicates(array) {
-        console.log(array);
+        debugLog(array);
         for (let i = 0; i < array.length; ++i) {
             for (let j = i + 1; j < array.length; j++) {
-                console.log("i = " + i + "; " + j + " = " + array[i].variant + "; " + array[j].variant);
+                debugLog("i = " + i + "; " + j + " = " + array[i].variant + "; " + array[j].variant);
                 if (array[i].variant === array[j].variant) {
                     return true;
                 }
@@ -52,7 +52,7 @@ export default class FormValidator {
     }
 
     static correctQuiz(quiz) {
-        console.log(quiz);
+        debugLog(quiz);
         let errors = [];
         let empty_flag = false;
         let necessary_fields = document.getElementsByClassName("necessary-field");

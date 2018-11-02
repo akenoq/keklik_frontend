@@ -24,7 +24,7 @@ export default class OfficePage extends Page {
         );
 
         this.addEventsOnButtons();
-        console.log("office");
+        debugLog("office");
         globalBus().user = {};
         this.profileForm = new ProfileForm();
 

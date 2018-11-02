@@ -135,7 +135,7 @@ export default class Router {
                         globalBus().btn.loginBtn.click();
                         break;
                 }
-                return console.log("NOT AUTH");
+                return debugLog("NOT AUTH");
             } else if (resp) {
                 globalBus().btn.signoutBtn.hidden = false;
                 globalBus().btn.loginBtn.hidden = true;
@@ -155,11 +155,11 @@ export default class Router {
                         Requester.whoami((err, resp) => {
                             if (err) {
                                 globalBus().btn.loginBtn.click();
-                                return console.log("office error router");
+                                return debugLog("office error router");
                             }
                             globalBus().officePage.render();
                             PagePresenter.showOnlyOnePage("office-page");
-                            return console.log("office norm router");
+                            return debugLog("office norm router");
                         });
                         break;
 
@@ -171,10 +171,10 @@ export default class Router {
                         Requester.whoami((err, resp) => {
                             if (err) {
                                 globalBus().btn.loginBtn.click();
-                                return console.log("office error router");
+                                return debugLog("office error router");
                             }
                             PagePresenter.showOnlyOnePage("course-page");
-                            return console.log("office norm router");
+                            return debugLog("office norm router");
                         });
                         break;
 
@@ -214,7 +214,7 @@ export default class Router {
                         PagePresenter.showOnlyOnePage("office-page");
                         break;
                 }
-                return console.log("NORM AUTH");
+                return debugLog("NORM AUTH");
             }
         });
     }

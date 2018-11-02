@@ -68,6 +68,18 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = debugLog;
+
+
+function debugLog(s) {
+    // console.log(s);
+}
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = globalBus;
 
 
@@ -78,24 +90,12 @@ function globalBus() {
 }
 
 /***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = debugLog;
-
-
-function debugLog(s) {
-    console.log(s);
-}
-
-/***/ }),
 /* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__debugLog__ = __webpack_require__(0);
 /**
  * Класс для запросов на сервер
  */
@@ -433,7 +433,7 @@ function linkOnButtons(...buttons) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__debugLog__ = __webpack_require__(0);
 
 "use strict";
 
@@ -475,10 +475,10 @@ class FormValidator {
     }
 
     static hasDuplicates(array) {
-        console.log(array);
+        Object(__WEBPACK_IMPORTED_MODULE_0__debugLog__["a" /* default */])(array);
         for (let i = 0; i < array.length; ++i) {
             for (let j = i + 1; j < array.length; j++) {
-                console.log("i = " + i + "; " + j + " = " + array[i].variant + "; " + array[j].variant);
+                Object(__WEBPACK_IMPORTED_MODULE_0__debugLog__["a" /* default */])("i = " + i + "; " + j + " = " + array[i].variant + "; " + array[j].variant);
                 if (array[i].variant === array[j].variant) {
                     return true;
                 }
@@ -488,7 +488,7 @@ class FormValidator {
     }
 
     static correctQuiz(quiz) {
-        console.log(quiz);
+        Object(__WEBPACK_IMPORTED_MODULE_0__debugLog__["a" /* default */])(quiz);
         let errors = [];
         let empty_flag = false;
         let necessary_fields = document.getElementsByClassName("necessary-field");
@@ -607,11 +607,11 @@ class RegisterPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_globalBus_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_globalBus_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_network_Requester_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_fieldsCleaner_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_PagePresenter__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
 
 
 
@@ -640,7 +640,7 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
         this.passwordValue = "";
         this.errorBox = null;
         this.addEventsToButtons();
-        console.log("reg FORM");
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("reg FORM");
     }
 
     static msgEmptyField() {
@@ -698,7 +698,7 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
         __WEBPACK_IMPORTED_MODULE_2__modules_network_Requester_js__["a" /* default */].register(this.loginValue, this.passwordValue, (err, resp) => {
             if (err) {
                 err = JSON.parse(err.responseText);
-                console.log(JSON.stringify(err));
+                Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(JSON.stringify(err));
                 if (err.username !== undefined) {
                     if (err.username[0].code === "unique") {
                         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("UNIQ = ");
@@ -787,10 +787,12 @@ class RegisterPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_globalBus_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_globalBus_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_network_Requester_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_fieldsCleaner_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_PagePresenter__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
+
 
 
 
@@ -815,7 +817,7 @@ class LoginForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__[
         this.passwordValue = "";
         this.errorBox = null;
         this.addEventsToButtons();
-        console.log("log FORM");
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("log FORM");
     }
 
     static msgEmptyField() {
@@ -881,7 +883,7 @@ class LoginForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__[
             this.passwordValue = document.querySelector("#login-form-password").value;
             this.errorBox = document.querySelector("#login-form-err");
 
-            console.log("log BTN");
+            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("log BTN");
             const valid = LoginForm.validate(this.loginValue, this.passwordValue, this.errorBox);
 
             if (valid) {
@@ -901,13 +903,13 @@ class LoginForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__[
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_PagePresenter__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_globalBus__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_globalBus__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_network_Requester__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__quizzes_QuizzesDesk__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProfileForm__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_GameManager__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__organizations_OrganizationDesk__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_debugLog__ = __webpack_require__(0);
 
 
 
@@ -1018,7 +1020,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameTeacherPage.attachRedirect();
                 Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.restart_manage(this.target_pin);
                 document.getElementById("start-game-btn_clicker").click(); // redirect
-                document.getElementById("selected-managed-game").innerHTML = "Продолжить по PIN...";
+                document.getElementById("selected-managed-game").innerHTML = "Управляемые PIN...";
                 Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("REDIRECT TO RESTART");
             }
         }
@@ -1086,10 +1088,10 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__network_Requester__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__network_WsController__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__debugLog__ = __webpack_require__(0);
 
 
 
@@ -1100,7 +1102,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
 class GameManager {
     constructor() {
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameManager = this;
-        console.log("GAME MANAGER START");
+        Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("GAME MANAGER START");
         this.ws_controller = null;
         this.game_id = null;
         this.joined_counter = 0;
@@ -1111,17 +1113,17 @@ class GameManager {
     start(quiz_id, game_title, group_id) {
         document.getElementById("focus-btn").focus();
         // запрос на создание игры /games/
-        console.log("Переход на страницу с игрой " + quiz_id);
+        Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("Переход на страницу с игрой " + quiz_id);
         __WEBPACK_IMPORTED_MODULE_1__network_Requester__["a" /* default */].createGame(quiz_id, game_title, group_id, (err, resp) => {
             if (err) {
-                console.log(err);
+                Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])(err);
                 return;
             }
             this.game_id = resp.id;
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderQuizNum(this.game_id);
-            console.log("GAME ID = " + this.game_id);
+            Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("GAME ID = " + this.game_id);
             this.ws_controller = new __WEBPACK_IMPORTED_MODULE_2__network_WsController__["a" /* default */]("teacher");
-            console.log("WS");
+            Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("WS");
         });
     }
 
@@ -1202,9 +1204,9 @@ class GameManager {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_linkOnButtons__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_globalBus_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_globalBus_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__organizationCard__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_network_AuthWorker__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(17);
 
@@ -1221,7 +1223,7 @@ class GameManager {
 class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */] {
 
     static render() {
-        console.log("Quiz Desk");
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("Quiz Desk");
         let orgDesk = document.getElementById("org-desk");
         orgDesk.innerHTML = "";
         let cardsInRow = 0;
@@ -1241,8 +1243,8 @@ class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* defaul
                 newRow.setAttribute("id", `org-card-row-${rowCount}`);
                 newRow.setAttribute("class", "card-deck");
                 orgDesk.appendChild(newRow);
-                console.log("new row = ");
-                console.log(newRow);
+                Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("new row = ");
+                Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(newRow);
             }
             let caBox = document.createElement('div');
             caBox.setAttribute("id", `org-card-${resp[i].id}`);
@@ -1317,7 +1319,7 @@ function organizationCard(name, group_len, date) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = userGroupsByOrgId;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_globalBus__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_globalBus__ = __webpack_require__(1);
 
 
 
@@ -1341,9 +1343,9 @@ function userGroupsByOrgId(org_id) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_PagePresenter__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_network_Requester__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_globalBus__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_globalBus__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_network_AuthWorker__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__office_organizations_organizationCard__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(17);
 
@@ -1371,7 +1373,7 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
             {button: "to-group-btn-redirect", nextPage: "group-page", pagePath: "/group"}
         );
 
-        console.log("course")
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("course")
     }
 
     static pagePath() {
@@ -1387,7 +1389,7 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("ID ORGANIZATION = " + org_id + "_________userGroupsByOrgId");
         document.querySelector("#org-title span").innerHTML = org_name;
         let groups = Object(__WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__["a" /* default */])(org_id);
-        console.log(groups);
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(groups);
         let groups_len = groups.length;
         let table_groups = document.getElementById("table-groups-in-org");
         table_groups.innerHTML = "";
@@ -1459,6 +1461,8 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_PagePresenter__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_debugLog__ = __webpack_require__(0);
+
 
 
 
@@ -1472,7 +1476,7 @@ class GroupPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default */
         this.addRedirectOnButtons(
             {button: "to-play-btn-1", nextPage: "play-page", pagePath: "/play"}
         );
-        console.log("group")
+        Object(__WEBPACK_IMPORTED_MODULE_2__modules_debugLog__["a" /* default */])("group")
     }
 
     static pagePath() {
@@ -1496,14 +1500,14 @@ class GroupPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default */
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_globalBus_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_globalBus_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_network_Requester_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_fieldsCleaner_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_PagePresenter__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Page__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__questionBox__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__emptyQuizForm__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_debugLog__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__office_organizations_OrganizationDesk__ = __webpack_require__(15);
 
 
@@ -1825,7 +1829,7 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = htmlEntities;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__debugLog__ = __webpack_require__(0);
 
 
 
@@ -1846,7 +1850,7 @@ function htmlEntities(s) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Router_js__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_registion_RegisterPage_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__views_registion_RegisterForm_js__ = __webpack_require__(10);
@@ -1912,7 +1916,7 @@ window.addEventListener("load", function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__views_registion_RegisterPage_js__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_login_LoginPage_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__ = __webpack_require__(4);
@@ -1926,7 +1930,7 @@ window.addEventListener("load", function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_GameTeacherPage__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_GameStudentPage__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_ModalWindow__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__debugLog__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__saveUserMembership__ = __webpack_require__(33);
 
 
@@ -2065,7 +2069,7 @@ class Router {
                         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
                         break;
                 }
-                return console.log("NOT AUTH");
+                return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("NOT AUTH");
             } else if (resp) {
                 Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.signoutBtn.hidden = false;
                 Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.hidden = true;
@@ -2085,11 +2089,11 @@ class Router {
                         __WEBPACK_IMPORTED_MODULE_8__network_Requester__["a" /* default */].whoami((err, resp) => {
                             if (err) {
                                 Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
-                                return console.log("office error router");
+                                return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office error router");
                             }
                             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().officePage.render();
                             __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("office-page");
-                            return console.log("office norm router");
+                            return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office norm router");
                         });
                         break;
 
@@ -2101,10 +2105,10 @@ class Router {
                         __WEBPACK_IMPORTED_MODULE_8__network_Requester__["a" /* default */].whoami((err, resp) => {
                             if (err) {
                                 Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
-                                return console.log("office error router");
+                                return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office error router");
                             }
                             __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("course-page");
-                            return console.log("office norm router");
+                            return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office norm router");
                         });
                         break;
 
@@ -2144,7 +2148,7 @@ class Router {
                         __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("office-page");
                         break;
                 }
-                return console.log("NORM AUTH");
+                return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("NORM AUTH");
             }
         });
     }
@@ -2161,7 +2165,9 @@ class Router {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__quizCard__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_linkOnButtons__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_globalBus_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_globalBus_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
+
 
 
 
@@ -2185,12 +2191,12 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
     }
 
     static redirectToQuiz(id) {
-        console.log(id);
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(id);
         __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].getQuizById(id, (err, resp) => {
             if (err) {
-                console.log(err);
+                Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(err);
             } else {
-                console.log("quiz " + id + " rendering");
+                Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("quiz " + id + " rendering");
                 Object(__WEBPACK_IMPORTED_MODULE_4__modules_globalBus_js__["a" /* default */])().quizEditorPage.render(id, resp);
             }
         });
@@ -2208,12 +2214,12 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
     }
 
     static render() {
-        console.log("Quiz Desk");
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("Quiz Desk");
         let quizzesDesk = document.getElementById("quizzes-desk");
         quizzesDesk.innerHTML = "";
         QuizzesDesk.renderNewQuizCard(quizzesDesk);
         QuizzesDesk.quizzesReq((resp) => {
-            console.log(resp);
+            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(resp);
             let cardsInRow = 1;
             let rowCount = 1;
             for (let i = 0; i < resp.length; i++) {
@@ -2222,7 +2228,7 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                     rowCount++;
                 }
                 if (rowCount === 1 && cardsInRow < 3) {
-                    console.log("first str");
+                    Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("first str");
                     let caBox = document.createElement('div');
                     // <div id="quiz-card-${id}" class="card quizzes-desk__quiz-card">
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
@@ -2239,8 +2245,8 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                         newRow.setAttribute("id", `card-row-${rowCount}`);
                         newRow.setAttribute("class", "card-deck");
                         quizzesDesk.appendChild(newRow);
-                        console.log("new row = ");
-                        console.log(newRow);
+                        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("new row = ");
+                        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(newRow);
                     }
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
@@ -2262,9 +2268,9 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
             if (err) {
                 return console.log(" error");
             }
-            console.log("quizzes of user norm");
-            console.log(err);
-            console.log(resp);
+            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("quizzes of user norm");
+            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(err);
+            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(resp);
             callback(resp);
         });
     }
@@ -2300,6 +2306,8 @@ function quizCard(title, description, date) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_fieldsCleaner_js__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_debugLog__ = __webpack_require__(0);
+
 
 
 
@@ -2323,7 +2331,7 @@ class ProfileForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js_
         this.newPasswordValueRepeat = document.querySelector("#profile-repeat-password").value;
         this.errorBox = null;
         this.addEventsToButtons();
-        console.log("prof FORM");
+        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("prof FORM");
     }
 
     static msgIncorrectInput() {
@@ -2347,7 +2355,7 @@ class ProfileForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js_
             "profile-repeat-password",
             "profile-form-error"
         );
-        console.log(this.nameValue + " " + resp.last_name);
+        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])(this.nameValue + " " + resp.last_name);
         document.querySelector("#profile-name").value = resp.last_name;
         document.querySelector("#profile-email").value = resp.email;
     }
@@ -2382,14 +2390,14 @@ class ProfileForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js_
             this.newPasswordValue = document.querySelector("#profile-new-password").value;
             this.newPasswordValueRepeat = document.querySelector("#profile-repeat-password").value;
 
-            console.log("prof BTN");
+            Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("prof BTN");
             const valid = ProfileForm.validate(this.nameValue, this.emailValue, this.passwordValue, this.newPasswordValue, this.newPasswordValueRepeat);
 
             if (valid) {
                 if (this.passwordValue !== "") {
                     if (this.newPasswordValue === this.newPasswordValueRepeat && this.newPasswordValue !== "") {
                         this.sendRequestChangePswd();
-                        console.log("prof ch data");
+                        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("prof ch data");
                         this.sendRequest();
                     } else {
                         document.getElementById("profile-form-error").innerHTML = "Неверно повторили пароль";
@@ -2412,9 +2420,9 @@ class ProfileForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__AuthWorker__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__debugLog__ = __webpack_require__(0);
 
 
 
@@ -2876,9 +2884,9 @@ function emptyQuizForm() {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_PagePresenter__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_globalBus__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_globalBus__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_debugLog__ = __webpack_require__(0);
 
 
 
@@ -2974,12 +2982,12 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
         this.renderAnsweredCounter();
 
         let data = ws_gameObj.payload.data;
-        console.log("DATA = " + data);
+        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("DATA = " + data);
         let ansUser = data.player.user.username;
         if (data.player.user.last_name !== "") {
             ansUser = data.player.user.last_name;
         }
-        console.log("ОТВЕТИЛ " + ansUser);
+        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("ОТВЕТИЛ " + ansUser);
         if (data.correct === true) {
             document.getElementById("game-table-question").innerHTML +=
                 `<tr class="line-result-table table-group-line right-ans">
@@ -3018,7 +3026,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
                 }
             }
         }
-        console.log(answers_count);
+        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])(answers_count);
         return answers_count;
     }
 
@@ -3109,9 +3117,11 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page_js__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_PagePresenter__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_globalBus__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_globalBus__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_network_AuthWorker__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_htmlEntities__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
+
 
 
 
@@ -3125,7 +3135,7 @@ class GameStudentPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     constructor() {
         super();
         this.addEventsOnButtons();
-        console.log("student")
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("student")
     }
 
     static pagePath() {
@@ -3141,7 +3151,7 @@ class GameStudentPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             {button: "join-game-btn_clicker", nextPage: "play-page", pagePath: "/play"},
             {button: "exit-game-student-btn", nextPage: "office-page", pagePath: "/office"}
         );
-        console.log("add redirect");
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("add redirect");
     }
 
     renderQuestion(ws_dataObj) {
@@ -3166,7 +3176,7 @@ class GameStudentPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             document.getElementById(`ans-btn-${variant_id}`).innerHTML =
                 Object(__WEBPACK_IMPORTED_MODULE_4__modules_htmlEntities__["a" /* default */])(ws_dataObj.payload.data.current_question.variants[i].variant);
             document.getElementById(`ans-btn-${variant_id}`).onclick = () => {
-                console.log("______________click______________");
+                Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("______________click______________");
                 Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.sendAnswer(variant_id, cur_question_id);
             }
         }
@@ -3200,7 +3210,7 @@ class GameStudentPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             for (let k = 0; k < len_players_ans; k++) {
                 if (gen_question.players_answers[k].player.user.username === __WEBPACK_IMPORTED_MODULE_3__modules_network_AuthWorker__["a" /* default */].getUsername() &&
                     gen_question.players_answers[k].correct === true) {
-                    console.log("USER NAME = " + __WEBPACK_IMPORTED_MODULE_3__modules_network_AuthWorker__["a" /* default */].getUsername());
+                    Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("USER NAME = " + __WEBPACK_IMPORTED_MODULE_3__modules_network_AuthWorker__["a" /* default */].getUsername());
                     person_score += gen_question.points;
                 }
             }
@@ -3224,8 +3234,8 @@ class GameStudentPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_globalBus__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_globalBus__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_debugLog__ = __webpack_require__(0);
 
 
 
@@ -3294,8 +3304,8 @@ class ModalWindow {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = saveUserMembership;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__debugLog__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__debugLog__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__network_Requester__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__network_AuthWorker__ = __webpack_require__(5);
 

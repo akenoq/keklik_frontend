@@ -8,7 +8,7 @@ import debugLog from "./debugLog";
 export default class GameManager {
     constructor() {
         globalBus().gameManager = this;
-        console.log("GAME MANAGER START");
+        debugLog("GAME MANAGER START");
         this.ws_controller = null;
         this.game_id = null;
         this.joined_counter = 0;
@@ -19,17 +19,17 @@ export default class GameManager {
     start(quiz_id, game_title, group_id) {
         document.getElementById("focus-btn").focus();
         // запрос на создание игры /games/
-        console.log("Переход на страницу с игрой " + quiz_id);
+        debugLog("Переход на страницу с игрой " + quiz_id);
         Requester.createGame(quiz_id, game_title, group_id, (err, resp) => {
             if (err) {
-                console.log(err);
+                debugLog(err);
                 return;
             }
             this.game_id = resp.id;
             globalBus().gameTeacherPage.renderQuizNum(this.game_id);
-            console.log("GAME ID = " + this.game_id);
+            debugLog("GAME ID = " + this.game_id);
             this.ws_controller = new WsController("teacher");
-            console.log("WS");
+            debugLog("WS");
         });
     }
 

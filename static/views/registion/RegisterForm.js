@@ -26,7 +26,7 @@ export default class RegisterForm extends FormValidator {
         this.passwordValue = "";
         this.errorBox = null;
         this.addEventsToButtons();
-        console.log("reg FORM");
+        debugLog("reg FORM");
     }
 
     static msgEmptyField() {
@@ -84,7 +84,7 @@ export default class RegisterForm extends FormValidator {
         Requester.register(this.loginValue, this.passwordValue, (err, resp) => {
             if (err) {
                 err = JSON.parse(err.responseText);
-                console.log(JSON.stringify(err));
+                debugLog(JSON.stringify(err));
                 if (err.username !== undefined) {
                     if (err.username[0].code === "unique") {
                         debugLog("UNIQ = ");

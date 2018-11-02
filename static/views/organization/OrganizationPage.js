@@ -23,7 +23,7 @@ export default class OrganizationPage extends Page {
             {button: "to-group-btn-redirect", nextPage: "group-page", pagePath: "/group"}
         );
 
-        console.log("course")
+        debugLog("course")
     }
 
     static pagePath() {
@@ -39,7 +39,7 @@ export default class OrganizationPage extends Page {
         debugLog("ID ORGANIZATION = " + org_id + "_________userGroupsByOrgId");
         document.querySelector("#org-title span").innerHTML = org_name;
         let groups = userGroupsByOrgId(org_id);
-        console.log(groups);
+        debugLog(groups);
         let groups_len = groups.length;
         let table_groups = document.getElementById("table-groups-in-org");
         table_groups.innerHTML = "";
