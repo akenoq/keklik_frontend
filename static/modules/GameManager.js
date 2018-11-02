@@ -44,14 +44,20 @@ export default class GameManager {
                    payload: {}
                };
                ws_dataObj.payload.data = resp;
+               this.joined_counter = resp.players.length;
+
                debugLog("my DATA OBJ");
                debugLog(ws_dataObj);
 
                if (resp.state === "players_waiting") {
+                   this.answered_counter = 0;
                    globalBus().gameTeacherPage.renderQuizNum(game_id);
+                   globalBus().gameTeacherPage.renderJoinedCounter();
                } else if (resp.state === "answering") {
+                   this.answered_counter = resp.current_question.players_answers.length;
                    globalBus().gameTeacherPage.renderQuizNum(game_id);
                    globalBus().gameTeacherPage.prepareGameMode();
+                   globalBus().gameTeacherPage.renderAnsweredCounter();
                    globalBus().gameTeacherPage.renderQuestion(ws_dataObj);
                }
 

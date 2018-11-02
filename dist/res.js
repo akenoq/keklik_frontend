@@ -72,7 +72,7 @@
 
 
 function debugLog(s) {
-    // console.log(s);
+    console.log(s);
 }
 
 /***/ }),
@@ -936,7 +936,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
         );
 
         this.addEventsOnButtons();
-        console.log("office");
+        Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("office");
         Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().user = {};
         this.profileForm = new __WEBPACK_IMPORTED_MODULE_5__ProfileForm__["a" /* default */]();
 
@@ -1138,14 +1138,20 @@ class GameManager {
                    payload: {}
                };
                ws_dataObj.payload.data = resp;
+               this.joined_counter = resp.players.length;
+
                Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("my DATA OBJ");
                Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])(ws_dataObj);
 
                if (resp.state === "players_waiting") {
+                   this.answered_counter = 0;
                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderQuizNum(game_id);
+                   Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderJoinedCounter();
                } else if (resp.state === "answering") {
+                   this.answered_counter = resp.current_question.players_answers.length;
                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderQuizNum(game_id);
                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.prepareGameMode();
+                   Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderAnsweredCounter();
                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderQuestion(ws_dataObj);
                }
 
