@@ -59,6 +59,8 @@ export default class Router {
         globalBus().gameStudentPage = new GameStudentPage();
         globalBus().gameManager = new GameManager();
 
+        globalBus().course_page_flag = false; // для редиректа при обновлении /course
+
         // pagePath
         const registerPagePath = RegisterPage.pagePath();
         // const infoPage = new InfoPage();
@@ -173,7 +175,13 @@ export default class Router {
                                 globalBus().btn.loginBtn.click();
                                 return debugLog("office error router");
                             }
-                            PagePresenter.showOnlyOnePage("course-page");
+                            if (globalBus().course_page_flag === true) {
+                                PagePresenter.showOnlyOnePage("course-page");
+                                debugLog("/course");
+                            } else {
+                                globalBus().btn.officeBtn.click();
+                                debugLog("undefined /course");
+                            }
                             return debugLog("office norm router");
                         });
                         break;

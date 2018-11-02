@@ -46,6 +46,7 @@ export default class OrganizationDesk extends Page {
 
             document.getElementById(`org-card-row-${rowCount}`).appendChild(caBox);
             document.getElementById(`org-card-${resp[i].id}`).onclick = () => {
+                globalBus().course_page_flag = true; // для роутера
                 OrganizationDesk.redirectToOrganization(resp[i].id, resp[i].name)
             };
             cardsInRow++;

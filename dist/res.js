@@ -1263,6 +1263,7 @@ class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* defaul
 
             document.getElementById(`org-card-row-${rowCount}`).appendChild(caBox);
             document.getElementById(`org-card-${resp[i].id}`).onclick = () => {
+                Object(__WEBPACK_IMPORTED_MODULE_3__modules_globalBus_js__["a" /* default */])().course_page_flag = true; // для роутера
                 OrganizationDesk.redirectToOrganization(resp[i].id, resp[i].name)
             };
             cardsInRow++;
@@ -2007,6 +2008,8 @@ class Router {
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().gameStudentPage = new __WEBPACK_IMPORTED_MODULE_12__views_GameStudentPage__["a" /* default */]();
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().gameManager = new __WEBPACK_IMPORTED_MODULE_10__GameManager__["a" /* default */]();
 
+        Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().course_page_flag = false; // для редиректа при обновлении /course
+
         // pagePath
         const registerPagePath = __WEBPACK_IMPORTED_MODULE_1__views_registion_RegisterPage_js__["a" /* default */].pagePath();
         // const infoPage = new InfoPage();
@@ -2121,7 +2124,13 @@ class Router {
                                 Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
                                 return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office error router");
                             }
-                            __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("course-page");
+                            if (Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().course_page_flag === true) {
+                                __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("course-page");
+                                Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("/course");
+                            } else {
+                                Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn.click();
+                                Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("undefined /course");
+                            }
                             return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office norm router");
                         });
                         break;
