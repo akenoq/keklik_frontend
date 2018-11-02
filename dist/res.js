@@ -72,7 +72,7 @@
 
 
 function debugLog(s) {
-    console.log(s);
+    // console.log(s);
 }
 
 /***/ }),
@@ -1402,9 +1402,6 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
 
         for (let i = 0; i < groups_len; i++) {
             table_groups.innerHTML += `<div id="group-card-${groups[i].group.id}" class="card game-card-in-group">
-              <div class="card-header">
-                ${groups[i].group.name}
-              </div>
               <!--<div class="card-body">-->
                 <!--<h5 class="card-title">Актуальные соревнования</h5>-->
                 <!--&lt;!&ndash;<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>&ndash;&gt;-->
@@ -1423,20 +1420,28 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
                         let group_card = document.getElementById(`group-card-${groups[i].group.id}`);
                         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("_______________>       >        >        >_______________");
                         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(running_games);
+                        let htmlContent = `<div class="card-header">
+                            ${groups[i].group.name}
+                            </div>`;
                         for (let i = 0; i < len_games; i++) {
                             Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(running_games[i]);
                             Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(running_games[i].id);
-                            group_card.innerHTML += `<div id="group-game-${running_games[i].id}" class="card-body">
+                            htmlContent += `<div id="group-game-${running_games[i].id}" class="card-body">
                                 <h5 class="card-title"><u>PIN</u> ${running_games[i].id}</h5>
                                 <p class="card-text"><u>Название:</u> ${running_games[i].quiz.title}</p>
                                 <a id="to-group-game-btn-${running_games[i].id}" class="btn btn-success">Присоединиться</a>
                               </div>
                               <hr>`;
+                        }
+
+                        group_card.innerHTML = htmlContent;
+
+                        for (let i = 0; i < len_games; i++) {
                             let to_game_by_id_btn = document.getElementById(`to-group-game-btn-${running_games[i].id}`);
                             to_game_by_id_btn.onclick = () => {
                                 // можно добавить проверку роли
                                 // задаем PIN в поле ввода
-                                Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("пишу ПИН = "+ running_games[i].id.toString());
+                                Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("пишу ПИН = " + running_games[i].id.toString());
                                 document.getElementById("game-pin-input").value = running_games[i].id.toString();
                                 // нажимаем на кнопку join и присоедин как ученик
                                 document.getElementById("join-game-btn").click();
@@ -1444,7 +1449,10 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
                         }
                     } else {
                         let group_card = document.getElementById(`group-card-${groups[i].group.id}`);
-                        group_card.innerHTML += `<div id="no-games-in-group" class="card-body">
+                        let htmlContent = `<div class="card-header">
+                            ${groups[i].group.name}
+                            </div>`;
+                        group_card.innerHTML = htmlContent + `<div id="no-games-in-group" class="card-body">
                             <h5 class="card-title">В группе нет активных соревнований</h5>
                           </div>`;
                     }
