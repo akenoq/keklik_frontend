@@ -72,7 +72,7 @@
 
 
 function debugLog(s) {
-    // console.log(s);
+    console.log(s);
 }
 
 /***/ }),
@@ -2988,8 +2988,6 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     }
 
     renderGameTable(ws_gameObj) {
-        this.renderAnsweredCounter();
-
         let data = ws_gameObj.payload.data;
         Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("DATA = " + data);
         let ansUser = data.player.user.username;
@@ -3007,6 +3005,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             // индикатор сколько ответило
             Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter += 1;
             Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("answered_counter += 1 =>" + Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter);
+            this.renderAnsweredCounter();
 
             this.game_table_answered.push(ansUser.toString());
 

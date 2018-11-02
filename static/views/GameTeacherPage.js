@@ -93,8 +93,6 @@ export default class GameTeacherPage extends Page {
     }
 
     renderGameTable(ws_gameObj) {
-        this.renderAnsweredCounter();
-
         let data = ws_gameObj.payload.data;
         debugLog("DATA = " + data);
         let ansUser = data.player.user.username;
@@ -112,6 +110,7 @@ export default class GameTeacherPage extends Page {
             // индикатор сколько ответило
             globalBus().gameManager.answered_counter += 1;
             debugLog("answered_counter += 1 =>" + globalBus().gameManager.answered_counter);
+            this.renderAnsweredCounter();
 
             this.game_table_answered.push(ansUser.toString());
 
