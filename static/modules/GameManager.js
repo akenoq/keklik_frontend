@@ -33,6 +33,35 @@ export default class GameManager {
         });
     }
 
+    restart_manage(game_id) {
+        document.getElementById("focus-btn").focus();
+        Requester.getGameById(game_id, (err, resp) => {
+           if (err) {
+               debugLog("err in get game by id")
+           } else {
+               this.game_id = game_id;
+               let ws_dataObj = {
+                   payload: {}
+               };
+               ws_dataObj.payload.data = resp;
+               debugLog("my DATA OBJ");
+               debugLog(ws_dataObj);
+
+               if (resp.state === "players_waiting") {
+                   globalBus().gameTeacherPage.renderQuizNum(game_id);
+               } else if (resp.state === "answering") {
+                   globalBus().gameTeacherPage.renderQuizNum(game_id);
+                   globalBus().gameTeacherPage.prepareGameMode();
+                   globalBus().gameTeacherPage.renderQuestion(ws_dataObj);
+               }
+
+               debugLog("GAME ID = " + this.game_id);
+               this.ws_controller = new WsController("teacher");
+               debugLog("WS");
+           }
+        });
+    }
+
     join(game_id) {
         document.getElementById("focus-btn").focus();
         this.game_id = game_id;

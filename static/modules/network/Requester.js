@@ -157,7 +157,11 @@ export default class Requester {
         Requester.requestToHost("GET", `api/groups/${id}/games/running/`, null, callback);
     }
 
-    static getRunningGameOfUser(callback) {
-        Requester.requestToHost("GET", "api/games/current_player/running/", null, callback);
+    static getRunningGameByUser(callback) {
+        Requester.requestToHost("GET", "api/games/my/running/", null, callback);
+    }
+
+    static getGameById(id, callback) {
+        Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
 }

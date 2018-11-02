@@ -4,13 +4,22 @@ import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
 import globalBus from "../modules/globalBus";
 import htmlEntities from "../modules/htmlEntities";
+import debugLog from "../modules/debugLog";
 
 export default class GameTeacherPage extends Page {
 
     constructor() {
         super();
         this.addEventsOnButtons();
-        console.log("teacher")
+        debugLog("teacher");
+        this.addRedirectOnButtons(
+            {button: "start-game-btn_clicker", nextPage: "play-page-manage", pagePath: "/teacher"},
+            {button: "exit-game-btn", nextPage: "office-page", pagePath: "/office"}
+        );
+        document.getElementById("exit-game-btn").onclick = () => {
+            debugLog("OFFICE rerender");
+            globalBus().btn.officeBtn.click();
+        };
     }
 
     static pagePath() {
@@ -22,12 +31,8 @@ export default class GameTeacherPage extends Page {
     }
 
     attachRedirect() {
-        this.addRedirectOnButtons(
-            {button: "start-game-btn", nextPage: "play-page-manage", pagePath: "/teacher"},
-            {button: "exit-game-btn", nextPage: "office-page", pagePath: "/office"}
-        );
         this.prepareWaitingPlayers();
-        console.log("add redirect");
+        debugLog("add redirect");
     }
 
     addEventsOnButtons() {

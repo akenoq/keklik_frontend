@@ -155,8 +155,22 @@
                 <img src="img/ava_teacher.png" class="ava rounded-circle border border-danger" width="75px" height="75px">
                 <span id="office-header-username">Login of user</span>
             </h1>
-            <input id="game-pin-input" type="text">
-            <button id="join-game-btn" class="btn btn-success start-btn" >Присоединиться по PIN</button>
+            <div>
+                <input id="game-pin-input" type="text">
+                <button id="join-game-btn" class="btn btn-success start-btn" >Присоединиться по PIN</button>
+            </div>
+            <div id="managed-game-box">
+                <div class="btn-group org-btn-group list-btn">
+                    <button id="selected-managed-game" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Продолжить по PIN...
+                    </button>
+
+                    <div id="list-managed-game-btn" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        <!--<a class="dropdown-item" href="#">Школа 444</a>-->
+                    </div>
+                </div>
+                <button id="managed-game-btn" class="btn btn-success start-btn">Управлять PIN</button>
+            </div>
             <div class="office-content card text-center">
                 <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
@@ -663,6 +677,7 @@
     </div>
     <button id="focus-btn" hidden onclick="console.log('RESET FOCUS')"></button>
     <button id="join-game-btn_clicker" hidden onclick="console.log('CLICKER JOIN')"></button>
+    <button id="start-game-btn_clicker" hidden onclick="console.log('CLICKER MANAGE')"></button>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

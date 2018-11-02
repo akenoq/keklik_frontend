@@ -30,6 +30,7 @@ export default class OfficePage extends Page {
 
         globalBus().count_ws = 0;
         globalBus().joinBtnFlag = false;
+        this.target_pin = null;
     }
 
     static pagePath() {
@@ -59,22 +60,79 @@ export default class OfficePage extends Page {
         });
     }
 
+    renderListManaged(){
+        Requester.getRunningGameByUser((err, resp) => {
+            if (err) {
+                debugLog("err load user running games");
+            } else {
+                debugLog("RESP");
+                debugLog(resp);
+                globalBus().saver.userRunningGames = [];
+                let games = resp;
+                let len_games = games.length;
+                for (let i = 0; i < len_games; i++) {
+                    globalBus().saver.userRunningGames.push(games[i]);
+                }
+                this.target_pin = null;
+                let listManagedGameBtn = document.getElementById("list-managed-game-btn");
+                listManagedGameBtn.innerHTML = "";
+                if (globalBus().saver.userRunningGames.length !== 0) {
+                    let managed_game = globalBus().saver.userRunningGames;
+                    let managed_game_len = managed_game.length;
+                    document.getElementById("selected-managed-game").innerHTML = "Продолжить по PIN...";
+                    for (let i = 0; i < managed_game_len; i++) {
+                        debugLog("render a");
+                        let a = document.createElement('a');
+                        a.setAttribute('class', 'dropdown-item');
+                        listManagedGameBtn.appendChild(a);
+                        a.innerHTML = "PIN " + managed_game[i].id;
+                        a.setAttribute('id', `select-managed-by-id-${managed_game[i].id}`);
+                        a.onclick = () => {
+                            debugLog("change selected-manage text");
+                            document.getElementById("selected-managed-game").innerHTML = managed_game[i].id;
+                            this.target_pin = managed_game[i].id;
+                            debugLog("учительский ПИН = "+ managed_game[i].id.toString());
+                        }
+                    }
+                }
+            }
+        });
+        debugLog("__________________RUNNING GAMES =");
+        debugLog(globalBus().saver.userRunningGames);
+    }
+
+    rejoinManagedGameBtn() {
+        document.getElementById("managed-game-btn").onclick = () => {
+            if (this.target_pin !== null) {
+                globalBus().gameManager.joined_counter = 0;
+                globalBus().gameTeacherPage.attachRedirect();
+                globalBus().gameManager.restart_manage(this.target_pin);
+                document.getElementById("start-game-btn_clicker").click(); // redirect
+                document.getElementById("selected-managed-game").innerHTML = "Продолжить по PIN...";
+                debugLog("REDIRECT TO RESTART");
+            }
+        }
+    }
+
     render() {
         return Requester.whoami((err, resp) => {
             if (err) {
-                return alert("office error");
+                debugLog("office err");
+            } else {
+                globalBus().user = resp;
+                document.getElementById("office-header-username").innerHTML = globalBus().user.username;
+                globalBus().nav.loginBox.innerHTML = resp.username;
+                this.profileForm.setFormValues(resp);
+                OrganizationDesk.render();
+                QuizzesDesk.render();
+                this.renderListManaged();
+                if (globalBus().joinBtnFlag === false) {
+                    this.joinGameBtn();
+                    this.rejoinManagedGameBtn();
+                    globalBus().joinBtnFlag = true;
+                }
+                debugLog("office norm");
             }
-            globalBus().user = resp;
-            document.getElementById("office-header-username").innerHTML = globalBus().user.username;
-            globalBus().nav.loginBox.innerHTML = resp.username;
-            this.profileForm.setFormValues(resp);
-            OrganizationDesk.render();
-            QuizzesDesk.render();
-            if (globalBus().joinBtnFlag === false) {
-                this.joinGameBtn();
-                globalBus().joinBtnFlag = true;
-            }
-            return console.log("office norm");
         });
     }
 

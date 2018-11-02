@@ -255,8 +255,12 @@ class Requester {
         Requester.requestToHost("GET", `api/groups/${id}/games/running/`, null, callback);
     }
 
-    static getRunningGameOfUser(callback) {
-        Requester.requestToHost("GET", "api/games/current_player/running/", null, callback);
+    static getRunningGameByUser(callback) {
+        Requester.requestToHost("GET", "api/games/my/running/", null, callback);
+    }
+
+    static getGameById(id, callback) {
+        Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Requester;
@@ -936,6 +940,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
 
         Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().count_ws = 0;
         Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag = false;
+        this.target_pin = null;
     }
 
     static pagePath() {
@@ -965,22 +970,80 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
         });
     }
 
+    renderListManaged(){
+        __WEBPACK_IMPORTED_MODULE_3__modules_network_Requester__["a" /* default */].getRunningGameByUser((err, resp) => {
+            if (err) {
+                Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("err load user running games");
+            } else {
+                Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("RESP");
+                Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])(resp);
+                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames = [];
+                let games = resp;
+                let len_games = games.length;
+                for (let i = 0; i < len_games; i++) {
+                    Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames.push(games[i]);
+                }
+                this.target_pin = null;
+                let listManagedGameBtn = document.getElementById("list-managed-game-btn");
+                listManagedGameBtn.innerHTML = "";
+                if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames.length !== 0) {
+                    let managed_game = Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames;
+                    let managed_game_len = managed_game.length;
+                    document.getElementById("selected-managed-game").innerHTML = "Продолжить по PIN...";
+                    for (let i = 0; i < managed_game_len; i++) {
+                        Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("render a");
+                        let a = document.createElement('a');
+                        a.setAttribute('class', 'dropdown-item');
+                        listManagedGameBtn.appendChild(a);
+                        a.innerHTML = "PIN " + managed_game[i].id;
+                        a.setAttribute('id', `select-managed-by-id-${managed_game[i].id}`);
+                        a.onclick = () => {
+                            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("change selected-manage text");
+                            document.getElementById("selected-managed-game").innerHTML = managed_game[i].id;
+                            this.target_pin = managed_game[i].id;
+                            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("учительский ПИН = "+ managed_game[i].id.toString());
+                        }
+                    }
+                }
+            }
+        });
+        Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("__________________RUNNING GAMES =");
+        Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames);
+    }
+
+    rejoinManagedGameBtn() {
+        document.getElementById("managed-game-btn").onclick = () => {
+            if (this.target_pin !== null) {
+                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.joined_counter = 0;
+                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameTeacherPage.attachRedirect();
+                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.restart_manage(this.target_pin);
+                document.getElementById("start-game-btn_clicker").click(); // redirect
+                document.getElementById("selected-managed-game").innerHTML = "Продолжить по PIN...";
+                Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("REDIRECT TO RESTART");
+                // в зависимости от игрового состояния редерить разное
+            }
+        }
+    }
+
     render() {
         return __WEBPACK_IMPORTED_MODULE_3__modules_network_Requester__["a" /* default */].whoami((err, resp) => {
             if (err) {
-                return alert("office error");
+                Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("office err");
+            } else {
+                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().user = resp;
+                document.getElementById("office-header-username").innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().user.username;
+                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().nav.loginBox.innerHTML = resp.username;
+                this.profileForm.setFormValues(resp);
+                __WEBPACK_IMPORTED_MODULE_7__organizations_OrganizationDesk__["a" /* default */].render();
+                __WEBPACK_IMPORTED_MODULE_4__quizzes_QuizzesDesk__["a" /* default */].render();
+                this.renderListManaged();
+                if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag === false) {
+                    this.joinGameBtn();
+                    this.rejoinManagedGameBtn();
+                    Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag = true;
+                }
+                Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("office norm");
             }
-            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().user = resp;
-            document.getElementById("office-header-username").innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().user.username;
-            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().nav.loginBox.innerHTML = resp.username;
-            this.profileForm.setFormValues(resp);
-            __WEBPACK_IMPORTED_MODULE_7__organizations_OrganizationDesk__["a" /* default */].render();
-            __WEBPACK_IMPORTED_MODULE_4__quizzes_QuizzesDesk__["a" /* default */].render();
-            if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag === false) {
-                this.joinGameBtn();
-                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag = true;
-            }
-            return console.log("office norm");
         });
     }
 
@@ -1060,6 +1123,35 @@ class GameManager {
             console.log("GAME ID = " + this.game_id);
             this.ws_controller = new __WEBPACK_IMPORTED_MODULE_2__network_WsController__["a" /* default */]("teacher");
             console.log("WS");
+        });
+    }
+
+    restart_manage(game_id) {
+        document.getElementById("focus-btn").focus();
+        __WEBPACK_IMPORTED_MODULE_1__network_Requester__["a" /* default */].getGameById(game_id, (err, resp) => {
+           if (err) {
+               Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("err in get game by id")
+           } else {
+               this.game_id = game_id;
+               let ws_dataObj = {
+                   payload: {}
+               };
+               ws_dataObj.payload.data = resp;
+               Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("my DATA OBJ");
+               Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])(ws_dataObj);
+
+               if (resp.state === "players_waiting") {
+                   Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderQuizNum(game_id);
+               } else if (resp.state === "answering") {
+                   Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderQuizNum(game_id);
+                   Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.prepareGameMode();
+                   Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderQuestion(ws_dataObj);
+               }
+
+               Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("GAME ID = " + this.game_id);
+               this.ws_controller = new __WEBPACK_IMPORTED_MODULE_2__network_WsController__["a" /* default */]("teacher");
+               Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("WS");
+           }
         });
     }
 
@@ -1543,6 +1635,7 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
         Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus_js__["a" /* default */])().gameTeacherPage.attachRedirect();
         startGameBtn.addEventListener("click", () => {
             Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("ID = " + this.target_group_id);
+            document.getElementById("start-game-btn_clicker").click();
             Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus_js__["a" /* default */])().gameManager.start(this.editQuizById, resp.title, this.target_group_id);
         });
     }
@@ -2786,6 +2879,8 @@ function emptyQuizForm() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_PagePresenter__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_globalBus__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_debugLog__ = __webpack_require__(1);
+
 
 
 
@@ -2798,7 +2893,15 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     constructor() {
         super();
         this.addEventsOnButtons();
-        console.log("teacher")
+        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("teacher");
+        this.addRedirectOnButtons(
+            {button: "start-game-btn_clicker", nextPage: "play-page-manage", pagePath: "/teacher"},
+            {button: "exit-game-btn", nextPage: "office-page", pagePath: "/office"}
+        );
+        document.getElementById("exit-game-btn").onclick = () => {
+            Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("TO OFFFFFFFFFFFFFFFFFFIICE rerender");
+            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().btn.officeBtn.click();
+        };
     }
 
     static pagePath() {
@@ -2810,12 +2913,8 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     }
 
     attachRedirect() {
-        this.addRedirectOnButtons(
-            {button: "start-game-btn", nextPage: "play-page-manage", pagePath: "/teacher"},
-            {button: "exit-game-btn", nextPage: "office-page", pagePath: "/office"}
-        );
         this.prepareWaitingPlayers();
-        console.log("add redirect");
+        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("add redirect");
     }
 
     addEventsOnButtons() {
@@ -3244,21 +3343,22 @@ function saveUserMembership(member_of_groups) {
     }
 
     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userRunningGames = [];
-    __WEBPACK_IMPORTED_MODULE_2__network_Requester__["a" /* default */].getRunningGameOfUser((err,resp) => {
-        if (err) {
-            Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("err load user running games");
-        } else {
-            Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("RESP");
-            Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(resp);
-            let games = resp;
-            let len_games = games.length;
-            for (let i = 0; i < len_games; i++) {
-                if (games[i].user.username === __WEBPACK_IMPORTED_MODULE_3__network_AuthWorker__["a" /* default */].getUsername()) {
-                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userRunningGames.push(games[i]);
-                }
-            }
-        }
-    });
+    // Requester.getRunningGameByUser((err, resp) => {
+    //     if (err) {
+    //         debugLog("err load user running games");
+    //     } else {
+    //         debugLog("RESP");
+    //         debugLog(resp);
+    //         let games = resp;
+    //         let len_games = games.length;
+    //         for (let i = 0; i < len_games; i++) {
+    //             globalBus().saver.userRunningGames.push(games[i]);
+    //             // if (games[i].user.username === AuthWorker.getUsername()) {
+    //             //     globalBus().saver.userRunningGames.push(games[i]);
+    //             // }
+    //         }
+    //     }
+    // });
 
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("__________________ORG =");
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userOrg);
@@ -3268,8 +3368,8 @@ function saveUserMembership(member_of_groups) {
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups);
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("__________________TEACHER GROUP =");
     Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherGroups);
-    Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("__________________RUNNING GAMES =");
-    Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userRunningGames);
+    // debugLog("__________________RUNNING GAMES =");
+    // debugLog(globalBus().saver.userRunningGames);
 }
 
 /***/ })

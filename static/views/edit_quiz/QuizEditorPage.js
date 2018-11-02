@@ -127,6 +127,7 @@ export default class QuizEditorPage extends Page {
         globalBus().gameTeacherPage.attachRedirect();
         startGameBtn.addEventListener("click", () => {
             debugLog("ID = " + this.target_group_id);
+            document.getElementById("start-game-btn_clicker").click();
             globalBus().gameManager.start(this.editQuizById, resp.title, this.target_group_id);
         });
     }

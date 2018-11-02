@@ -42,21 +42,6 @@ export default function saveUserMembership(member_of_groups) {
     }
 
     globalBus().saver.userRunningGames = [];
-    Requester.getRunningGameOfUser((err,resp) => {
-        if (err) {
-            debugLog("err load user running games");
-        } else {
-            debugLog("RESP");
-            debugLog(resp);
-            let games = resp;
-            let len_games = games.length;
-            for (let i = 0; i < len_games; i++) {
-                if (games[i].user.username === AuthWorker.getUsername()) {
-                    globalBus().saver.userRunningGames.push(games[i]);
-                }
-            }
-        }
-    });
 
     debugLog("__________________ORG =");
     debugLog(globalBus().saver.userOrg);
@@ -66,6 +51,4 @@ export default function saveUserMembership(member_of_groups) {
     debugLog(globalBus().saver.userGroups);
     debugLog("__________________TEACHER GROUP =");
     debugLog(globalBus().saver.userTeacherGroups);
-    debugLog("__________________RUNNING GAMES =");
-    debugLog(globalBus().saver.userRunningGames);
 }
