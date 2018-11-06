@@ -100,7 +100,7 @@ export default class Requester {
     }
 
     static quizEdit(id, quiz, callback) {
-        console.log("id = " + id);
+        debugLog("id = " + id);
         Requester.requestToHost("PUT", `api/quizzes/${id}/`, quiz, callback);
     }
 

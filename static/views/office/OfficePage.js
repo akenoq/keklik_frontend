@@ -52,7 +52,7 @@ export default class OfficePage extends Page {
                 document.getElementById("game-pin-input").setAttribute('data-nec', 'true');
                 globalBus().gameManager.join(game_id);
                 globalBus().count_ws += 1;
-                console.log("WS COUNT = " + globalBus().count_ws);
+                debugLog("WS COUNT = " + globalBus().count_ws);
                 document.getElementById("game-pin-input").value = "";
             } else {
                 document.getElementById("game-pin-input").setAttribute('data-nec', 'empty');
@@ -138,7 +138,7 @@ export default class OfficePage extends Page {
 
     addEventsOnButtons() {
         document.getElementById("to-courses-btn").onclick = () => {
-            console.log("C1");
+            debugLog("C1");
             document.getElementById("org-desk").hidden = false;
             document.getElementById("to-quizzes-btn").classList.remove("active");
             document.getElementById("quizzes-desk").hidden = true;
@@ -148,7 +148,7 @@ export default class OfficePage extends Page {
         };
 
         document.getElementById("to-quizzes-btn").onclick = () => {
-            console.log("C2");
+            debugLog("C2");
             document.getElementById("org-desk").hidden = true;
             document.getElementById("to-quizzes-btn").classList.add("active");
             document.getElementById("quizzes-desk").hidden = false;
@@ -158,7 +158,7 @@ export default class OfficePage extends Page {
         };
 
         document.getElementById("to-profile-btn").onclick = () => {
-            console.log("C3");
+            debugLog("C3");
             document.getElementById("org-desk").hidden = true;
             document.getElementById("to-quizzes-btn").classList.remove("active");
             document.getElementById("quizzes-desk").hidden = true;
