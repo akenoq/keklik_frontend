@@ -72,7 +72,7 @@
 
 
 function debugLog(s) {
-    // console.log(s);
+    console.log(s);
 }
 
 /***/ }),
@@ -198,7 +198,7 @@ class Requester {
     }
 
     static quizEdit(id, quiz, callback) {
-        console.log("id = " + id);
+        Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])("id = " + id);
         Requester.requestToHost("PUT", `api/quizzes/${id}/`, quiz, callback);
     }
 
@@ -327,9 +327,11 @@ class PagePresenter {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__debugLog__ = __webpack_require__(0);
 /**
  * Класс для работы с авторизацией
  */
+
 
 
 
@@ -366,7 +368,7 @@ class AuthWorker {
     static setToken(resp) {
         let token = "Token " + resp.token.toString();
         localStorage.setItem("token", token);
-        console.log("TOKEN = " + localStorage.getItem("token"));
+        Object(__WEBPACK_IMPORTED_MODULE_0__debugLog__["a" /* default */])("TOKEN = " + localStorage.getItem("token"));
     }
 
     /**
@@ -376,7 +378,7 @@ class AuthWorker {
     static setSessionKey(resp) {
         let session_key = resp.session_key.toString();
         localStorage.setItem("session_key", session_key);
-        console.log("session_key = " + localStorage.getItem("session_key"));
+        Object(__WEBPACK_IMPORTED_MODULE_0__debugLog__["a" /* default */])("session_key = " + localStorage.getItem("session_key"));
     }
 
     /**
@@ -385,7 +387,7 @@ class AuthWorker {
      */
     static setUser(resp) {
         localStorage.setItem("user", JSON.stringify(resp));
-        console.log("USER = " + localStorage.getItem("user"));
+        Object(__WEBPACK_IMPORTED_MODULE_0__debugLog__["a" /* default */])("USER = " + localStorage.getItem("user"));
     }
 
     autharization(resp) {
@@ -964,7 +966,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 document.getElementById("game-pin-input").setAttribute('data-nec', 'true');
                 Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.join(game_id);
                 Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().count_ws += 1;
-                console.log("WS COUNT = " + Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().count_ws);
+                Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("WS COUNT = " + Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().count_ws);
                 document.getElementById("game-pin-input").value = "";
             } else {
                 document.getElementById("game-pin-input").setAttribute('data-nec', 'empty');
@@ -1050,7 +1052,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
 
     addEventsOnButtons() {
         document.getElementById("to-courses-btn").onclick = () => {
-            console.log("C1");
+            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("C1");
             document.getElementById("org-desk").hidden = false;
             document.getElementById("to-quizzes-btn").classList.remove("active");
             document.getElementById("quizzes-desk").hidden = true;
@@ -1060,7 +1062,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
         };
 
         document.getElementById("to-quizzes-btn").onclick = () => {
-            console.log("C2");
+            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("C2");
             document.getElementById("org-desk").hidden = true;
             document.getElementById("to-quizzes-btn").classList.add("active");
             document.getElementById("quizzes-desk").hidden = false;
@@ -1070,7 +1072,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
         };
 
         document.getElementById("to-profile-btn").onclick = () => {
-            console.log("C3");
+            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("C3");
             document.getElementById("org-desk").hidden = true;
             document.getElementById("to-quizzes-btn").classList.remove("active");
             document.getElementById("quizzes-desk").hidden = true;
@@ -3385,15 +3387,23 @@ function saveUserMembership(member_of_groups) {
                 orgIdInArr = true;
             }
         }
-        if (!orgIdInArr) {
+        if (!orgIdInArr) { // если такой организации еще нет, то добавляем
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userOrg.push(
                 Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups[i].group.organization
             );
-            if (Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups[i].role === "teacher") {
-                Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherOrg.push(
-                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups[i].group.organization
-                )
+        }
+
+        let orgTeacherIdInArr = false;
+        let org_teacher_len =  Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherOrg.length;
+        for (let j = 0; j < org_teacher_len; j++) {
+            if(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherOrg[j].id === Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups[i].group.organization.id) {
+                orgTeacherIdInArr = true
             }
+        }
+        if (!orgTeacherIdInArr) { // если такой организации учителя еще нет, то добавляем
+            Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherOrg.push(
+              Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups[i].group.organization
+            );
         }
     }
 
