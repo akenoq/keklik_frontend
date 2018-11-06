@@ -3393,17 +3393,19 @@ function saveUserMembership(member_of_groups) {
             );
         }
 
-        let orgTeacherIdInArr = false;
-        let org_teacher_len =  Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherOrg.length;
-        for (let j = 0; j < org_teacher_len; j++) {
-            if(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherOrg[j].id === Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups[i].group.organization.id) {
-                orgTeacherIdInArr = true
+        if (Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups[i].role === "teacher") {
+            let orgTeacherIdInArr = false;
+            let org_teacher_len = Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherOrg.length;
+            for (let j = 0; j < org_teacher_len; j++) {
+                if (Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherOrg[j].id === Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups[i].group.organization.id) {
+                    orgTeacherIdInArr = true
+                }
             }
-        }
-        if (!orgTeacherIdInArr) { // если такой организации учителя еще нет, то добавляем
-            Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherOrg.push(
-              Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups[i].group.organization
-            );
+            if (!orgTeacherIdInArr) { // если такой организации учителя еще нет, то добавляем
+                Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userTeacherOrg.push(
+                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().saver.userGroups[i].group.organization
+                );
+            }
         }
     }
 
