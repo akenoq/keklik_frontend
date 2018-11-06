@@ -35,17 +35,19 @@ export default function saveUserMembership(member_of_groups) {
             );
         }
 
-        let orgTeacherIdInArr = false;
-        let org_teacher_len =  globalBus().saver.userTeacherOrg.length;
-        for (let j = 0; j < org_teacher_len; j++) {
-            if(globalBus().saver.userTeacherOrg[j].id === globalBus().saver.userGroups[i].group.organization.id) {
-                orgTeacherIdInArr = true
+        if (globalBus().saver.userGroups[i].role === "teacher") {
+            let orgTeacherIdInArr = false;
+            let org_teacher_len = globalBus().saver.userTeacherOrg.length;
+            for (let j = 0; j < org_teacher_len; j++) {
+                if (globalBus().saver.userTeacherOrg[j].id === globalBus().saver.userGroups[i].group.organization.id) {
+                    orgTeacherIdInArr = true
+                }
             }
-        }
-        if (!orgTeacherIdInArr) { // если такой организации учителя еще нет, то добавляем
-            globalBus().saver.userTeacherOrg.push(
-              globalBus().saver.userGroups[i].group.organization
-            );
+            if (!orgTeacherIdInArr) { // если такой организации учителя еще нет, то добавляем
+                globalBus().saver.userTeacherOrg.push(
+                    globalBus().saver.userGroups[i].group.organization
+                );
+            }
         }
     }
 
