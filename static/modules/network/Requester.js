@@ -11,7 +11,7 @@ const messagesFromHost = {
     XHR_READY : 4
 };
 
-const WITH_CREDENTIALS = true;
+const WITH_CREDENTIALS = false;
 
 export default class Requester {
 
@@ -21,7 +21,8 @@ export default class Requester {
      */
     static baseUrl() {
         // return  "https://keklik-api.herokuapp.com/";
-        return "http://46.229.213.75:8000/";
+        // return "http://46.229.213.75:8000/";
+        return "http://api.keklik.xyz/"
     }
 
     /**
