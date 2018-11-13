@@ -88,11 +88,23 @@ export default class FormValidator {
             if (variants < 2)
                 empty_flag = true;
                 // errors.push(i + "_variants_empty");
-            if (parseInt(document.getElementById(`edit-quiz-form__question-box_${i}`)
-                    .querySelector(".true-var").value) > variants.length) {
-                document.getElementById(`edit-quiz-form__question-box_${i}`)
-                    .querySelector(".true-var").setAttribute('data-nec', 'big');
+            let true_var_box = document.getElementById(`edit-quiz-form__question-box_${i}`)
+                .querySelector(".true-var");
+            let true_var_num = true_var_box.value;
+
+            if (true_var_num > variants.length) {
+                true_var_box.setAttribute('data-nec', 'big');
                 errors.push(`&#9888; Номер правильного варианта в вопосе ${i+1} превышает количество вариантов`);
+            } else {
+                if (true_var_num < 1) {
+                    errors.push(`&#9888; Номер правильного варианта в вопосе ${i+1} указан некорректно`);
+                    true_var_box.setAttribute('data-nec', 'big');
+                }
+            }
+            if (parseInt(elem.points) < 1) {
+                errors.push(`&#9888; Число очков за ответ в вопосе ${i+1} должно быть положительным`);
+                document.getElementById(`edit-quiz-form__question-box_${i}`)
+                    .querySelector(".edit-points").setAttribute('data-nec', 'big');
             }
         });
         if (empty_flag) errors.push("&#9888; Заполните обязательные поля");

@@ -527,11 +527,23 @@ class FormValidator {
             if (variants < 2)
                 empty_flag = true;
                 // errors.push(i + "_variants_empty");
-            if (parseInt(document.getElementById(`edit-quiz-form__question-box_${i}`)
-                    .querySelector(".true-var").value) > variants.length) {
-                document.getElementById(`edit-quiz-form__question-box_${i}`)
-                    .querySelector(".true-var").setAttribute('data-nec', 'big');
+            let true_var_num = parseInt(document.getElementById(`edit-quiz-form__question-box_${i}`)
+                .querySelector(".true-var").value);
+            let true_var_box = document.getElementById(`edit-quiz-form__question-box_${i}`)
+                .querySelector(".true-var");
+            if (true_var_num > variants.length) {
+                true_var_box.setAttribute('data-nec', 'big');
                 errors.push(`&#9888; Номер правильного варианта в вопосе ${i+1} превышает количество вариантов`);
+            } else {
+                if (true_var_num < 1) {
+                    errors.push(`&#9888; Номер правильного варианта в вопосе ${i+1} указан некорректно`);
+                    true_var_box.setAttribute('data-nec', 'big');
+                }
+            }
+            if (parseInt(elem.points) < 1) {
+                errors.push(`&#9888; Число очков за ответ в вопосе ${i+1} должно быть положительным`);
+                document.getElementById(`edit-quiz-form__question-box_${i}`)
+                    .querySelector(".edit-points").setAttribute('data-nec', 'big');
             }
         });
         if (empty_flag) errors.push("&#9888; Заполните обязательные поля");
@@ -1637,7 +1649,7 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
         } else {
             __WEBPACK_IMPORTED_MODULE_2__modules_network_Requester_js__["a" /* default */].quizNew(this.quiz, (err, resp) => {
                 if (err) {
-                    document.getElementById("edit-quiz-err").innerHTML = "Обязательные поля не заполнены или заполнены с ошибками";
+                    document.getElementById("edit-quiz-err").innerHTML = "&#9888; Обязательные поля не заполнены или заполнены с ошибками";
                     return Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("err in quiz");
                 }
                 Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("ok in quiz" + resp);

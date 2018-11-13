@@ -108,7 +108,7 @@ export default class QuizEditorPage extends Page {
         } else {
             Requester.quizNew(this.quiz, (err, resp) => {
                 if (err) {
-                    document.getElementById("edit-quiz-err").innerHTML = "Обязательные поля не заполнены или заполнены с ошибками";
+                    document.getElementById("edit-quiz-err").innerHTML = "&#9888; Обязательные поля не заполнены или заполнены с ошибками";
                     return debugLog("err in quiz");
                 }
                 debugLog("ok in quiz" + resp);
