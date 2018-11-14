@@ -5,6 +5,7 @@ import globalBus from "../../modules/globalBus.js";
 import Requester from "../../modules/network/Requester.js";
 import fieldsCleaner from "./../../modules/fieldsCleaner.js";
 import PagePresenter from "../../modules/PagePresenter";
+import debugLog from "../../modules/debugLog";
 
 const messagesLoginForm = {
     EMPTY_MESSAGE : "Заполнены не все поля",
@@ -22,7 +23,7 @@ export default class LoginForm extends FormValidator {
         this.passwordValue = "";
         this.errorBox = null;
         this.addEventsToButtons();
-        console.log("log FORM");
+        debugLog("log FORM");
     }
 
     static msgEmptyField() {
@@ -88,7 +89,7 @@ export default class LoginForm extends FormValidator {
             this.passwordValue = document.querySelector("#login-form-password").value;
             this.errorBox = document.querySelector("#login-form-err");
 
-            console.log("log BTN");
+            debugLog("log BTN");
             const valid = LoginForm.validate(this.loginValue, this.passwordValue, this.errorBox);
 
             if (valid) {

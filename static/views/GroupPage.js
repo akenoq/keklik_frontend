@@ -2,6 +2,7 @@
 
 import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
+import debugLog from "../modules/debugLog";
 
 export default class GroupPage extends Page {
 
@@ -11,7 +12,7 @@ export default class GroupPage extends Page {
         this.addRedirectOnButtons(
             {button: "to-play-btn-1", nextPage: "play-page", pagePath: "/play"}
         );
-        console.log("group")
+        debugLog("group")
     }
 
     static pagePath() {

@@ -3,6 +3,6 @@
 module.exports = {
     entry: "./static/modules/app.js",
     output: {
-        filename: "./app.js"
+        filename: "./dist/res.js"
     }
 };

@@ -7,7 +7,7 @@ import RegisterForm from "../views/registion/RegisterForm.js";
 import LoginPage from "../views/login/LoginPage.js";
 import LoginForm from "../views/login/LoginForm.js";
 import OfficePage from "../views/office/OfficePage.js";
-import CoursesPage from "../views/CoursePage.js";
+import OrganizationPage from "../views/organization/OrganizationPage.js";
 import GroupPage from "../views/GroupPage.js";
 import Requester from "./network/Requester.js";
 import AuthWorker from "./network/AuthWorker";

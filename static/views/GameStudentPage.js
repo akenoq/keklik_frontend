@@ -5,13 +5,14 @@ import PagePresenter from "../modules/PagePresenter";
 import globalBus from "../modules/globalBus";
 import authWorker from "../modules/network/AuthWorker";
 import htmlEntities from "../modules/htmlEntities";
+import debugLog from "../modules/debugLog";
 
 export default class GameStudentPage extends Page {
 
     constructor() {
         super();
         this.addEventsOnButtons();
-        console.log("student")
+        debugLog("student")
     }
 
     static pagePath() {
@@ -24,10 +25,10 @@ export default class GameStudentPage extends Page {
 
     attachRedirect() {
         this.addRedirectOnButtons(
-            {button: "join-game-btn", nextPage: "play-page", pagePath: "/play"},
+            {button: "join-game-btn_clicker", nextPage: "play-page", pagePath: "/play"},
             {button: "exit-game-student-btn", nextPage: "office-page", pagePath: "/office"}
         );
-        console.log("add redirect");
+        debugLog("add redirect");
     }
 
     renderQuestion(ws_dataObj) {
@@ -52,7 +53,7 @@ export default class GameStudentPage extends Page {
             document.getElementById(`ans-btn-${variant_id}`).innerHTML =
                 htmlEntities(ws_dataObj.payload.data.current_question.variants[i].variant);
             document.getElementById(`ans-btn-${variant_id}`).onclick = () => {
-                console.log("______________click______________");
+                debugLog("______________click______________");
                 globalBus().gameManager.sendAnswer(variant_id, cur_question_id);
             }
         }
@@ -86,7 +87,7 @@ export default class GameStudentPage extends Page {
             for (let k = 0; k < len_players_ans; k++) {
                 if (gen_question.players_answers[k].player.user.username === authWorker.getUsername() &&
                     gen_question.players_answers[k].correct === true) {
-                    console.log("USER NAME = " + authWorker.getUsername());
+                    debugLog("USER NAME = " + authWorker.getUsername());
                     person_score += gen_question.points;
                 }
             }

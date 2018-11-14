@@ -3,6 +3,7 @@
  */
 "use strict";
 
+import debugLog from "../debugLog";
 
 export default class AuthWorker {
 
@@ -37,7 +38,7 @@ export default class AuthWorker {
     static setToken(resp) {
         let token = "Token " + resp.token.toString();
         localStorage.setItem("token", token);
-        console.log("TOKEN = " + localStorage.getItem("token"));
+        debugLog("TOKEN = " + localStorage.getItem("token"));
     }
 
     /**
@@ -47,7 +48,7 @@ export default class AuthWorker {
     static setSessionKey(resp) {
         let session_key = resp.session_key.toString();
         localStorage.setItem("session_key", session_key);
-        console.log("session_key = " + localStorage.getItem("session_key"));
+        debugLog("session_key = " + localStorage.getItem("session_key"));
     }
 
     /**
@@ -56,7 +57,7 @@ export default class AuthWorker {
      */
     static setUser(resp) {
         localStorage.setItem("user", JSON.stringify(resp));
-        console.log("USER = " + localStorage.getItem("user"));
+        debugLog("USER = " + localStorage.getItem("user"));
     }
 
     autharization(resp) {

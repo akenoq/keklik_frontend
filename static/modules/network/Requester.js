@@ -11,7 +11,7 @@ const messagesFromHost = {
     XHR_READY : 4
 };
 
-const WITH_CREDENTIALS = true;
+const WITH_CREDENTIALS = false;
 
 export default class Requester {
 
@@ -21,7 +21,8 @@ export default class Requester {
      */
     static baseUrl() {
         // return  "https://keklik-api.herokuapp.com/";
-        return "http://46.229.213.75:8000/";
+        // return "http://46.229.213.75:8000/";
+        return "http://api.keklik.xyz/"
     }
 
     /**
@@ -100,7 +101,7 @@ export default class Requester {
     }
 
     static quizEdit(id, quiz, callback) {
-        console.log("id = " + id);
+        debugLog("id = " + id);
         Requester.requestToHost("PUT", `api/quizzes/${id}/`, quiz, callback);
     }
 
@@ -126,12 +127,42 @@ export default class Requester {
         Requester.requestToHost("GET", `api/quizzes/${id}/`, null, callback);
     }
 
-    static createGame(id, label = "", callback) {
-        const quiz = {
-            quiz: id,
-            label: label,
-            online: true
-        };
+    static createGame(id, label = "", group_id, callback) {
+        let quiz = null;
+        if (group_id === null) {
+            quiz = {
+                quiz: id,
+                label: label,
+                online: true
+            };
+        } else {
+            quiz = {
+                quiz: id,
+                label: label,
+                online: true,
+                group: group_id
+            };
+        }
         Requester.requestToHost("POST", "api/games/", quiz, callback);
+    }
+
+    static organizationsAll(callback) {
+        Requester.requestToHost("GET", "api/organizations/", null, callback);
+    }
+
+    static getOrganizationsById(id, callback) {
+        Requester.requestToHost("GET", `api/organizations/${id}/`, null, callback);
+    }
+
+    static getRunningGameByGroupId(id, callback) {
+        Requester.requestToHost("GET", `api/groups/${id}/games/running/`, null, callback);
+    }
+
+    static getRunningGameByUser(callback) {
+        Requester.requestToHost("GET", "api/games/my/running/", null, callback);
+    }
+
+    static getGameById(id, callback) {
+        Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
 }

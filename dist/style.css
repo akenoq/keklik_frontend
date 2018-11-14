@@ -253,10 +253,10 @@ body {
     box-shadow: 0 0 50px #9680b9;
 }
 
-.form-control::-webkit-input-placeholder {color: #e3aeec; opacity:1;}/* webkit */
-.form-control::-moz-placeholder          {color: #e3aeec; opacity:1;}/* Firefox 19+ */
-.form-control:-moz-placeholder           {color: #e3aeec; opacity:1;}/* Firefox 18- */
-.form-control:-ms-input-placeholder      {color: #e3aeec; opacity:1;}/* IE */
+.form-control::-webkit-input-placeholder {color: #e3aeec !important; opacity:1 !important;}/* webkit */
+.form-control::-moz-placeholder          {color: #e3aeec !important; opacity:1 !important;}/* Firefox 19+ */
+.form-control:-moz-placeholder           {color: #e3aeec !important; opacity:1 !important;}/* Firefox 18- */
+.form-control:-ms-input-placeholder      {color: #e3aeec !important; opacity:1 !important;}/* IE */
 
 red {
     color: #ee4545;
@@ -280,4 +280,33 @@ red {
 
 #edit-quiz-form__tags {
     margin-left: 5px;
+}
+
+#table-groups-in-org {
+    /*max-width: 700px;*/
+}
+
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#target-group-box {
+    margin-bottom: 15px;
+}
+
+.list-btn {
+    margin: 5px;
+}
+
+.game-card-in-group {
+    margin: 15px;
+}
+
+.btn-success{
+    color: #fff !important;
+}
+
+.card-header {
+    color: white;
 }

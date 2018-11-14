@@ -9,6 +9,7 @@ import Page from "../Page";
 import questionBox from "./questionBox";
 import emptyQuizForm from "./emptyQuizForm";
 import debugLog from "../../modules/debugLog";
+import OrganizationDesk from "../office/organizations/OrganizationDesk";
 
 export default class QuizEditorPage extends Page {
     constructor() {
@@ -20,6 +21,7 @@ export default class QuizEditorPage extends Page {
         globalBus().quizEditorPage = this;
 
         this.editQuizById = false;
+        this.target_group_id = null;
     }
 
     resetQuiz() {
@@ -106,7 +108,7 @@ export default class QuizEditorPage extends Page {
         } else {
             Requester.quizNew(this.quiz, (err, resp) => {
                 if (err) {
-                    document.getElementById("edit-quiz-err").innerHTML = "Обязательные поля не заполнены или заполнены с ошибками";
+                    document.getElementById("edit-quiz-err").innerHTML = "&#9888; Обязательные поля не заполнены или заполнены с ошибками";
                     return debugLog("err in quiz");
                 }
                 debugLog("ok in quiz" + resp);
@@ -124,8 +126,86 @@ export default class QuizEditorPage extends Page {
         globalBus().gameManager.joined_counter = 0;
         globalBus().gameTeacherPage.attachRedirect();
         startGameBtn.addEventListener("click", () => {
-            globalBus().gameManager.start(this.editQuizById, resp.title);
+            debugLog("ID = " + this.target_group_id);
+            document.getElementById("start-game-btn_clicker").click();
+            globalBus().gameManager.start(this.editQuizById, resp.title, this.target_group_id);
         });
+    }
+
+    selectTargetGroupBtn(organizations) {
+        let targetBox = document.getElementById("target-group-box");
+        targetBox.innerHTML =
+            `<div class="btn-group org-btn-group list-btn">
+                <button id="selected-org" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Выберите организацию...
+                </button>
+                    
+                <div id="list-org-btn" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <!--<a class="dropdown-item" href="#">Школа 444</a>-->
+                </div>
+            </div>
+            <div class="btn-group group-btn-group list-btn">
+                <button id="selected-group" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Выберите группу...
+                </button>
+
+                <div id="list-group-btn" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <!--<a class="dropdown-item" href="#">Класс 5Б</a>-->
+                </div>
+            </div>`;
+        let org_len = organizations.length;
+        let listOrgBtn = document.getElementById("list-org-btn");
+        listOrgBtn.innerHTML = "";
+        let listGroupBtn = document.getElementById("list-group-btn");
+        listGroupBtn.innerHTML = "";
+        document.getElementById("selected-org").innerHTML = "Выберете организацию...";
+        document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        for (let i = 0; i < org_len; i++) {
+            let a = document.createElement('a');
+            a.setAttribute('class', 'dropdown-item');
+            listOrgBtn.appendChild(a);
+            a.innerHTML = organizations[i].name;
+            a.setAttribute('id', `select-org-by-id-${organizations[i].id}`);
+            a.onclick = () => {
+                debugLog("change selected-org text");
+                document.getElementById("selected-org").innerHTML = organizations[i].name;
+                this.renderListGroupByOrg(organizations[i].id);
+            }
+        }
+    }
+
+    renderListGroupByOrg(org_id) {
+        let groups = [];
+        let len_groups = globalBus().saver.userTeacherGroups.length;
+        for (let i = 0; i < len_groups; i++) {
+            if (globalBus().saver.userTeacherGroups[i].organization.id === org_id) {
+                groups.push(globalBus().saver.userTeacherGroups[i]);
+            }
+        }
+        debugLog(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        debugLog(groups);
+        let groups_len = groups.length;
+        let listGroupBtn = document.getElementById("list-group-btn");
+        listGroupBtn.innerHTML = "";
+        document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        this.target_group_id = null;
+
+        for (let i = 0; i < groups_len; i++) {
+            debugLog(groups[i]);
+            debugLog("________________________");
+            debugLog(listGroupBtn);
+            let a = document.createElement('a');
+            a.setAttribute('class', 'dropdown-item');
+            listGroupBtn.appendChild(a);
+            a.innerHTML = groups[i].name;
+            debugLog(groups[i].name);
+            a.setAttribute('id', `select-group-by-id-${groups[i].id}`);
+            a.onclick = () => {
+                debugLog("change selected-group text " + groups[i].id);
+                document.getElementById("selected-group").innerHTML = groups[i].name;
+                this.target_group_id = groups[i].id;
+            }
+        }
     }
 
     render(id, resp) {
@@ -136,6 +216,7 @@ export default class QuizEditorPage extends Page {
         document.getElementById("quiz-editor-h3").innerHTML = `Викторина ${this.editQuizById}`;
         // кнопка запуска викторины
         this.startQuizBtn(resp);
+        this.selectTargetGroupBtn(globalBus().saver.userTeacherOrg);
         document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__title").value =
             resp.title;
         document.getElementById("edit-quiz-form").querySelector("#edit-quiz-form__description").value =

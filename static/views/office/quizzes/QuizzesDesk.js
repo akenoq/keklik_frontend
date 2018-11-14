@@ -1,10 +1,11 @@
 "use strict";
 
-import Page from "../Page";
-import Requester from "../../modules/network/Requester.js";
+import Page from "../../Page";
+import Requester from "../../../modules/network/Requester.js";
 import quizCard from "./quizCard";
-import linkOnButtons from "../../modules/linkOnButtons";
-import globalBus from "../../modules/globalBus.js";
+import linkOnButtons from "../../../modules/linkOnButtons";
+import globalBus from "../../../modules/globalBus.js";
+import debugLog from "../../../modules/debugLog";
 
 export default class QuizzesDesk extends Page {
 
@@ -21,12 +22,12 @@ export default class QuizzesDesk extends Page {
     }
 
     static redirectToQuiz(id) {
-        console.log(id);
+        debugLog(id);
         Requester.getQuizById(id, (err, resp) => {
             if (err) {
-                console.log(err);
+                debugLog(err);
             } else {
-                console.log("quiz " + id + " rendering");
+                debugLog("quiz " + id + " rendering");
                 globalBus().quizEditorPage.render(id, resp);
             }
         });
@@ -44,12 +45,12 @@ export default class QuizzesDesk extends Page {
     }
 
     static render() {
-        console.log("Quiz Desk");
+        debugLog("Quiz Desk");
         let quizzesDesk = document.getElementById("quizzes-desk");
         quizzesDesk.innerHTML = "";
         QuizzesDesk.renderNewQuizCard(quizzesDesk);
         QuizzesDesk.quizzesReq((resp) => {
-            console.log(resp);
+            debugLog(resp);
             let cardsInRow = 1;
             let rowCount = 1;
             for (let i = 0; i < resp.length; i++) {
@@ -58,7 +59,7 @@ export default class QuizzesDesk extends Page {
                     rowCount++;
                 }
                 if (rowCount === 1 && cardsInRow < 3) {
-                    console.log("first str");
+                    debugLog("first str");
                     let caBox = document.createElement('div');
                     // <div id="quiz-card-${id}" class="card quizzes-desk__quiz-card">
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
@@ -75,8 +76,8 @@ export default class QuizzesDesk extends Page {
                         newRow.setAttribute("id", `card-row-${rowCount}`);
                         newRow.setAttribute("class", "card-deck");
                         quizzesDesk.appendChild(newRow);
-                        console.log("new row = ");
-                        console.log(newRow);
+                        debugLog("new row = ");
+                        debugLog(newRow);
                     }
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
@@ -98,9 +99,9 @@ export default class QuizzesDesk extends Page {
             if (err) {
                 return console.log(" error");
             }
-            console.log("quizzes of user norm");
-            console.log(err);
-            console.log(resp);
+            debugLog("quizzes of user norm");
+            debugLog(err);
+            debugLog(resp);
             callback(resp);
         });
     }

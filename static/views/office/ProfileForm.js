@@ -3,6 +3,7 @@
 import FormValidator from "../../modules/FormValidator.js";
 import Requester from "../../modules/network/Requester.js";
 import fieldsCleaner from "./../../modules/fieldsCleaner.js";
+import debugLog from "../../modules/debugLog";
 
 const messagesProfileForm = {
     INCORRECT_MESSAGE : "Использованы недопустимые символы",
@@ -21,7 +22,7 @@ export default class ProfileForm extends FormValidator {
         this.newPasswordValueRepeat = document.querySelector("#profile-repeat-password").value;
         this.errorBox = null;
         this.addEventsToButtons();
-        console.log("prof FORM");
+        debugLog("prof FORM");
     }
 
     static msgIncorrectInput() {
@@ -45,7 +46,7 @@ export default class ProfileForm extends FormValidator {
             "profile-repeat-password",
             "profile-form-error"
         );
-        console.log(this.nameValue + " " + resp.last_name);
+        debugLog(this.nameValue + " " + resp.last_name);
         document.querySelector("#profile-name").value = resp.last_name;
         document.querySelector("#profile-email").value = resp.email;
     }
@@ -80,14 +81,14 @@ export default class ProfileForm extends FormValidator {
             this.newPasswordValue = document.querySelector("#profile-new-password").value;
             this.newPasswordValueRepeat = document.querySelector("#profile-repeat-password").value;
 
-            console.log("prof BTN");
+            debugLog("prof BTN");
             const valid = ProfileForm.validate(this.nameValue, this.emailValue, this.passwordValue, this.newPasswordValue, this.newPasswordValueRepeat);
 
             if (valid) {
                 if (this.passwordValue !== "") {
                     if (this.newPasswordValue === this.newPasswordValueRepeat && this.newPasswordValue !== "") {
                         this.sendRequestChangePswd();
-                        console.log("prof ch data");
+                        debugLog("prof ch data");
                         this.sendRequest();
                     } else {
                         document.getElementById("profile-form-error").innerHTML = "Неверно повторили пароль";

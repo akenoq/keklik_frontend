@@ -6,6 +6,7 @@
   "scripts": {
     "prestart": "webpack",
     "start": "node index.js",
+    "host": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,9 +21,7 @@
   "homepage": "https://github.com/akenoq/keklik_frontend#readme",
   "dependencies": {
     "express": "^4.16.3",
-    "webpack": "^4.20.1",
-    "webpack-cli": "^3.1.1"
+    "webpack": "^3.5.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

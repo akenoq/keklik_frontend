@@ -4,13 +4,24 @@ import Page from "./Page.js";
 import PagePresenter from "../modules/PagePresenter";
 import globalBus from "../modules/globalBus";
 import htmlEntities from "../modules/htmlEntities";
+import debugLog from "../modules/debugLog";
 
 export default class GameTeacherPage extends Page {
 
     constructor() {
         super();
         this.addEventsOnButtons();
-        console.log("teacher")
+        debugLog("teacher");
+        this.addRedirectOnButtons(
+            {button: "start-game-btn_clicker", nextPage: "play-page-manage", pagePath: "/teacher"},
+            {button: "exit-game-btn", nextPage: "office-page", pagePath: "/office"}
+        );
+        document.getElementById("exit-game-btn").onclick = () => {
+            debugLog("OFFICE rerender");
+            globalBus().btn.officeBtn.click();
+        };
+        this.game_table_answered = [];
+        this.game_table_joined = [];
     }
 
     static pagePath() {
@@ -22,26 +33,25 @@ export default class GameTeacherPage extends Page {
     }
 
     attachRedirect() {
-        this.addRedirectOnButtons(
-            {button: "start-game-btn", nextPage: "play-page-manage", pagePath: "/teacher"},
-            {button: "exit-game-btn", nextPage: "office-page", pagePath: "/office"}
-        );
         this.prepareWaitingPlayers();
-        console.log("add redirect");
+        debugLog("add redirect");
     }
 
     addEventsOnButtons() {
         document.getElementById("next-question-btn").onclick = () => {
             globalBus().gameManager.switchNext();
             document.getElementById("game-table-question").innerHTML = "";
+            this.game_table_answered = [];
         };
     }
 
     prepareWaitingPlayers() {
+        this.game_table_answered = [];
+        this.game_table_joined = [];
         document.getElementById("game-diagram-1").hidden = true;
         document.getElementById("game-diagram-2").hidden = true;
         document.getElementById("exit-game-btn").hidden = true;
-
+        document.getElementById("question-preview").innerHTML = "";
         document.getElementById("next-question-btn").innerHTML = "Запустить соревнование >>";
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = false;
@@ -83,31 +93,49 @@ export default class GameTeacherPage extends Page {
     }
 
     renderGameTable(ws_gameObj) {
-        // индикатор сколько ответило
-        globalBus().gameManager.answered_counter += 1;
-        this.renderAnsweredCounter();
-
         let data = ws_gameObj.payload.data;
-        console.log("DATA = " + data);
+        debugLog("DATA = " + data);
         let ansUser = data.player.user.username;
         if (data.player.user.last_name !== "") {
             ansUser = data.player.user.last_name;
         }
-        console.log("ОТВЕТИЛ " + ansUser);
-        if (data.correct === true) {
-            document.getElementById("game-table-question").innerHTML +=
-                `<tr class="line-result-table table-group-line right-ans">
+        debugLog("ОТВЕТИЛ " + ansUser);
+
+        debugLog(this.game_table_answered);
+        debugLog(this.game_table_answered.indexOf(ansUser.toString()));
+
+        debugLog("answered_counter до if =>" + globalBus().gameManager.answered_counter);
+
+        if (this.game_table_answered.indexOf(ansUser.toString()) === -1) {
+            // индикатор сколько ответило
+            globalBus().gameManager.answered_counter += 1;
+            debugLog("answered_counter += 1 =>" + globalBus().gameManager.answered_counter);
+            this.renderAnsweredCounter();
+
+            this.game_table_answered.push(ansUser.toString());
+
+            if (data.correct === true) {
+                document.getElementById("game-table-question").innerHTML +=
+                    `<tr class="line-result-table table-group-line right-ans">
                     <th scope="row">${globalBus().gameManager.answered_counter}</th>
                     <td>${htmlEntities(ansUser)}</td>
                     <td>${htmlEntities(data.answer[0].variant)}</td>
             </tr>`
-        } else {
-            document.getElementById("game-table-question").innerHTML +=
-                `<tr class="line-result-table table-group-line">
+            } else {
+                document.getElementById("game-table-question").innerHTML +=
+                    `<tr class="line-result-table table-group-line">
                     <th scope="row">${globalBus().gameManager.answered_counter}</th>
                     <td>${htmlEntities(ansUser)}</td>
                     <td>${htmlEntities(data.answer[0].variant)}</td>
             </tr>`
+            }
+        }
+    }
+
+    newJoin(username) {
+        if (this.game_table_joined.indexOf(username.toString()) === -1) {
+            this.game_table_joined.push(username);
+            globalBus().gameManager.joined_counter += 1;
         }
     }
 
@@ -132,7 +160,7 @@ export default class GameTeacherPage extends Page {
                 }
             }
         }
-        console.log(answers_count);
+        debugLog(answers_count);
         return answers_count;
     }
 

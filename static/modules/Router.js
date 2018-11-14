@@ -6,7 +6,7 @@ import LoginPage from "../views/login/LoginPage.js";
 import PagePresenter from "./PagePresenter.js";
 import linkOnButtons from "./linkOnButtons.js";
 import OfficePage from "../views/office/OfficePage";
-import CoursePage from "../views/CoursePage";
+import OrganizationPage from "../views/organization/OrganizationPage";
 import GroupPage from "../views/GroupPage";
 import Requester from "./network/Requester";
 import QuizEditorPage from "../views/edit_quiz/QuizEditorPage";
@@ -15,6 +15,7 @@ import GameTeacherPage from "../views/GameTeacherPage";
 import GameStudentPage from "../views/GameStudentPage";
 import ModalWindow from "../views/ModalWindow";
 import debugLog from "./debugLog";
+import saveUserMembership from "./saveUserMembership";
 
 export default class Router {
     constructor() {
@@ -50,13 +51,15 @@ export default class Router {
         globalBus().registerPage = new RegisterPage();
         globalBus().loginPage = new LoginPage();
         globalBus().officePage = new OfficePage();
-        globalBus().coursePage = new CoursePage();
+        globalBus().organizationPage = new OrganizationPage();
         globalBus().groupPage = new GroupPage();
         globalBus().quizEditor = new QuizEditorPage();
 
         globalBus().gameTeacherPage = new GameTeacherPage();
         globalBus().gameStudentPage = new GameStudentPage();
         globalBus().gameManager = new GameManager();
+
+        globalBus().course_page_flag = false; // для редиректа при обновлении /course
 
         // pagePath
         const registerPagePath = RegisterPage.pagePath();
@@ -134,11 +137,16 @@ export default class Router {
                         globalBus().btn.loginBtn.click();
                         break;
                 }
-                return console.log("NOT AUTH");
+                return debugLog("NOT AUTH");
             } else if (resp) {
                 globalBus().btn.signoutBtn.hidden = false;
                 globalBus().btn.loginBtn.hidden = true;
                 globalBus().nav.loginBox.innerHTML = resp.username;
+
+                // user org + group
+                globalBus().saver = {};
+                saveUserMembership(resp.member_of_groups);
+
                 switch (pathname) {
 
                     case "/main":
@@ -149,11 +157,11 @@ export default class Router {
                         Requester.whoami((err, resp) => {
                             if (err) {
                                 globalBus().btn.loginBtn.click();
-                                return console.log("office error router");
+                                return debugLog("office error router");
                             }
                             globalBus().officePage.render();
                             PagePresenter.showOnlyOnePage("office-page");
-                            return console.log("office norm router");
+                            return debugLog("office norm router");
                         });
                         break;
 
@@ -162,7 +170,20 @@ export default class Router {
                         break;
 
                     case "/course":
-                        PagePresenter.showOnlyOnePage("course-page");
+                        Requester.whoami((err, resp) => {
+                            if (err) {
+                                globalBus().btn.loginBtn.click();
+                                return debugLog("office error router");
+                            }
+                            if (globalBus().course_page_flag === true) {
+                                PagePresenter.showOnlyOnePage("course-page");
+                                debugLog("/course");
+                            } else {
+                                globalBus().btn.officeBtn.click();
+                                debugLog("undefined /course");
+                            }
+                            return debugLog("office norm router");
+                        });
                         break;
 
                     case "/group":
@@ -201,7 +222,7 @@ export default class Router {
                         PagePresenter.showOnlyOnePage("office-page");
                         break;
                 }
-                return console.log("NORM AUTH");
+                return debugLog("NORM AUTH");
             }
         });
     }

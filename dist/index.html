@@ -147,7 +147,7 @@
         </div>
 
         <div class="info-page page container" hidden>
-            <h3>INFO</h3>
+            <h3>О Keklik</h3>
         </div>
 
         <div class="office-page page container" hidden>
@@ -155,8 +155,22 @@
                 <img src="img/ava_teacher.png" class="ava rounded-circle border border-danger" width="75px" height="75px">
                 <span id="office-header-username">Login of user</span>
             </h1>
-            <input id="game-pin-input" type="text">
-            <button id="join-game-btn" class="btn btn-success start-btn" >Присоединиться по PIN</button>
+            <div>
+                <input id="game-pin-input" type="text">
+                <button id="join-game-btn" class="btn btn-success start-btn" >Присоединиться по PIN</button>
+            </div>
+            <div id="managed-game-box">
+                <div class="btn-group org-btn-group list-btn">
+                    <button id="selected-managed-game" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Управляемые PIN...
+                    </button>
+
+                    <div id="list-managed-game-btn" class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        <!--<a class="dropdown-item" href="#">Школа 444</a>-->
+                    </div>
+                </div>
+                <button id="managed-game-btn" class="btn btn-info start-btn">Управлять PIN</button>
+            </div>
             <div class="office-content card text-center">
                 <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
@@ -172,39 +186,39 @@
                         </ul>
                     </div>
                     <div class="card-body">
-                        <div id = "courses-desk">
-                            <div class="card-deck">
-                                <div class="card">
-                                    <img id="course-card-1" class="card-img-top" src="img/course_logo.png" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Школа 218</h5>
-                                        <p class="card-text">Школа в САО. Многопрофильная.</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Последний визит 23/9/2017</small>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <img class="card-img-top" src="img/course_logo.png" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Школа 444</h5>
-                                        <p class="card-text">Школа в ВАО. Физмат.</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Последний визит 23/9/2017</small>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <img class="card-img-top" src="img/course_logo.png" alt="Card image cap">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Школа 1290</h5>
-                                        <p class="card-text">Школа в ВАО. Английская.</p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Последний визит 23/9/2017</small>
-                                    </div>
-                                </div>
-                            </div>
+                        <div id = "org-desk">
+                            <!--<div class="card-deck">-->
+                                <!--<div class="card">-->
+                                    <!--<img id="course-card-1" class="card-img-top" src="img/course_logo.png" alt="Card image cap">-->
+                                    <!--<div class="card-body">-->
+                                        <!--<h5 class="card-title">Школа 218</h5>-->
+                                        <!--<p class="card-text">Школа в САО. Многопрофильная.</p>-->
+                                    <!--</div>-->
+                                    <!--<div class="card-footer">-->
+                                        <!--<small class="text-muted">Последний визит 23/9/2017</small>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="card">-->
+                                    <!--<img class="card-img-top" src="img/course_logo.png" alt="Card image cap">-->
+                                    <!--<div class="card-body">-->
+                                        <!--<h5 class="card-title">Школа 444</h5>-->
+                                        <!--<p class="card-text">Школа в ВАО. Физмат.</p>-->
+                                    <!--</div>-->
+                                    <!--<div class="card-footer">-->
+                                        <!--<small class="text-muted">Последний визит 23/9/2017</small>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div class="card">-->
+                                    <!--<img class="card-img-top" src="img/course_logo.png" alt="Card image cap">-->
+                                    <!--<div class="card-body">-->
+                                        <!--<h5 class="card-title">Школа 1290</h5>-->
+                                        <!--<p class="card-text">Школа в ВАО. Английская.</p>-->
+                                    <!--</div>-->
+                                    <!--<div class="card-footer">-->
+                                        <!--<small class="text-muted">Последний визит 23/9/2017</small>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
 
                         <div id="quizzes-desk" hidden>
@@ -324,40 +338,40 @@
         </div>
 
         <div class="course-page page container" hidden>
-            <h1 class="content-logo">
+            <h1 id="org-title" class="content-logo">
                 <img src="img/ava_course.jpg" class="ava rounded-circle border border-danger" width="75px" height="75px">
                 <span>Название курса</span>
             </h1>
-            <table class="table bg-white">
-                <thead class="thead-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Мои классы</th>
-                    <th scope="col">Последее использование</th>
-                    <th scope="col">Количество викторин</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr id="group-card-1" class="table-group-line">
-                    <th scope="row">1</th>
-                    <td>7A_id</td>
-                    <td>12/7/17</td>
-                    <td>5</td>
-                </tr>
-                <tr class="table-group-line">
-                    <th scope="row">2</th>
-                    <td>5A_id</td>
-                    <td>3/9/15</td>
-                    <td>7</td>
-                </tr>
-                <tr class="table-group-line">
-                    <th scope="row">3</th>
-                    <td>3A_id</td>
-                    <td>3/3/17</td>
-                    <td>3</td>
-                </tr>
-                </tbody>
-            </table>
+            <div id="table-groups-in-org"></div>
+            <!--<table class="table bg-white">-->
+                <!--<thead class="thead-dark">-->
+                <!--<tr>-->
+                    <!--<th scope="col">#</th>-->
+                    <!--<th scope="col">Группа </th>-->
+                    <!--<th scope="col">Создана</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody id="table-groups-in-org">-->
+                <!--&lt;!&ndash;<tr id="group-card-1" class="table-group-line">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th scope="row">1</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>7A_id</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>12/7/17</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>5</td>&ndash;&gt;-->
+                <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                <!--&lt;!&ndash;<tr class="table-group-line">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th scope="row">2</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>5A_id</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>3/9/15</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>7</td>&ndash;&gt;-->
+                <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                <!--&lt;!&ndash;<tr class="table-group-line">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<th scope="row">3</th>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>3A_id</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>3/3/17</td>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<td>3</td>&ndash;&gt;-->
+                <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+                <!--</tbody>-->
+            <!--</table>-->
         </div>
 
         <div class="group-page page container" hidden>
@@ -628,7 +642,7 @@
             <div class="page-content">
                 <br>
             <button id="next-question-btn" type="button" class="btn btn-primary btn-lg btn-block">Следующий вопрос >></button>
-            <button id="exit-game-btn" type="button" class="btn btn-primary btn-lg btn-block">К сприску викторин</button>
+            <button id="exit-game-btn" type="button" class="btn btn-primary btn-lg btn-block">К списку викторин</button>
                 <br>
                 <div id="question-preview"></div>
                 <div id="game-diagram-1" style="height: 370px; width: 100%;" hidden></div>
@@ -656,43 +670,20 @@
                     <!--<td>Иванова Анна</td>-->
                     <!--<td>слон</td>-->
                 <!--</tr>-->
-                <!--<tr class="table-group-line right-ans">-->
-                    <!--<th scope="row">2</th>-->
-                    <!--<td>Кузнецов Максим</td>-->
-                    <!--<td>слон</td>-->
-                <!--</tr>-->
-                <!--<tr class="table-group-line">-->
-                    <!--<th scope="row">3</th>-->
-                    <!--<td>Самсонов Петр</td>-->
-                    <!--<td>баран</td>-->
-                <!--</tr>-->
-                <!--<tr class="table-group-line">-->
-                    <!--<th scope="row">4</th>-->
-                    <!--<td>Иванов Иван</td>-->
-                    <!--<td>баран</td>-->
-                <!--</tr>-->
-                <!--<tr class="table-group-line">-->
-                    <!--<th scope="row">5</th>-->
-                    <!--<td>Кузнецов Коля</td>-->
-                    <!--<td>жираф</td>-->
-                <!--</tr>-->
-                <!--<tr class="table-group-line">-->
-                    <!--<th scope="row">6</th>-->
-                    <!--<td>Мирный Никос</td>-->
-                    <!--<td>ленивец</td>-->
-                <!--</tr>-->
                 </tbody>
             </table>
             </div>
         </div>
     </div>
-    <button id="focus-btn" hidden onclick="console.log('RESET FOCUS')"></button>
+    <button id="focus-btn" hidden></button>
+    <button id="join-game-btn_clicker" hidden></button>
+    <button id="start-game-btn_clicker" hidden></button>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    <script src="app.js"></script>
+    <script src="./res.js"></script>
 </body>
 </html>

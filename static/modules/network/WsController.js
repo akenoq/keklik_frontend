@@ -71,7 +71,7 @@ export default class WsController {
                 } else if (ws_dataObj.payload.action === ACTIONS.answer) {
                     globalBus().gameTeacherPage.renderGameTable(ws_dataObj);
                 } else if (ws_dataObj.payload.action === ACTIONS.join) {
-                    globalBus().gameManager.joined_counter += 1;
+                    globalBus().gameTeacherPage.newJoin(ws_dataObj.payload.data.user.username);
                     debugLog("JOINED________________" + globalBus().gameManager.joined_counter);
                     globalBus().gameTeacherPage.renderAnsweredCounter();
                     globalBus().gameTeacherPage.renderJoinedCounter();

@@ -2,6 +2,9 @@
 
 export default function emptyQuizForm() {
     return `<h3 id="quiz-editor-h3">Создание викторины</h3>
+    
+        <div id="target-group-box"></div>
+        
         <div class="edit-quiz-box" id="edit-quiz-form">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
