@@ -7,15 +7,23 @@ body {
     /* желтая тема */
     /*background-color: #feff47;*/
     /*background-color: #cbee7a;*/
-    background-color: #a583da3d;
-    font-family: ComicRu, Arial, Tahoma;
+    background-color: #a583da3d !important;
+    font-family: ComicRu, Arial, Tahoma !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: ComicRu, Arial, Tahoma !important;
+}
+
+header.masthead {
+    margin-top: -2%;
 }
 
 .main-page {
     /*background-color: #8dff005e;*/
-    padding: 10px;
-    border-radius: 5px;
-    padding-bottom: 30px;
+    /*padding: 10px;*/
+    /*border-radius: 5px;*/
+    /*padding-bottom: 30px;*/
 }
 
 .regform {

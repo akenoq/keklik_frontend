@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
 
-    <head>
-        <link rel="shortcut icon" href="./img/favicon-32x32.png" type="image/png">
-    </head>
+    <!-- Custom styles for this template -->
+    <link href="./landing.min.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="./img/favicon-32x32.png" type="image/png">
 
     <title>Keklik</title>
 </head>
@@ -62,7 +63,21 @@
             </div>
         </div>
 
-        <div class="main-page page container" hidden>
+        <div class="main-page page" hidden>
+            <header class="masthead text-center text-white">
+                <div class="masthead-content">
+                    <div class="container">
+                        <h1 class="masthead-heading mb-0">Keklik</h1>
+                        <h2 class="masthead-subheading mb-0">Real-time викторины для уроков </h2>
+                        <a id="participate-btn" href="#" class="btn btn-primary btn-xl rounded-pill mt-5">Участвовать!</a>
+                    </div>
+                </div>
+                <div class="bg-circle-1 bg-circle"></div>
+                <div class="bg-circle-2 bg-circle"></div>
+                <div class="bg-circle-3 bg-circle"></div>
+                <div class="bg-circle-4 bg-circle"></div>
+            </header>
+
             <div id="carousel-main" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-target="#carousel-main" data-slide-to="0" class="active"></li>
@@ -73,33 +88,101 @@
                     <div class="carousel-item active">
                         <img class="d-block w-100" src="img/ing1.jpg" alt="First slide">
                         <!--<div class="carousel-caption d-none d-md-block">-->
-                            <!--<h5>Первый</h5>-->
-                            <!--<p>лололололололло</p>-->
+                        <!--<h5>Первый</h5>-->
+                        <!--<p>лололололололло</p>-->
                         <!--</div>-->
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="img/ing2.jpg" alt="Second slide">
                         <!--<div class="carousel-caption d-none d-md-block">-->
-                            <!--<h5>Второй</h5>-->
-                            <!--<p>кекекеккекекекекек</p>-->
+                        <!--<h5>Второй</h5>-->
+                        <!--<p>кекекеккекекекекек</p>-->
                         <!--</div>-->
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="img/ing3.jpg" alt="Second slide">
                         <!--<div class="carousel-caption d-none d-md-block">-->
-                            <!--<h5>Третий</h5>-->
-                            <!--<p>азазазаззаз</p>-->
+                        <!--<h5>Третий</h5>-->
+                        <!--<p>азазазаззаз</p>-->
                         <!--</div>-->
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="text-center" align="center">
-                <br>
-                GameToEdu-интегратор <strong>Keklik!</strong>
-                <br><br>
-                <button id="participate-btn" class="btn btn-success">Участвовать!</button>
-            </div>
+
+            <!--<div class="text-center" align="center">-->
+                <!--<br>-->
+                <!--GameToEdu-интегратор <strong>Keklik!</strong>-->
+                <!--<br><br>-->
+                <!--&lt;!&ndash;<button id="participate-btn" class="btn btn-success">Участвовать!</button>&ndash;&gt;-->
+            <!--</div>-->
+
+            <section>
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 order-lg-2">
+                            <div class="p-5">
+                                <img class="img-fluid rounded-circle" src="./img/manual_1.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 order-lg-1">
+                            <div class="p-2">
+                                <h3 class="display-4">Создайте викторину</h3>
+                                <p>В личном кабинете во вкладке "Мои викторины" можно
+                                    выбрать уже имеющуюся виктоину или создать и сохранить новую</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <img class="img-fluid rounded-circle" src="img/manual_2.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-2">
+                                <h2 class="display-4">Запустите соревнование</h2>
+                                <p>В личном кабинете во вкладке "Мои викторины" выберите викторину,
+                                    на основе которой будет соревнование и нажмите "Запустить"</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 order-lg-2">
+                            <div class="p-5">
+                                <img class="img-fluid rounded-circle" src="img/manual_3.jpeg" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 order-lg-1">
+                            <div class="p-2">
+                                <h2 class="display-4">Сообщите номер соревнования участникам</h2>
+                                <p>Соревнование запущено, но еще не началось.
+                                    Для начала необходимо сообщить участникам номер соревнования (PIN).
+                                    В своем кабинете участник может присоединиться по этому PIN к соревнованию.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="py-5 bg-black">
+                <div class="container">
+                    <p class="m-0 text-center text-white small">&copy; Keklik 2018</p>
+                </div>
+                <!-- /.container -->
+            </footer>
+
         </div>
 
         <div class="register-page page container" hidden>
@@ -182,6 +265,9 @@
                             </li>
                             <li class="nav-item">
                                 <a id="to-profile-btn" class="nav-link card-header-green-tab" href="#">Мой профиль</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="to-statistic-btn" class="nav-link card-header-green-tab" href="#">История</a>
                             </li>
                         </ul>
                     </div>
@@ -330,6 +416,26 @@
                                         <div id="profile-form-error" class="form-group error-box"></div>
                                         <button id="profile-form-btn" class="btn btn-primary">Подтвердить изменения</button>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="statistic" hidden>
+                            <div class="row justify-content-md-center">
+                                <div class="col">
+                                    <div id="table-statistic" class="list-group">
+                                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h5 class="mb-1">#23423 Unity</h5>
+                                                <small>3 days ago</small>
+                                            </div>
+                                            <div class="text-left">
+                                                <small class="mb-1 text-left">Организация: -</small><br>
+                                                <small class="text-left">Группа: -</small>
+                                            </div>
+                                            <button class="btn btn-success">Скачать отчет</button>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

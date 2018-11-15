@@ -527,10 +527,10 @@ class FormValidator {
             if (variants < 2)
                 empty_flag = true;
                 // errors.push(i + "_variants_empty");
-            let true_var_num = parseInt(document.getElementById(`edit-quiz-form__question-box_${i}`)
-                .querySelector(".true-var").value);
             let true_var_box = document.getElementById(`edit-quiz-form__question-box_${i}`)
                 .querySelector(".true-var");
+            let true_var_num = true_var_box.value;
+
             if (true_var_num > variants.length) {
                 true_var_box.setAttribute('data-nec', 'big');
                 errors.push(`&#9888; Номер правильного варианта в вопосе ${i+1} превышает количество вариантов`);
@@ -1072,6 +1072,8 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
             document.getElementById("to-courses-btn").classList.add("active");
             document.getElementById("profile").hidden = true;
             document.getElementById("to-profile-btn").classList.remove("active");
+            document.getElementById("statistic").hidden = true;
+            document.getElementById("to-statistic-btn").classList.remove("active");
         };
 
         document.getElementById("to-quizzes-btn").onclick = () => {
@@ -1082,6 +1084,8 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
             document.getElementById("to-courses-btn").classList.remove("active");
             document.getElementById("profile").hidden = true;
             document.getElementById("to-profile-btn").classList.remove("active");
+            document.getElementById("statistic").hidden = true;
+            document.getElementById("to-statistic-btn").classList.remove("active");
         };
 
         document.getElementById("to-profile-btn").onclick = () => {
@@ -1092,7 +1096,21 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
             document.getElementById("to-courses-btn").classList.remove("active");
             document.getElementById("profile").hidden = false;
             document.getElementById("to-profile-btn").classList.add("active");
-        }
+            document.getElementById("statistic").hidden = true;
+            document.getElementById("to-statistic-btn").classList.remove("active");
+        };
+
+        document.getElementById("to-statistic-btn").onclick = () => {
+            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("C1");
+            document.getElementById("org-desk").hidden = true;
+            document.getElementById("to-quizzes-btn").classList.remove("active");
+            document.getElementById("quizzes-desk").hidden = true;
+            document.getElementById("to-courses-btn").classList.remove("active");
+            document.getElementById("profile").hidden = true;
+            document.getElementById("to-profile-btn").classList.remove("active");
+            document.getElementById("statistic").hidden = false;
+            document.getElementById("to-statistic-btn").classList.add("active");
+        };
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = OfficePage;
@@ -2217,15 +2235,16 @@ class Router {
 class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */] {
 
     static newQuizCard() {
-        return `<div id="card-row-1" class="card-deck">
-                                <div id="new-quiz" class="card new-quiz">
-                                    <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
-                                    <div class="card-body text-white">
-                                        <h5 class="card-title">Новая викторина</h5>
-                                        <hr>
-                                        <p class="card-text">Создание нового набора вопросов</p>
-                                    </div>
-                                </div>`
+        return `<div id="card-row-1" class="row">
+                    <div class="col-sm-4">
+                    <div id="new-quiz" class="new-quiz card">
+                        <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
+                        <div class="card-body text-white">
+                            <h5 class="card-title">Новая викторина</h5>
+                            <hr>
+                            <p class="card-text">Создание нового набора вопросов</p>
+                        </div>
+                    </div>`
     }
 
     static redirectToQuiz(id) {
