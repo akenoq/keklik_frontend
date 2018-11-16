@@ -22,6 +22,7 @@ export default class Router {
 
         this.addRedirectOnNavBtn(
             {button: "nav-main-btn", nextPage: "main-page", pagePath: "/main"},
+            {button: "nav-logo-btn", nextPage: "main-page", pagePath: "/main"},
             {button: "nav-login-btn", nextPage: "login-page", pagePath: "/login"},
             {button: "nav-info-btn", nextPage: "info-page", pagePath: "/info"},
             {button: "nav-office-btn", nextPage: "office-page", pagePath: "/office"}
