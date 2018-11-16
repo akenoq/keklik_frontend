@@ -12,7 +12,7 @@ export default class QuizzesDesk extends Page {
     static newQuizCard() {
         return `<div id="card-row-1" class="row equal-height-col">
                     <div class="col-sm-4">
-                        <div id="new-quiz" class="new-quiz card card-in-col">
+                        <div id="new-quiz" class="new-quiz card card-in-col bg-success">
                             <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
                             <div class="card-body text-white">
                                 <h5 class="card-title">Новая викторина</h5>
