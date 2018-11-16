@@ -10,15 +10,18 @@ import debugLog from "../../../modules/debugLog";
 export default class QuizzesDesk extends Page {
 
     static newQuizCard() {
-        return `<div id="card-row-1" class="card-deck">
-                                <div id="new-quiz" class="card new-quiz">
-                                    <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
-                                    <div class="card-body text-white">
-                                        <h5 class="card-title">Новая викторина</h5>
-                                        <hr>
-                                        <p class="card-text">Создание нового набора вопросов</p>
-                                    </div>
-                                </div>`
+        return `<div id="card-row-1" class="row equal-height-col">
+                    <div class="col-sm-4">
+                        <div id="new-quiz" class="new-quiz card card-in-col">
+                            <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
+                            <div class="card-body text-white">
+                                <h5 class="card-title">Новая викторина</h5>
+                                <hr>
+                                <p class="card-text">Создание нового набора вопросов</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
     }
 
     static redirectToQuiz(id) {
@@ -60,12 +63,15 @@ export default class QuizzesDesk extends Page {
                 }
                 if (rowCount === 1 && cardsInRow < 3) {
                     debugLog("first str");
-                    let caBox = document.createElement('div');
+                    let caCol = document.createElement('div');
                     // <div id="quiz-card-${id}" class="card quizzes-desk__quiz-card">
+                    caCol.setAttribute("class", "col-sm-4");
+                    let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
-                    caBox.setAttribute("class", "card quizzes-desk__quiz-card");
+                    caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col");
                     caBox.innerHTML = quizCard(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
-                    document.getElementById("card-row-1").appendChild(caBox);
+                    caCol.appendChild(caBox);
+                    document.getElementById("card-row-1").appendChild(caCol);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
                         QuizzesDesk.redirectToQuiz(resp[i].id)
                     };
@@ -74,16 +80,19 @@ export default class QuizzesDesk extends Page {
                     if (cardsInRow === 0) {
                         let newRow = document.createElement('div');
                         newRow.setAttribute("id", `card-row-${rowCount}`);
-                        newRow.setAttribute("class", "card-deck");
+                        newRow.setAttribute("class", "row equal-height-col");
                         quizzesDesk.appendChild(newRow);
                         debugLog("new row = ");
                         debugLog(newRow);
                     }
+                    let caCol = document.createElement('div');
+                    caCol.setAttribute("class", "col-sm-4");
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
-                    caBox.setAttribute("class", "card quizzes-desk__quiz-card");
+                    caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col");
                     caBox.innerHTML = quizCard(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
-                    document.getElementById(`card-row-${rowCount}`).appendChild(caBox);
+                    caCol.appendChild(caBox);
+                    document.getElementById(`card-row-${rowCount}`).appendChild(caCol);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
                         QuizzesDesk.redirectToQuiz(resp[i].id)
                     };

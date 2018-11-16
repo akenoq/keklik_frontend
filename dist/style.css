@@ -322,3 +322,17 @@ td {
 .wrap-text {
     overflow-wrap: break-word;
 }
+
+.card-in-col {
+    margin-bottom: 5%;
+    width: 100%;
+}
+
+.equal-height-col, .equal-height-col > div[class*='col-'] {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex:1 0 auto;
+}
