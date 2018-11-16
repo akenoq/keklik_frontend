@@ -158,8 +158,8 @@ export default class QuizEditorPage extends Page {
         listOrgBtn.innerHTML = "";
         let listGroupBtn = document.getElementById("list-group-btn");
         listGroupBtn.innerHTML = "";
-        document.getElementById("selected-org").innerHTML = "Выберете организацию...";
-        document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        document.getElementById("selected-org").innerHTML = "Выберите организацию...";
+        document.getElementById("selected-group").innerHTML = "Выберите группу...";
         for (let i = 0; i < org_len; i++) {
             let a = document.createElement('a');
             a.setAttribute('class', 'dropdown-item');
@@ -187,7 +187,7 @@ export default class QuizEditorPage extends Page {
         let groups_len = groups.length;
         let listGroupBtn = document.getElementById("list-group-btn");
         listGroupBtn.innerHTML = "";
-        document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        document.getElementById("selected-group").innerHTML = "Выберите группу...";
         this.target_group_id = null;
 
         for (let i = 0; i < groups_len; i++) {
