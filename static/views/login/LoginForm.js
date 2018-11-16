@@ -10,7 +10,7 @@ import debugLog from "../../modules/debugLog";
 const messagesLoginForm = {
     EMPTY_MESSAGE : "Заполнены не все поля",
     INCORRECT_MESSAGE : "Использованы недопустимые символы",
-    RESPONSE_MESSAGE : "Некорректный ввод или логина не существует",
+    RESPONSE_MESSAGE : "Неправильный логин или пароль",
     SUCCESS_SIGN_IN_MESSAGE : "Вы вошли на сайт!"
 };
 

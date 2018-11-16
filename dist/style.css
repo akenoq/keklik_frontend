@@ -261,10 +261,10 @@ header.masthead {
     box-shadow: 0 0 50px #9680b9;
 }
 
-.form-control::-webkit-input-placeholder {color: #e3aeec !important; opacity:1 !important;}/* webkit */
-.form-control::-moz-placeholder          {color: #e3aeec !important; opacity:1 !important;}/* Firefox 19+ */
-.form-control:-moz-placeholder           {color: #e3aeec !important; opacity:1 !important;}/* Firefox 18- */
-.form-control:-ms-input-placeholder      {color: #e3aeec !important; opacity:1 !important;}/* IE */
+.form-control::-webkit-input-placeholder {color: #c9c2c5 !important; opacity:1 !important;}/* webkit */
+.form-control::-moz-placeholder          {color: #c9c2c5 !important; opacity:1 !important;}/* Firefox 19+ */
+.form-control:-moz-placeholder           {color: #c9c2c5 !important; opacity:1 !important;}/* Firefox 18- */
+.form-control:-ms-input-placeholder      {color: #c9c2c5 !important; opacity:1 !important;}/* IE */
 
 red {
     color: #ee4545;
