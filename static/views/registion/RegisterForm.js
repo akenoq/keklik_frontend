@@ -12,9 +12,10 @@ const messagesRegisterForm = {
     INCORRECT_MESSAGE : "Использованы недопустимые символы",
     RESPONSE_MESSAGE : "Некорректный ввод или логин уже существует",
     UNIQUE_MESSAGE: "Пользователь с таким логином<br>уже существует",
-    TOO_SHORT_LOGIN: "Пароль должен содержать<br>не менее 4х символов",
+    TOO_SHORT_PASSWORD: "Пароль должен содержать<br>не менее 4х символов",
     SUCCESS_SIGN_UP_MESSAGE : "Вы успешо зарегистрировались!",
-    CONTENT_SHOULD_BE: "Логин и пароль должны состоять<br>из латинских букв и цифр"
+    CONTENT_SHOULD_BE: "Логин и пароль должны состоять<br>из латинских букв и цифр",
+    INV_PASSWORD: "Некорректный пароль"
 };
 
 export default class RegisterForm extends FormValidator {
@@ -38,7 +39,7 @@ export default class RegisterForm extends FormValidator {
     }
 
     static msgTooShortPassword() {
-        return messagesRegisterForm.TOO_SHORT_LOGIN;
+        return messagesRegisterForm.TOO_SHORT_PASSWORD;
     }
 
     static msgNotUniqueLogin() {
@@ -51,6 +52,10 @@ export default class RegisterForm extends FormValidator {
 
     static msgSignUpSuccess() {
         return messagesRegisterForm.SUCCESS_SIGN_UP_MESSAGE;
+    }
+
+    static msgInvalidPassword() {
+        return messagesRegisterForm.INV_PASSWORD;
     }
 
     static validate(loginValue, passwordValue, errorBox) {
@@ -91,9 +96,12 @@ export default class RegisterForm extends FormValidator {
                         msg = RegisterForm.msgNotUniqueLogin();
                     }
                 } else if (err.password !== undefined) {
+                    if (err.password[0].code === "password_too_short") {
+                        msg = RegisterForm.msgTooShortPassword();
+                    }
                     if (err.password[0].code === "invalid") {
                         debugLog("INV = ");
-                        msg = RegisterForm.msgTooShortPassword();
+                        msg = RegisterForm.msgInvalidPassword();
                     }
                 }
                 return this.errorBox.innerHTML = msg;

@@ -9,6 +9,7 @@ import ProfileForm from "./ProfileForm";
 import GameManager from "../../modules/GameManager";
 import OrganizationDesk from "./organizations/OrganizationDesk";
 import debugLog from "../../modules/debugLog";
+import StatisticTable from "./statistic/StaticticTable";
 
 export default class OfficePage extends Page {
 
@@ -125,6 +126,7 @@ export default class OfficePage extends Page {
                 this.profileForm.setFormValues(resp);
                 OrganizationDesk.render();
                 QuizzesDesk.render();
+                StatisticTable.render();
                 this.renderListManaged();
                 if (globalBus().joinBtnFlag === false) {
                     this.joinGameBtn();
@@ -145,6 +147,8 @@ export default class OfficePage extends Page {
             document.getElementById("to-courses-btn").classList.add("active");
             document.getElementById("profile").hidden = true;
             document.getElementById("to-profile-btn").classList.remove("active");
+            document.getElementById("statistic").hidden = true;
+            document.getElementById("to-statistic-btn").classList.remove("active");
         };
 
         document.getElementById("to-quizzes-btn").onclick = () => {
@@ -155,6 +159,8 @@ export default class OfficePage extends Page {
             document.getElementById("to-courses-btn").classList.remove("active");
             document.getElementById("profile").hidden = true;
             document.getElementById("to-profile-btn").classList.remove("active");
+            document.getElementById("statistic").hidden = true;
+            document.getElementById("to-statistic-btn").classList.remove("active");
         };
 
         document.getElementById("to-profile-btn").onclick = () => {
@@ -165,6 +171,20 @@ export default class OfficePage extends Page {
             document.getElementById("to-courses-btn").classList.remove("active");
             document.getElementById("profile").hidden = false;
             document.getElementById("to-profile-btn").classList.add("active");
-        }
+            document.getElementById("statistic").hidden = true;
+            document.getElementById("to-statistic-btn").classList.remove("active");
+        };
+
+        document.getElementById("to-statistic-btn").onclick = () => {
+            debugLog("C1");
+            document.getElementById("org-desk").hidden = true;
+            document.getElementById("to-quizzes-btn").classList.remove("active");
+            document.getElementById("quizzes-desk").hidden = true;
+            document.getElementById("to-courses-btn").classList.remove("active");
+            document.getElementById("profile").hidden = true;
+            document.getElementById("to-profile-btn").classList.remove("active");
+            document.getElementById("statistic").hidden = false;
+            document.getElementById("to-statistic-btn").classList.add("active");
+        };
     }
 }

@@ -25,7 +25,7 @@ export default class FormValidator {
         if (!login) {
             return FormValidator.responseEmpty();
         }
-        const loginRegexp = /^[\w\d]{3,10}$/;
+        const loginRegexp = /^[\w\d]{1,100}$/;
         return (loginRegexp.test(login)) ? FormValidator.responseOk() : FormValidator.responseIncorrect();
     }
 
@@ -34,7 +34,7 @@ export default class FormValidator {
             return FormValidator.responseEmpty();
         }
         // const passwordRegexp = /\S{3,16}$/;
-        const passwordRegexp = /^[\w\d]{3,10}$/;
+        const passwordRegexp = /^[\w\d]{1,100}$/;
         return (passwordRegexp.test(password)) ? FormValidator.responseOk() : FormValidator.responseIncorrect();
     }
 

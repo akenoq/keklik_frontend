@@ -263,6 +263,10 @@ class Requester {
     static getGameById(id, callback) {
         Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
+
+    static getGameByUser(callback) {
+        Requester.requestToHost("GET", "api/games/my/", null, callback);
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Requester;
 
@@ -464,7 +468,7 @@ class FormValidator {
         if (!login) {
             return FormValidator.responseEmpty();
         }
-        const loginRegexp = /^[\w\d]{3,10}$/;
+        const loginRegexp = /^[\w\d]{1,100}$/;
         return (loginRegexp.test(login)) ? FormValidator.responseOk() : FormValidator.responseIncorrect();
     }
 
@@ -473,7 +477,7 @@ class FormValidator {
             return FormValidator.responseEmpty();
         }
         // const passwordRegexp = /\S{3,16}$/;
-        const passwordRegexp = /^[\w\d]{3,10}$/;
+        const passwordRegexp = /^[\w\d]{1,100}$/;
         return (passwordRegexp.test(password)) ? FormValidator.responseOk() : FormValidator.responseIncorrect();
     }
 
@@ -583,8 +587,30 @@ let fieldsCleaner = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = userGroupsByOrgId;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_globalBus__ = __webpack_require__(1);
+
+
+
+
+function userGroupsByOrgId(org_id) {
+    let groups = [];
+    let len_groups = Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups.length;
+    for (let i = 0; i < len_groups; i++) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups[i].group.organization.id === org_id) {
+            groups.push(Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups[i]);
+        }
+    }
+    return groups;
+}
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__RegisterForm_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__RegisterForm_js__ = __webpack_require__(11);
 
 
 
@@ -617,7 +643,7 @@ class RegisterPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -641,9 +667,10 @@ const messagesRegisterForm = {
     INCORRECT_MESSAGE : "Использованы недопустимые символы",
     RESPONSE_MESSAGE : "Некорректный ввод или логин уже существует",
     UNIQUE_MESSAGE: "Пользователь с таким логином<br>уже существует",
-    TOO_SHORT_LOGIN: "Пароль должен содержать<br>не менее 4х символов",
+    TOO_SHORT_PASSWORD: "Пароль должен содержать<br>не менее 4х символов",
     SUCCESS_SIGN_UP_MESSAGE : "Вы успешо зарегистрировались!",
-    CONTENT_SHOULD_BE: "Логин и пароль должны состоять<br>из латинских букв и цифр"
+    CONTENT_SHOULD_BE: "Логин и пароль должны состоять<br>из латинских букв и цифр",
+    INV_PASSWORD: "Некорректный пароль"
 };
 
 class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__["a" /* default */] {
@@ -667,7 +694,7 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
     }
 
     static msgTooShortPassword() {
-        return messagesRegisterForm.TOO_SHORT_LOGIN;
+        return messagesRegisterForm.TOO_SHORT_PASSWORD;
     }
 
     static msgNotUniqueLogin() {
@@ -680,6 +707,10 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
 
     static msgSignUpSuccess() {
         return messagesRegisterForm.SUCCESS_SIGN_UP_MESSAGE;
+    }
+
+    static msgInvalidPassword() {
+        return messagesRegisterForm.INV_PASSWORD;
     }
 
     static validate(loginValue, passwordValue, errorBox) {
@@ -720,9 +751,12 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
                         msg = RegisterForm.msgNotUniqueLogin();
                     }
                 } else if (err.password !== undefined) {
+                    if (err.password[0].code === "password_too_short") {
+                        msg = RegisterForm.msgTooShortPassword();
+                    }
                     if (err.password[0].code === "invalid") {
                         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("INV = ");
-                        msg = RegisterForm.msgTooShortPassword();
+                        msg = RegisterForm.msgInvalidPassword();
                     }
                 }
                 return this.errorBox.innerHTML = msg;
@@ -759,12 +793,12 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LoginForm_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LoginForm_js__ = __webpack_require__(13);
 
 
 
@@ -797,7 +831,7 @@ class RegisterPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -819,7 +853,7 @@ class RegisterPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default
 const messagesLoginForm = {
     EMPTY_MESSAGE : "Заполнены не все поля",
     INCORRECT_MESSAGE : "Использованы недопустимые символы",
-    RESPONSE_MESSAGE : "Некорректный ввод или логина не существует",
+    RESPONSE_MESSAGE : "Неправильный логин или пароль",
     SUCCESS_SIGN_IN_MESSAGE : "Вы вошли на сайт!"
 };
 
@@ -912,7 +946,7 @@ class LoginForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__[
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -922,9 +956,11 @@ class LoginForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__[
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_network_Requester__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__quizzes_QuizzesDesk__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProfileForm__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_GameManager__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__organizations_OrganizationDesk__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_GameManager__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__organizations_OrganizationDesk__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_debugLog__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__statistic_StaticticTable__ = __webpack_require__(28);
+
 
 
 
@@ -1052,6 +1088,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 this.profileForm.setFormValues(resp);
                 __WEBPACK_IMPORTED_MODULE_7__organizations_OrganizationDesk__["a" /* default */].render();
                 __WEBPACK_IMPORTED_MODULE_4__quizzes_QuizzesDesk__["a" /* default */].render();
+                __WEBPACK_IMPORTED_MODULE_9__statistic_StaticticTable__["a" /* default */].render();
                 this.renderListManaged();
                 if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag === false) {
                     this.joinGameBtn();
@@ -1117,7 +1154,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1236,7 +1273,7 @@ class GameManager {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1244,10 +1281,10 @@ class GameManager {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_linkOnButtons__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_globalBus_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__organizationCard__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__organizationCard__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_network_AuthWorker__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(9);
 
 
 
@@ -1280,21 +1317,23 @@ class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* defaul
             if (cardsInRow === 0) {
                 let newRow = document.createElement('div');
                 newRow.setAttribute("id", `org-card-row-${rowCount}`);
-                newRow.setAttribute("class", "card-deck");
+                newRow.setAttribute("class", "row equal-height-col");
                 orgDesk.appendChild(newRow);
                 Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("new row = ");
                 Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(newRow);
             }
+            let caCol = document.createElement('div');
+            caCol.setAttribute("class", "col-sm-4");
             let caBox = document.createElement('div');
             caBox.setAttribute("id", `org-card-${resp[i].id}`);
-            caBox.setAttribute("class", "card org-desk__org-card");
+            caBox.setAttribute("class", "card org-desk__org-card card-in-col");
             let groups = [];
             let org_id = resp[i].id;
             groups = Object(__WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__["a" /* default */])(org_id);
 
             caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_4__organizationCard__["a" /* default */])(resp[i].name, groups.length, resp[i].updated_at.split("T")[0]);
-
-            document.getElementById(`org-card-row-${rowCount}`).appendChild(caBox);
+            caCol.appendChild(caBox);
+            document.getElementById(`org-card-row-${rowCount}`).appendChild(caCol);
             document.getElementById(`org-card-${resp[i].id}`).onclick = () => {
                 Object(__WEBPACK_IMPORTED_MODULE_3__modules_globalBus_js__["a" /* default */])().course_page_flag = true; // для роутера
                 OrganizationDesk.redirectToOrganization(resp[i].id, resp[i].name)
@@ -1335,7 +1374,7 @@ class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* defaul
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1344,35 +1383,13 @@ class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* defaul
 
 function organizationCard(name, group_len, date) {
     return `<img class="card-img-top" src="img/course_logo.png" alt="Card image cap">
-            <div class="card-body">
+            <div class="card-body pointer">
                 <h5 class="card-title">${name}</h5>
                 <p class="card-text">${group_len} групп на курсе</p>
             </div>
             <div class="card-footer">
                 <small class="text-muted">Дата изменения ${date}</small>
             </div>`
-}
-
-/***/ }),
-/* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = userGroupsByOrgId;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_globalBus__ = __webpack_require__(1);
-
-
-
-
-function userGroupsByOrgId(org_id) {
-    let groups = [];
-    let len_groups = Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups.length;
-    for (let i = 0; i < len_groups; i++) {
-        if (Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups[i].group.organization.id === org_id) {
-            groups.push(Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups[i]);
-        }
-    }
-    return groups;
 }
 
 /***/ }),
@@ -1386,8 +1403,8 @@ function userGroupsByOrgId(org_id) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_globalBus__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_network_AuthWorker__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__office_organizations_organizationCard__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__office_organizations_organizationCard__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(9);
 
 
 
@@ -1553,10 +1570,10 @@ class GroupPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_fieldsCleaner_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_PagePresenter__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Page__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__questionBox__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__emptyQuizForm__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__questionBox__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__emptyQuizForm__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_debugLog__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__office_organizations_OrganizationDesk__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__office_organizations_OrganizationDesk__ = __webpack_require__(16);
 
 
 
@@ -1717,8 +1734,8 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
         listOrgBtn.innerHTML = "";
         let listGroupBtn = document.getElementById("list-group-btn");
         listGroupBtn.innerHTML = "";
-        document.getElementById("selected-org").innerHTML = "Выберете организацию...";
-        document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        document.getElementById("selected-org").innerHTML = "Выберите организацию...";
+        document.getElementById("selected-group").innerHTML = "Выберите группу...";
         for (let i = 0; i < org_len; i++) {
             let a = document.createElement('a');
             a.setAttribute('class', 'dropdown-item');
@@ -1746,7 +1763,7 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
         let groups_len = groups.length;
         let listGroupBtn = document.getElementById("list-group-btn");
         listGroupBtn.innerHTML = "";
-        document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        document.getElementById("selected-group").innerHTML = "Выберите группу...";
         this.target_group_id = null;
 
         for (let i = 0; i < groups_len; i++) {
@@ -1900,11 +1917,11 @@ function htmlEntities(s) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Router_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_registion_RegisterPage_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__views_registion_RegisterForm_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_login_LoginPage_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_login_LoginForm_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_office_OfficePage_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_registion_RegisterPage_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__views_registion_RegisterForm_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_login_LoginPage_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_login_LoginForm_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_office_OfficePage_js__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_organization_OrganizationPage_js__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_GroupPage_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__network_Requester_js__ = __webpack_require__(2);
@@ -1965,21 +1982,21 @@ window.addEventListener("load", function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__views_registion_RegisterPage_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_login_LoginPage_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__views_registion_RegisterPage_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_login_LoginPage_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__linkOnButtons_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_office_OfficePage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_office_OfficePage__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_organization_OrganizationPage__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_GroupPage__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__network_Requester__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_edit_quiz_QuizEditorPage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__GameManager__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_GameTeacherPage__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_GameStudentPage__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_ModalWindow__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__GameManager__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_GameTeacherPage__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_GameStudentPage__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_ModalWindow__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__debugLog__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__saveUserMembership__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__saveUserMembership__ = __webpack_require__(35);
 
 
 
@@ -2235,16 +2252,18 @@ class Router {
 class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */] {
 
     static newQuizCard() {
-        return `<div id="card-row-1" class="row">
+        return `<div id="card-row-1" class="row equal-height-col">
                     <div class="col-sm-4">
-                    <div id="new-quiz" class="new-quiz card">
-                        <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
-                        <div class="card-body text-white">
-                            <h5 class="card-title">Новая викторина</h5>
-                            <hr>
-                            <p class="card-text">Создание нового набора вопросов</p>
+                        <div id="new-quiz" class="new-quiz card card-in-col bg-success">
+                            <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
+                            <div class="card-body text-white">
+                                <h5 class="card-title">Новая викторина</h5>
+                                <hr>
+                                <p class="card-text">Создание нового набора вопросов</p>
+                            </div>
                         </div>
-                    </div>`
+                    </div>
+                </div>`
     }
 
     static redirectToQuiz(id) {
@@ -2286,12 +2305,15 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                 }
                 if (rowCount === 1 && cardsInRow < 3) {
                     Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("first str");
-                    let caBox = document.createElement('div');
+                    let caCol = document.createElement('div');
                     // <div id="quiz-card-${id}" class="card quizzes-desk__quiz-card">
+                    caCol.setAttribute("class", "col-sm-4");
+                    let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
-                    caBox.setAttribute("class", "card quizzes-desk__quiz-card");
+                    caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col");
                     caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
-                    document.getElementById("card-row-1").appendChild(caBox);
+                    caCol.appendChild(caBox);
+                    document.getElementById("card-row-1").appendChild(caCol);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
                         QuizzesDesk.redirectToQuiz(resp[i].id)
                     };
@@ -2300,16 +2322,19 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                     if (cardsInRow === 0) {
                         let newRow = document.createElement('div');
                         newRow.setAttribute("id", `card-row-${rowCount}`);
-                        newRow.setAttribute("class", "card-deck");
+                        newRow.setAttribute("class", "row equal-height-col");
                         quizzesDesk.appendChild(newRow);
                         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("new row = ");
                         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(newRow);
                     }
+                    let caCol = document.createElement('div');
+                    caCol.setAttribute("class", "col-sm-4");
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
-                    caBox.setAttribute("class", "card quizzes-desk__quiz-card");
+                    caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col");
                     caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
-                    document.getElementById(`card-row-${rowCount}`).appendChild(caBox);
+                    caCol.appendChild(caBox);
+                    document.getElementById(`card-row-${rowCount}`).appendChild(caCol);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
                         QuizzesDesk.redirectToQuiz(resp[i].id)
                     };
@@ -2345,7 +2370,7 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
 
 function quizCard(title, description, date) {
     return `<img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">
-            <div class="card-body">
+            <div class="card-body pointer">
                 <h5 class="card-title">${title}</h5>
                 <p class="card-text">${description}</p>
             </div>
@@ -2684,6 +2709,99 @@ class WsController {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_linkOnButtons__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_globalBus_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__statisticItem__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_network_AuthWorker__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(9);
+
+
+
+
+
+
+
+
+
+
+
+class StaticticTable extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */] {
+
+    static render() {
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("Statictic Table");
+        let statDesk = document.getElementById("table-statistic");
+        statDesk.innerHTML = "";
+
+        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].getGameByUser((err, resp) => {
+            if (err) {
+                Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("err load user games");
+            } else {
+                if (resp.length === 0) {
+                    statDesk.innerHTML = "<h3>Вы не провели ни одного соревнования</h3>";
+                } else {
+                    let content = "";
+                    // до 10
+                    let len = resp.length < 10 ? resp.length : 10;
+                    for (let i = 0; i < len; i++) {
+                        let game = resp[i];
+                        content += Object(__WEBPACK_IMPORTED_MODULE_4__statisticItem__["a" /* default */])(game.id, game.quiz.title, game.created_at.split("T")[0],
+                            game.group !== null ? game.group.organization.name : "─",
+                            game.group !== null ? game.group.name : "─");
+                    }
+                    statDesk.innerHTML = content;
+                }
+            }
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = StaticticTable;
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = statisticItem;
+
+
+function statisticItem(pin, quiz_name, game_date, org_name, group_name) {
+    return `<div class="list-group-item  align-items-start">
+                <div class="container">
+                    <div class="text-left d-flex justify-content-between row">
+                        <div class="col col-sm-9">
+                            <h5 class="mb-1"><u>PIN </u>${pin} ${quiz_name}</h5>
+                        </div>
+                        <div class="col col-sm-3 text-right">
+                            <small><u>Дата проведения:</u> ${game_date}</small>
+                        </div>
+                    </div>
+                    <div class="text-left row">
+                        <div class="col col-sm-9">
+                            <small class="mb-1 text-left"><u>Организация:</u> ${org_name}</small><br>
+                            <small class="text-left"><u>Группа:</u> ${group_name}</small>
+                        </div>
+                        <div class="col col-sm-3 text-right">
+                            <a href="http://api.keklik.xyz/media/games/${pin}/report">
+                                <button type="button" class="btn btn-sm btn-success btn-icon">
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+}
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = questionBox;
 
 
@@ -2796,7 +2914,7 @@ function questionBox(index) {
 }
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2935,7 +3053,7 @@ function emptyQuizForm() {
 }
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3191,7 +3309,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3310,7 +3428,7 @@ class GameStudentPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3379,7 +3497,7 @@ class ModalWindow {
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

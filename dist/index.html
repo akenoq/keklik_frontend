@@ -12,6 +12,8 @@
     <!-- Custom styles for this template -->
     <link href="./landing.min.css" rel="stylesheet">
 
+    <link href="./fontawesome.min.css" rel="stylesheet">
+
     <link rel="shortcut icon" href="./img/favicon-32x32.png" type="image/png">
 
     <title>Keklik</title>
@@ -168,7 +170,7 @@
                                 <p>Соревнование запущено, но еще не началось.
                                     Для начала необходимо сообщить участникам номер соревнования (PIN) и подождать их присоединения.
                                     В своем кабинете участник может присоединиться по этому PIN к соревнованию.
-                                    Когда все участники присоединились нажмите "Запустить соревнование >>"
+                                    Когда все участники присоединились нажмите "Запустить соревнование"
                                 </p>
                             </div>
                         </div>
@@ -259,16 +261,16 @@
                 <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item">
-                                <a id="to-courses-btn" class="nav-link active card-header-green-tab" href="#">Мои курсы</a>
+                                <span id="to-courses-btn" class="nav-link active card-header-green-tab pointer">Мои курсы</span>
                             </li>
                             <li class="nav-item">
-                                <a id="to-quizzes-btn" class="nav-link card-header-green-tab" href="#">Мои викторины</a>
+                                <span id="to-quizzes-btn" class="nav-link card-header-green-tab pointer">Мои викторины</span>
                             </li>
                             <li class="nav-item">
-                                <a id="to-profile-btn" class="nav-link card-header-green-tab" href="#">Мой профиль</a>
+                                <span id="to-profile-btn" class="nav-link card-header-green-tab pointer">Мой профиль</span>
                             </li>
                             <li class="nav-item">
-                                <a id="to-statistic-btn" class="nav-link card-header-green-tab" href="#">История</a>
+                                <span id="to-statistic-btn" class="nav-link card-header-green-tab pointer">История</span>
                             </li>
                         </ul>
                     </div>
@@ -422,21 +424,31 @@
                         </div>
 
                         <div id="statistic" hidden>
-                            <div class="row justify-content-md-center">
-                                <div class="col">
-                                    <div id="table-statistic" class="list-group">
-                                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">#23423 Unity</h5>
-                                                <small>3 days ago</small>
-                                            </div>
-                                            <div class="text-left">
-                                                <small class="mb-1 text-left">Организация: -</small><br>
-                                                <small class="text-left">Группа: -</small>
-                                            </div>
-                                            <button class="btn btn-success">Скачать отчет</button>
-                                        </a>
-                                    </div>
+                            <div class="justify-content-md-center">
+                                <div id="table-statistic" class="list-group">
+                                    <!--<div class="list-group-item-action  align-items-start">-->
+                                        <!--<div class="container">-->
+                                            <!--<div class="text-left d-flex justify-content-between row">-->
+                                                <!--<div class="col col-sm-9">-->
+                                                    <!--<h5 class="mb-1">#23423 Unity</h5>-->
+                                                <!--</div>-->
+                                                <!--<div class="col col-sm-3 text-right">-->
+                                                    <!--<small>3 days ago</small>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="text-left row">-->
+                                                <!--<div class="col col-sm-9">-->
+                                                    <!--<small class="mb-1 text-left">Организация: ksdlksajlksajsdjsaldlksadjlsjalkdj</small><br>-->
+                                                    <!--<small class="text-left">Группа: -</small>-->
+                                                <!--</div>-->
+                                                <!--<div class="col col-sm-3 text-right">-->
+                                                    <!--<a href="#">-->
+                                                        <!--<button class="btn btn-sm btn-success">⇓ Отчет .xls</button>-->
+                                                    <!--</a>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
                                 </div>
                             </div>
                         </div>

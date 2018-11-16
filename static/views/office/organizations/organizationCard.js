@@ -2,7 +2,7 @@
 
 export default function organizationCard(name, group_len, date) {
     return `<img class="card-img-top" src="img/course_logo.png" alt="Card image cap">
-            <div class="card-body">
+            <div class="card-body pointer">
                 <h5 class="card-title">${name}</h5>
                 <p class="card-text">${group_len} групп на курсе</p>
             </div>

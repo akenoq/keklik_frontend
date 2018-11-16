@@ -165,4 +165,8 @@ export default class Requester {
     static getGameById(id, callback) {
         Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
+
+    static getGameByUser(callback) {
+        Requester.requestToHost("GET", "api/games/my/", null, callback);
+    }
 }
