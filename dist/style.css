@@ -340,3 +340,11 @@ td {
 .pointer {
     cursor: pointer;
 }
+
+.my-btn-light {
+    background: #e9ecef;
+}
+
+.input-group-prepend > span {
+    background: #f8f9fa !important;
+}

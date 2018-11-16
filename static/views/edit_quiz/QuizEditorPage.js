@@ -145,7 +145,7 @@ export default class QuizEditorPage extends Page {
                 </div>
             </div>
             <div class="btn-group group-btn-group list-btn">
-                <button id="selected-group" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button id="selected-group" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Выберите группу...
                 </button>
 
@@ -213,7 +213,7 @@ export default class QuizEditorPage extends Page {
         debugLog("ID = " + id);
         this.editQuizById = id;
         // добавить id викторины в заголовок
-        document.getElementById("quiz-editor-h3").innerHTML = `Викторина ${this.editQuizById}`;
+        document.getElementById("quiz-editor-h3").innerHTML = `Моя викторина`;
         // кнопка запуска викторины
         this.startQuizBtn(resp);
         this.selectTargetGroupBtn(globalBus().saver.userTeacherOrg);
