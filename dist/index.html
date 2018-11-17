@@ -552,36 +552,53 @@
         </div>
 
         <div class="play-page page container" hidden>
-            <!--<img src="img/q1.jpg" class="img-fluid question" alt="Question img">-->
-            <div class="row justify-content-md-center">
-                <div class="col col-md-auto">
-                    <h3 id="play-page-header">Вопрос 1</h3>
-                    <figure class="figure">
-                        <img id="play-figure" src="img/pic.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-                        <figcaption class="figure-caption">
-                            <h5 id="play-page-question">
-                                Какое животное изображено на картинке?
-                            </h5>
-                        </figcaption>
-                        <!--<div class="progress">-->
-                            <!--<span class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></span>-->
-                            <!--<span class="question-timer">00:30</span>-->
-                        <!--</div>-->
-                        <button id="exit-game-student-btn" type="button" class="btn btn-primary btn-lg btn-block">Назад в кабинет</button>
-                    </figure>
-                    <div id="play-page-ans-list" class="list-group text-center">
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-secondary">Жираф</a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-success">Слон</a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-danger">Мяч</a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-warning">Море</a>-->
-                        <!--<a class="list-group-item list-group-item-action list-group-item-info"></a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-light">A simple light list group item</a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-dark">A simple dark list group item</a>-->
-                    </div>
+            <h1 class="content-logo">
+                <span id="play-page-header" class="text-center"></span>
+            </h1>
+            <br>
+            <div id="figure-box" class="page-content">
+                <div class="">
+                    <h5 id="play-page-question" class="variants-question">
+                    </h5>
                 </div>
+                <div class="text-center">
+                    <img id="play-figure" src="" class="img-fluid" hidden>
+                </div>
+                <button id="exit-game-student-btn" type="button" class="btn btn-primary btn-lg btn-block">Назад в кабинет</button>
+                <div id="play-page-ans-list" class="list-group text-center variants-list"></div>
             </div>
         </div>
+
+        <!--<div class="play-page page container" hidden>-->
+            <!--&lt;!&ndash;<img src="img/q1.jpg" class="img-fluid question" alt="Question img">&ndash;&gt;-->
+            <!--<div class="row justify-content-md-center">-->
+                <!--<div class="col col-md-auto">-->
+                    <!--<h3 id="play-page-header">Вопрос 1</h3>-->
+                    <!--<figure id="figure-box" class="figure">-->
+                        <!--&lt;!&ndash;<img id="play-figure" src="img/pic.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">&ndash;&gt;-->
+                        <!--<figcaption class="figure-caption">-->
+                            <!--<h5 id="play-page-question" class="variants-question">-->
+                            <!--</h5>-->
+                        <!--</figcaption>-->
+                        <!--&lt;!&ndash;<div class="progress">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span class="question-timer">00:30</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--<button id="exit-game-student-btn" type="button" class="btn btn-primary btn-lg btn-block">Назад в кабинет</button>-->
+                        <!--<div id="play-page-ans-list" class="list-group text-center variants-list">-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-secondary">Жираф</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-success">Слон</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-danger">Мяч</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-warning">Море</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a class="list-group-item list-group-item-action list-group-item-info"></a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-light">A simple light list group item</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-dark">A simple dark list group item</a>&ndash;&gt;-->
+                        <!--</div>-->
+                    <!--</figure>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div class="edit-page page container" hidden>
             <div class="edit-page__form">
@@ -604,10 +621,6 @@
                         <label>Метки викторины <red>&nbsp;*</red></label>
                         <input id="edit-quiz-form__tags" class="form-control necessary-field" type="text" placeholder="Математика, Физика">
                     </div>
-                    <!--<div class="custom-control custom-checkbox">-->
-                        <!--<input type="checkbox" class="custom-control-input" id="timer-check">-->
-                        <!--<label class="custom-control-label" for="timer-check">Автоматический переход к следующему вопросу</label>-->
-                    <!--</div>-->
                     <hr>
                     <br>
                     <div id="edit-quiz-form__questions">
@@ -731,17 +744,24 @@
                 <br>
             <button id="next-question-btn" type="button" class="btn btn-primary btn-lg btn-block">Следующий вопрос >></button>
             <button id="exit-game-btn" type="button" class="btn btn-primary btn-lg btn-block">К списку викторин</button>
-                <br>
-                <div id="question-preview"></div>
-                <div id="game-diagram-1" style="height: 370px; width: 100%;" hidden></div>
-                <div id="game-diagram-2" style="height: 370px; width: 100%;" hidden></div>
-                <br>
+            <br>
+            <h5>
+                <span id="question-preview"></span>
+                <button id="print-here-ans-btn" type="button" class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i></button>
+            </h5>
+            <h5 id="true-ans-box" class="text-success" hidden></h5>
+            <div id="game-diagram-1" style="height: 370px; width: 100%;" hidden></div>
+            <div id="game-diagram-2" style="height: 370px; width: 100%;" hidden></div>
+            <br>
             <h3>
                 <span id="answered-counter" class="text-right">
                     Ответили <ans>0</ans> из <all>0</all></span>
                 <span id="joined-counter" class="text-right">
                     Присоединились <all>0</all></span>
+                <button id="print-here-table-btn" type="button" class="btn btn-warning"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                <button id="show-ans-btn" type="button" class="btn btn-info"><i class="fa fa-paper-plane-o" aria-hidden="true"></i>Опубликовать ответ</button>
             </h3>
+
             <br>
 
             <table id="game-table" class="table bg-white">
@@ -752,7 +772,7 @@
                     <th scope="col">Ответ</th>
                 </tr>
                 </thead>
-                <tbody id="game-table-question">
+                <tbody id="game-table-question" hidden>
                 <!--<tr class="table-group-line right-ans">-->
                     <!--<th scope="row">1</th>-->
                     <!--<td>Иванова Анна</td>-->

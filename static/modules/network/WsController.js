@@ -12,6 +12,7 @@ const ACTIONS = {
     "subscribe" : "subscribe",
     "join" : "join",
     "next_question" : "next_question",
+    "check" : "check",
     "answer" : "answer",
     "finish" : "finish"
 };
@@ -81,6 +82,9 @@ export default class WsController {
                 ws_dataObj.payload.data.state !== STATE.finish) {
                     debugLog(ws_dataObj.payload.data.current_question + "_STUDENT_____________________________");
                     globalBus().gameStudentPage.renderQuestion(ws_dataObj);
+                } else if (ws_dataObj.payload.action === ACTIONS.check &&
+                    ws_dataObj.payload.data.state !== STATE.finish) {
+                    globalBus().gameStudentPage.renderAnswer(ws_dataObj);
                 } else if (ws_dataObj.payload.action === ACTIONS.finish) {
                     debugLog("_________________FINISH___________________");
                     globalBus().gameStudentPage.renderFinish(ws_dataObj);
@@ -155,6 +159,17 @@ export default class WsController {
                     "action": "subscribe",
                     "pk": game_id,
                     "data": {
+                        "action": "check"
+                    }
+                }
+            }));
+        this.socket.send(JSON.stringify(
+            {
+                "stream": "games",
+                "payload": {
+                    "action": "subscribe",
+                    "pk": game_id,
+                    "data": {
                         "action": "finish"
                     }
                 }
@@ -171,6 +186,18 @@ export default class WsController {
                 "pk": game_id
             }
         }));
+    }
+
+    sendTrueAnsForAll(game_id) {
+        debugLog("GAME ID in sending = " + game_id);
+        this.socket.send(
+            JSON.stringify({
+                "stream": "games",
+                "payload": {
+                    "action": "check",
+                    "pk": game_id
+                }
+            }));
     }
 
     sendAnswerMessage(game_id, ans_var_index, cur_question_id) {

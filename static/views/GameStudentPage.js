@@ -32,6 +32,8 @@ export default class GameStudentPage extends Page {
     }
 
     renderQuestion(ws_dataObj) {
+        document.getElementById("figure-box").hidden = false;
+        document.getElementById("play-page-question").innerHTML = "";
         document.getElementById("play-page-header").innerHTML =
             "Соревнование " +
             ws_dataObj.payload.data.id + ": " +
@@ -61,20 +63,43 @@ export default class GameStudentPage extends Page {
 
     renderWaitingStart() {
         document.getElementById("exit-game-student-btn").hidden = true;
-        document.getElementById("play-page-header").innerHTML = `Ожидание старта соревнования
-        ${globalBus().gameManager.game_id}...`;
+        document.getElementById("play-page-header").innerHTML =
+            `Ожидание старта соревнования ${globalBus().gameManager.game_id}...`;
         document.getElementById("play-page-question").innerHTML = "";
         document.getElementById("play-page-ans-list").innerHTML = "";
-        document.getElementById("play-figure").setAttribute("src", "img/pic.jpg");
+        document.getElementById("play-figure").hidden = true;
+        document.getElementById("play-figure").setAttribute("src", "");
+        document.getElementById("figure-box").hidden = true;
     }
 
     renderWaitingNext() {
-        document.getElementById("play-page-header").innerHTML = "Следующий вопрос...";
-        document.getElementById("play-page-question").innerHTML = "";
+        document.getElementById("play-page-header").innerHTML =
+            '<i class="fa fa-check-square-o" aria-hidden="true"></i>'+ " Ответ принят";
+        // вопрос оставляем
+        // document.getElementById("play-page-question").innerHTML = "";
         document.getElementById("play-page-ans-list").innerHTML = "";
     }
 
+    renderAnswer(ws_dataObj) {
+        document.getElementById("play-page-ans-list").innerHTML = "";
+        let game_data = ws_dataObj.payload.data;
+        let true_id = game_data.answer[0];
+        let ans = "";
+        game_data.variants.forEach((elem) => {
+            if (elem.id === true_id) {
+                ans = elem.variant;
+            }
+        });
+        debugLog(ans);
+        document.getElementById("play-page-ans-list").innerHTML =
+            `<br><h5 class="text-left text-success">
+                    <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                    <u>Правильный ответ:</u> ${ans}
+                </h5>`;
+    }
+
     renderFinish(ws_dataObj) {
+        document.getElementById("play-page-question").innerHTML = "";
         document.getElementById("exit-game-student-btn").hidden = false;
         let data = ws_dataObj.payload.data;
         let max_score = 0;
@@ -92,11 +117,15 @@ export default class GameStudentPage extends Page {
                 }
             }
         }
-
-        document.getElementById("play-page-header").innerHTML = "Соревнование завершено";
-        document.getElementById("play-page-question").innerHTML = "Ваш результат " + person_score + " из " + max_score;
+        document.getElementById("play-page-header").innerHTML =
+            `Соревнование завершено`;
+        document.getElementById("play-page-question").innerHTML =
+            `<h3 class="text-center text-white bg-success game-result-header">
+                Ваш результат <br>${person_score} из ${max_score}
+            </h3>`;
         document.getElementById("play-page-ans-list").innerHTML = "";
         document.getElementById("play-figure").setAttribute("src", "img/finish_flag_700.jpg");
+        document.getElementById("play-figure").hidden = false;
     }
 
     addEventsOnButtons() {

@@ -348,3 +348,17 @@ td {
 .input-group-prepend > span {
     background: #f8f9fa !important;
 }
+
+.variants-list {
+    /*max-width: 700px;*/
+    margin-top: 2%;
+}
+
+.variants-question {
+    /*max-width: 700px;*/
+}
+
+.game-result-header {
+    padding: 10px;
+    border-radius: .3rem;
+}
