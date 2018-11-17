@@ -1057,14 +1057,14 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                             let div = document.createElement('div');
                             running_game_box.appendChild(div);
                             div.innerHTML = `
-                                &#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id} 
-                                <button id="select-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-success">
-                                    <i class="fa fa-play" aria-hidden="true"></i> Продолжить
-                                </button>
                                 <button id="delete-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-danger">
-                                    <i class="fa fa-trash-o" aria-hidden="true"></i> Удалить
-                                </button>
-                                <br>
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>&nbsp;
+                                <button id="select-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-success">
+                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                </button> &nbsp;
+                                &#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}
+                                <br><br>
                             `;
                             document.getElementById(`select-managed-by-id-${managed_game[i].id}`).onclick = () => {
                                 Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.joined_counter = 0;
@@ -1980,9 +1980,16 @@ function startApp() {
     let router = Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().router;
     // router = router.getMe(router);
     // router.sendRouter();
-    document.body.onbeforeunload = () => {
-        return "try to go away";
+
+    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().unloadFunc = (event) => {
+        event.preventDefault();
+        event.returnValue = '';
     };
+
+    window.addEventListener("beforeunload", Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().unloadFunc);
+    // document.body.onbeforeunload = () => {
+    //     return "try to go away";
+    // };
 }
 
 function changingColor() {
@@ -2112,8 +2119,10 @@ class Router {
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().authWorker.deleteToken();
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.signoutBtn.hidden =true;
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.hidden =false;
-            Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
+            // globalBus().btn.loginBtn.click();
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().nav.loginBox.innerHTML = "";
+            window.removeEventListener("beforeunload", Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().unloadFunc);
+            window.location = "/login";
         };
 
         Router.redirect();
@@ -2163,9 +2172,9 @@ class Router {
                         __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("login-page");
                         break;
 
-                    case "/info":
-                        __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("info-page");
-                        break;
+                    // case "/info":
+                    //     PagePresenter.showOnlyOnePage("info-page");
+                    //     break;
 
                     default:
                         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
@@ -2199,9 +2208,9 @@ class Router {
                         });
                         break;
 
-                    case "/info":
-                        __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("info-page");
-                        break;
+                    // case "/info":
+                    //     PagePresenter.showOnlyOnePage("info-page");
+                    //     break;
 
                     case "/course":
                         __WEBPACK_IMPORTED_MODULE_8__network_Requester__["a" /* default */].whoami((err, resp) => {

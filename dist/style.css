@@ -308,7 +308,8 @@ td {
 }
 
 .game-card-in-group {
-    margin: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .btn-success{

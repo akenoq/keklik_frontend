@@ -33,7 +33,7 @@
                     <li class="nav-item active">
                         <a class="btnLink nav-link" href="#" id="nav-main-btn">Главная<span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li hidden class="nav-item">
                         <a class="btnLink nav-link" href="#" id="nav-info-btn">О Keklik</a>
                     </li>
                     <li class="nav-item">
@@ -238,16 +238,21 @@
 
         <div class="office-page page container" hidden>
             <h1 class="content-logo">
-                <img src="img/ava_teacher.png" class="ava rounded-circle border border-danger" width="75px" height="75px">
+                <!--<img src="img/ava_teacher.png" class="ava rounded-circle border border-danger" width="75px" height="75px">-->
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                 <span id="office-header-username">Login of user</span>
             </h1>
             <div>
-                <input id="game-pin-input" type="text">
-                <button id="join-game-btn" class="btn btn-success start-btn" >Присоединиться по PIN</button>
+                <div class="input-group mb-3">
+                    <input id="game-pin-input" type="number" class="form-control" placeholder="PIN">
+                    <div class="input-group-append">
+                        <button id="join-game-btn" class="btn btn-success" type="button">Присоединиться по PIN</button>
+                    </div>
+                </div>
             </div>
             <div id="managed-game-box">
                 <red id="rannunig-games-warning"></red>
-                <div class="btn-group org-btn-group list-btn">
+                <div hidden class="btn-group org-btn-group list-btn">
                     <button id="selected-managed-game" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Управляемые PIN...
                     </button>
@@ -256,7 +261,7 @@
                         <!--<a class="dropdown-item" href="#">Школа 444</a>-->
                     </div>
                 </div>
-                <button id="managed-game-btn" class="btn btn-info start-btn">Управлять PIN</button>
+                <button hidden id="managed-game-btn" class="btn btn-info start-btn">Управлять PIN</button>
             </div>
             <div class="office-content card text-center">
                 <div class="card-header">
@@ -459,8 +464,9 @@
 
         <div class="course-page page container" hidden>
             <h1 id="org-title" class="content-logo">
-                <img src="img/ava_course.jpg" class="ava rounded-circle border border-danger" width="75px" height="75px">
-                <span>Название курса</span>
+                <!--<img src="img/ava_course.jpg" class="ava rounded-circle border border-danger" width="75px" height="75px">-->
+                <i class="fa fa-university" aria-hidden="true"></i>
+                <span></span>
             </h1>
             <div id="table-groups-in-org"></div>
         </div>

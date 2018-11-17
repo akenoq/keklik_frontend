@@ -20,9 +20,16 @@ function startApp() {
     let router = globalBus().router;
     // router = router.getMe(router);
     // router.sendRouter();
-    document.body.onbeforeunload = () => {
-        return "try to go away";
+
+    globalBus().unloadFunc = (event) => {
+        event.preventDefault();
+        event.returnValue = '';
     };
+
+    window.addEventListener("beforeunload", globalBus().unloadFunc);
+    // document.body.onbeforeunload = () => {
+    //     return "try to go away";
+    // };
 }
 
 function changingColor() {
