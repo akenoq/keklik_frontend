@@ -33,6 +33,11 @@ export default class StaticticTable extends Page {
                             game.group !== null ? game.group.name : "─");
                     }
                     statDesk.innerHTML = content;
+                    for (let i = 0; i < len; i++) {
+                        let game = resp[i];
+                        document.getElementById(`statistic-xls-by-pin-${game.id}`)
+                            .onclick = function() {open(`http://api.keklik.xyz/media/games/${game.id}/report`)};
+                    }
                 }
             }
         });

@@ -17,11 +17,9 @@ export default function statisticItem(pin, quiz_name, game_date, org_name, group
                             <small class="text-left"><u>Группа:</u> ${group_name}</small>
                         </div>
                         <div class="col col-sm-3 text-right">
-                            <a href="http://api.keklik.xyz/media/games/${pin}/report">
-                                <button type="button" class="btn btn-sm btn-success btn-icon">
-                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
-                                </button>
-                            </a>
+                            <button id=statistic-xls-by-pin-${pin} type="button" class="btn btn-sm btn-success btn-icon">
+                                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
+                            </button>                         
                         </div>
                     </div>
                 </div>
