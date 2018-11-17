@@ -29,8 +29,8 @@ export default class StaticticTable extends Page {
                     for (let i = 0; i < len; i++) {
                         let game = resp[i];
                         content += statisticItem(game.id, game.quiz.title, game.created_at.split("T")[0],
-                            game.group !== null ? game.group.organization.name : "─",
-                            game.group !== null ? game.group.name : "─");
+                            game.group !== null ? game.group.organization.name : null,
+                            game.group !== null ? game.group.name : null);
                     }
                     statDesk.innerHTML = content;
                     for (let i = 0; i < len; i++) {
