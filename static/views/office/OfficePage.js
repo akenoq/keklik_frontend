@@ -93,7 +93,7 @@ export default class OfficePage extends Page {
                                 <button id="select-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-success">
                                     <i class="fa fa-play" aria-hidden="true"></i>
                                 </button> &nbsp;
-                                &#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}
+                                <red>&#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}</red>
                                 </div>
                             `;
                             document.getElementById(`select-managed-by-id-${managed_game[i].id}`).onclick = () => {

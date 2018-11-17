@@ -267,8 +267,10 @@ class Requester {
         Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
 
-    static getGameByUser(callback) {
-        Requester.requestToHost("GET", "api/games/my/", null, callback);
+    static getGameByUser(url_to_page, callback) {
+        let url = "api/" + url_to_page.split("/api/")[1];
+        // https://api.example.org/accounts/?limit=100&offset=400
+        Requester.requestToHost("GET", url, null, callback);
     }
 
     static delGameById(id, callback) {
@@ -1064,7 +1066,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                                 <button id="select-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-success">
                                     <i class="fa fa-play" aria-hidden="true"></i>
                                 </button> &nbsp;
-                                &#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}
+                                <red>&#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}</red>
                                 </div>
                             `;
                             document.getElementById(`select-managed-by-id-${managed_game[i].id}`).onclick = () => {
@@ -2802,15 +2804,18 @@ class WsController {
 
 class StaticticTable extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */] {
 
-    static render() {
+    static render(url="http://api.keklik.xyz/api/games/my/?limit=5&offset=0") {
         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("Statictic Table");
         let statDesk = document.getElementById("table-statistic");
-        statDesk.innerHTML = "";
 
-        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].getGameByUser((err, resp) => {
+        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].getGameByUser(url, (err, resp) => {
             if (err) {
                 Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("err load user games");
             } else {
+                statDesk.innerHTML = "";
+                let next_page = resp.next;
+                let prev_page = resp.previous;
+                resp = resp.results;
                 if (resp.length === 0) {
                     statDesk.innerHTML = "<h3>Вы не провели ни одного соревнования</h3>";
                 } else {
@@ -2820,14 +2825,44 @@ class StaticticTable extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default 
                     for (let i = 0; i < len; i++) {
                         let game = resp[i];
                         content += Object(__WEBPACK_IMPORTED_MODULE_4__statisticItem__["a" /* default */])(game.id, game.quiz.title, game.created_at.split("T")[0],
-                            game.group !== null ? game.group.organization.name : "─",
-                            game.group !== null ? game.group.name : "─");
+                            game.group !== null ? game.group.organization.name : null,
+                            game.group !== null ? game.group.name : null);
                     }
-                    statDesk.innerHTML = content;
+
+                    let paginator = `<nav aria-label="Page navigation example">
+                                  <ul class="pagination justify-content-center">
+                                    <li id="prev-page-statistic" class="page-item">
+                                      <span class="page-link"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+                                    </li>
+                                    <li id="next-page-statistic" class="page-item">
+                                      <span class="page-link"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                                    </li>
+                                  </ul>
+                                </nav>`;
+
+                    statDesk.innerHTML = content + "<br>" + paginator;
                     for (let i = 0; i < len; i++) {
                         let game = resp[i];
                         document.getElementById(`statistic-xls-by-pin-${game.id}`)
                             .onclick = function() {open(`http://api.keklik.xyz/media/games/${game.id}/report`)};
+                    }
+
+                    if (next_page === null) {
+                        document.getElementById("next-page-statistic").setAttribute('class','page-item disabled');
+                    } else {
+                        document.getElementById("next-page-statistic").setAttribute('class','page-item');
+                        document.getElementById("next-page-statistic").onclick = () => {
+                            StaticticTable.render(next_page);
+                        }
+                    }
+
+                    if (prev_page === null) {
+                        document.getElementById("prev-page-statistic").setAttribute('class','page-item disabled');
+                    } else {
+                        document.getElementById("prev-page-statistic").setAttribute('class','page-item');
+                        document.getElementById("prev-page-statistic").onclick = () => {
+                            StaticticTable.render(prev_page);
+                        }
                     }
                 }
             }
@@ -2846,6 +2881,15 @@ class StaticticTable extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default 
 
 
 function statisticItem(pin, quiz_name, game_date, org_name, group_name) {
+    let content = "";
+    if (org_name !== null || group_name !== null) {
+        content = `<small class="mb-1 text-left"><u>Организация:</u> ${org_name}</small><br>
+                   <small class="text-left"><u>Группа:</u> ${group_name}</small>`
+    } else {
+        content = `<small class="mb-1 text-left">&nbsp;</small><br>
+                   <small class="text-left">&nbsp;</small>`
+    }
+
     return `<div class="list-group-item  align-items-start">
                 <div class="container">
                     <div class="text-left d-flex justify-content-between row">
@@ -2858,8 +2902,7 @@ function statisticItem(pin, quiz_name, game_date, org_name, group_name) {
                     </div>
                     <div class="text-left row">
                         <div class="col col-sm-9">
-                            <small class="mb-1 text-left"><u>Организация:</u> ${org_name}</small><br>
-                            <small class="text-left"><u>Группа:</u> ${group_name}</small>
+                            ${content}
                         </div>
                         <div class="col col-sm-3 text-right">
                             <button id=statistic-xls-by-pin-${pin} type="button" class="btn btn-sm btn-success btn-icon">

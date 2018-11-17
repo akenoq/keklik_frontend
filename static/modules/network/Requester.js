@@ -169,8 +169,10 @@ export default class Requester {
         Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
 
-    static getGameByUser(callback) {
-        Requester.requestToHost("GET", "api/games/my/", null, callback);
+    static getGameByUser(url_to_page, callback) {
+        let url = "api/" + url_to_page.split("/api/")[1];
+        // https://api.example.org/accounts/?limit=100&offset=400
+        Requester.requestToHost("GET", url, null, callback);
     }
 
     static delGameById(id, callback) {
