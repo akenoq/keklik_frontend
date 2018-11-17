@@ -140,7 +140,7 @@ class Requester {
         xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
         xhr.setRequestHeader("Authorization", Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().authWorker.getToken());
 
-        if (method === "GET") {
+        if (method === "GET" || method === "DELETE") {
             xhr.send(null);
         } else {
             xhr.send(body);
@@ -158,9 +158,12 @@ class Requester {
                 return callback(xhr, null);
             }
 
-            const response = JSON.parse(xhr.responseText);
-
-            callback(null, response);
+            if (method !== "DELETE") {
+                const response = JSON.parse(xhr.responseText);
+                callback(null, response);
+            } else {
+                callback(null, null);
+            }
         };
     }
 
@@ -266,6 +269,10 @@ class Requester {
 
     static getGameByUser(callback) {
         Requester.requestToHost("GET", "api/games/my/", null, callback);
+    }
+
+    static delGameById(id, callback) {
+        Requester.requestToHost("DELETE", `api/games/${id}/`, null, callback)
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Requester;
@@ -993,7 +1000,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
 
         Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().count_ws = 0;
         Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag = false;
-        this.target_pin = null;
+        // this.target_pin = null;
     }
 
     static pagePath() {
@@ -1036,25 +1043,45 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 for (let i = 0; i < len_games; i++) {
                     Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames.push(games[i]);
                 }
-                this.target_pin = null;
-                let listManagedGameBtn = document.getElementById("list-managed-game-btn");
-                listManagedGameBtn.innerHTML = "";
+                // this.target_pin = null;
+                let running_game_box = document.getElementById("rannunig-games-warning");
+                running_game_box.innerHTML = "";
                 if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames.length !== 0) {
                     let managed_game = Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames;
                     let managed_game_len = managed_game.length;
-                    document.getElementById("selected-managed-game").innerHTML = "Управляемые PIN...";
-                    for (let i = 0; i < managed_game_len; i++) {
-                        Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("render a");
-                        let a = document.createElement('a');
-                        a.setAttribute('class', 'dropdown-item');
-                        listManagedGameBtn.appendChild(a);
-                        a.innerHTML = "PIN " + managed_game[i].id;
-                        a.setAttribute('id', `select-managed-by-id-${managed_game[i].id}`);
-                        a.onclick = () => {
-                            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("change selected-manage text");
-                            document.getElementById("selected-managed-game").innerHTML = managed_game[i].id;
-                            this.target_pin = managed_game[i].id;
-                            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("учительский ПИН = "+ managed_game[i].id.toString());
+                    if (managed_game_len !== 0) {
+                        let content = "";
+                        for (let i = 0; i < managed_game_len; i++) {
+                            let div = document.createElement('div');
+                            running_game_box.appendChild(div);
+                            div.innerHTML = `
+                                &#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id} 
+                                <button id="select-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-success">
+                                    <i class="fa fa-play" aria-hidden="true"></i> Продолжить
+                                </button>
+                                <button id="delete-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-danger">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i> Удалить
+                                </button>
+                                <br>
+                            `;
+                            document.getElementById(`select-managed-by-id-${managed_game[i].id}`).onclick = () => {
+                                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.joined_counter = 0;
+                                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameTeacherPage.attachRedirect();
+                                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.restart_manage(managed_game[i].id);
+                                document.getElementById("start-game-btn_clicker").click(); // redirect
+                                div.innerHTML = "";
+                                // this.target_pin = managed_game[i].id;
+                                Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("REDIRECT TO RESTART");
+                            };
+                            document.getElementById(`delete-managed-by-id-${managed_game[i].id}`).onclick = () => {
+                                __WEBPACK_IMPORTED_MODULE_3__modules_network_Requester__["a" /* default */].delGameById((managed_game[i].id), (err, resp) => {
+                                    if (err) {
+                                        console.log("err of del game")
+                                    } else {
+                                        div.innerHTML = "";
+                                    }
+                                });
+                            }
                         }
                     }
                 }
@@ -1090,9 +1117,10 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 __WEBPACK_IMPORTED_MODULE_4__quizzes_QuizzesDesk__["a" /* default */].render();
                 __WEBPACK_IMPORTED_MODULE_9__statistic_StaticticTable__["a" /* default */].render();
                 this.renderListManaged();
+                // добавляем листнеры на кнопу присоединиться
                 if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag === false) {
                     this.joinGameBtn();
-                    this.rejoinManagedGameBtn();
+                    // this.rejoinManagedGameBtn();
                     Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag = true;
                 }
                 Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("office norm");
@@ -1458,11 +1486,6 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
 
         for (let i = 0; i < groups_len; i++) {
             table_groups.innerHTML += `<div id="group-card-${groups[i].group.id}" class="card game-card-in-group">
-              <!--<div class="card-body">-->
-                <!--<h5 class="card-title">Актуальные соревнования</h5>-->
-                <!--&lt;!&ndash;<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>&ndash;&gt;-->
-                <!--&lt;!&ndash;<a href="#" class="btn btn-primary">Go somewhere</a>&ndash;&gt;-->
-              <!--</div>-->
             </div>`;
 
             __WEBPACK_IMPORTED_MODULE_2__modules_network_Requester__["a" /* default */].getRunningGameByGroupId(groups[i].group.id, (err, resp) => {
@@ -2789,6 +2812,11 @@ class StaticticTable extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default 
                             game.group !== null ? game.group.name : "─");
                     }
                     statDesk.innerHTML = content;
+                    for (let i = 0; i < len; i++) {
+                        let game = resp[i];
+                        document.getElementById(`statistic-xls-by-pin-${game.id}`)
+                            .onclick = function() {open(`http://api.keklik.xyz/media/games/${game.id}/report`)};
+                    }
                 }
             }
         });
@@ -2822,11 +2850,9 @@ function statisticItem(pin, quiz_name, game_date, org_name, group_name) {
                             <small class="text-left"><u>Группа:</u> ${group_name}</small>
                         </div>
                         <div class="col col-sm-3 text-right">
-                            <a href="http://api.keklik.xyz/media/games/${pin}/report">
-                                <button type="button" class="btn btn-sm btn-success btn-icon">
-                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
-                                </button>
-                            </a>
+                            <button id=statistic-xls-by-pin-${pin} type="button" class="btn btn-sm btn-success btn-icon">
+                                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
+                            </button>                         
                         </div>
                     </div>
                 </div>
@@ -3140,7 +3166,14 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.switchNext();
             document.getElementById("game-table-question").innerHTML = "";
             this.game_table_answered = [];
+            document.getElementById("next-question-btn").setAttribute("disabled", "true");
+
+            const nextButton = () => {
+                document.getElementById("next-question-btn").removeAttribute("disabled");
+            };
+            setTimeout(nextButton, 1000);
         };
+
         document.getElementById("print-here-ans-btn").onclick = () => {
             let trueBox = document.getElementById("true-ans-box");
             trueBox.hidden = !trueBox.hidden;
@@ -3383,11 +3416,11 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
         let pin = game_data.id;
         document.getElementById("question-preview").innerHTML =
             `Соревнование завершено 
-                <a href="http://api.keklik.xyz/media/games/${pin}/report">
-                    <button type="button" class="btn btn-sm btn-success btn-icon">
+                    <button id=xls-by-pin-${pin} type="button" class="btn btn-sm btn-success btn-icon">
                         <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
-                    </button>
-                </a>`;
+                    </button>`;
+        document.getElementById(`xls-by-pin-${pin}`).onclick = function() {open(`http://api.keklik.xyz/media/games/${pin}/report`)};
+
         document.getElementById("next-question-btn").hidden = true;
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = true;

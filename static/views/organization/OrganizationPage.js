@@ -46,11 +46,6 @@ export default class OrganizationPage extends Page {
 
         for (let i = 0; i < groups_len; i++) {
             table_groups.innerHTML += `<div id="group-card-${groups[i].group.id}" class="card game-card-in-group">
-              <!--<div class="card-body">-->
-                <!--<h5 class="card-title">Актуальные соревнования</h5>-->
-                <!--&lt;!&ndash;<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>&ndash;&gt;-->
-                <!--&lt;!&ndash;<a href="#" class="btn btn-primary">Go somewhere</a>&ndash;&gt;-->
-              <!--</div>-->
             </div>`;
 
             Requester.getRunningGameByGroupId(groups[i].group.id, (err, resp) => {

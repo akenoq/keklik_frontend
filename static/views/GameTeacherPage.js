@@ -43,7 +43,14 @@ export default class GameTeacherPage extends Page {
             globalBus().gameManager.switchNext();
             document.getElementById("game-table-question").innerHTML = "";
             this.game_table_answered = [];
+            document.getElementById("next-question-btn").setAttribute("disabled", "true");
+
+            const nextButton = () => {
+                document.getElementById("next-question-btn").removeAttribute("disabled");
+            };
+            setTimeout(nextButton, 1000);
         };
+
         document.getElementById("print-here-ans-btn").onclick = () => {
             let trueBox = document.getElementById("true-ans-box");
             trueBox.hidden = !trueBox.hidden;
