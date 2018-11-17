@@ -1057,6 +1057,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                             let div = document.createElement('div');
                             running_game_box.appendChild(div);
                             div.innerHTML = `
+                                <div class="alert alert-light" role="alert">
                                 <button id="delete-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-danger">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </button>&nbsp;
@@ -1064,7 +1065,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                                     <i class="fa fa-play" aria-hidden="true"></i>
                                 </button> &nbsp;
                                 &#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}
-                                <br><br>
+                                </div>
                             `;
                             document.getElementById(`select-managed-by-id-${managed_game[i].id}`).onclick = () => {
                                 Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.joined_counter = 0;

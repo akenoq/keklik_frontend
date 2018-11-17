@@ -86,6 +86,7 @@ export default class OfficePage extends Page {
                             let div = document.createElement('div');
                             running_game_box.appendChild(div);
                             div.innerHTML = `
+                                <div class="alert alert-light" role="alert">
                                 <button id="delete-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-danger">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </button>&nbsp;
@@ -93,7 +94,7 @@ export default class OfficePage extends Page {
                                     <i class="fa fa-play" aria-hidden="true"></i>
                                 </button> &nbsp;
                                 &#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}
-                                <br><br>
+                                </div>
                             `;
                             document.getElementById(`select-managed-by-id-${managed_game[i].id}`).onclick = () => {
                                 globalBus().gameManager.joined_counter = 0;
