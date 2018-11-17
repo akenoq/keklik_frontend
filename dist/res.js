@@ -779,7 +779,8 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
 
     addEventsToButtons() {
 
-        document.querySelector("#regformBtn").addEventListener("click", () => {
+        document.querySelector("#regformBtn").addEventListener("click", (event) => {
+            event.preventDefault();
             this.loginValue = document.querySelector("#regform-login").value;
             this.passwordValue = document.querySelector("#regform-password").value;
             this.errorBox = document.querySelector("#regform-err");
@@ -934,7 +935,8 @@ class LoginForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__[
 
     addEventsToButtons() {
 
-        document.querySelector("#login-form-btn").addEventListener("click", () => {
+        document.querySelector("#login-form-btn").addEventListener("click", (event) => {
+            event.preventDefault();
             this.loginValue = document.querySelector("#login-form-login").value;
             this.passwordValue = document.querySelector("#login-form-password").value;
             this.errorBox = document.querySelector("#login-form-err");

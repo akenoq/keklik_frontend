@@ -192,20 +192,20 @@
             <div class="row justify-content-md-center">
                 <div class="regform col col-md-auto">
                     <h3>Регистрация</h3>
-                    <div class="regform-inputs">
+                    <form class="regform-inputs">
                         <div class="form-group">
                             <label for="regform-login">Логин</label>
-                            <input type="email" class="form-control" id="regform-login" aria-describedby="emailHelp" placeholder="login">
+                            <input type="text" class="form-control" id="regform-login" aria-describedby="emailHelp" placeholder="login">
                         </div>
                         <div class="form-group">
                             <label for="regform-password">Пароль</label>
                             <input type="password" class="form-control" id="regform-password" placeholder="*********">
                         </div>
-                        <button id="regformBtn" class="btn btn-primary">Регистация</button>
+                        <input type="submit" value="Регистация" id="regformBtn" class="btn btn-primary">
                         <div id="regform-err"></div>
                         <br>
                         <a id="regform-to-login-link" href="#">Уже зарегистрированы?</a>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -214,20 +214,20 @@
             <div class="row justify-content-md-center">
                 <div class="login-form col col-md-auto">
                     <h3>Вход в кабинет</h3>
-                    <div class="regform-inputs">
+                    <form class="logform-inputs">
                         <div class="form-group">
                             <label for="login-form-login">Логин</label>
-                            <input type="email" class="form-control" id="login-form-login" aria-describedby="emailHelp" placeholder="login">
+                            <input type="text" class="form-control" id="login-form-login" aria-describedby="emailHelp" placeholder="login">
                         </div>
                         <div class="form-group">
                             <label for="login-form-password">Пароль</label>
                             <input type="password" class="form-control" id="login-form-password" placeholder="*********">
                         </div>
-                        <button id="login-form-btn" class="btn btn-primary">Войти</button>
+                        <input type="submit" value="Войти" id="login-form-btn" class="btn btn-primary">
                         <div id="login-form-err"></div>
                         <br>
                         <a id="login-form-to-register-link" href="#">Еще не зарегистрированы?</a>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

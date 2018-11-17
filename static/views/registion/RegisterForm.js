@@ -117,7 +117,8 @@ export default class RegisterForm extends FormValidator {
 
     addEventsToButtons() {
 
-        document.querySelector("#regformBtn").addEventListener("click", () => {
+        document.querySelector("#regformBtn").addEventListener("click", (event) => {
+            event.preventDefault();
             this.loginValue = document.querySelector("#regform-login").value;
             this.passwordValue = document.querySelector("#regform-password").value;
             this.errorBox = document.querySelector("#regform-err");
