@@ -1251,7 +1251,7 @@ class GameManager {
     }
 
     showTrueAnswer() {
-        Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("true ans sending");
+        Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("true ans send");
         this.ws_controller.sendTrueAnsForAll(this.game_id);
     }
 
@@ -1955,6 +1955,9 @@ function startApp() {
     let router = Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().router;
     // router = router.getMe(router);
     // router.sendRouter();
+    document.body.onbeforeunload = () => {
+        return "try to go away";
+    };
 }
 
 function changingColor() {
