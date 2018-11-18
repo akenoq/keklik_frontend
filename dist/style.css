@@ -363,3 +363,16 @@ td {
     padding: 10px;
     border-radius: .3rem;
 }
+
+.landing-header {
+    /*background: linear-gradient(0deg, rgba(238, 43, 106, 0.68) 0%, #a36dca 100%) !important;*/
+    background: linear-gradient(0deg, #00b0ff 0%, #ee096e 100%) !important;
+}
+
+.landing-header-btn {
+    background: white;
+}
+
+.landing-header-btn:hover {
+    box-shadow: 0 0 30px rgb(255, 240, 251);
+}

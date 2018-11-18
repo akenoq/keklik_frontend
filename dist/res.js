@@ -72,7 +72,7 @@
 
 
 function debugLog(s) {
-    console.log(s);
+    // console.log(s);
 }
 
 /***/ }),
@@ -2244,13 +2244,6 @@ class Router {
                                 Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
                                 return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office error router");
                             }
-                            try {
-                                Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.mainBtn.classList.remove('active');
-                            } catch(e){
-                                Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])(1);
-                            }
-
-                            Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn.classList.add('active');
                             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().officePage.render();
                             __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("office-page");
                             return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office norm router");
