@@ -2350,6 +2350,8 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                 return console.log(" error");
             }
             Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(resp);
+            console.log(resp);
+            console.log(resp.tags);
             let cardsInRow = 1;
             let rowCount = 1;
             for (let i = 0; i < resp.length; i++) {
@@ -2365,7 +2367,7 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
                     caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col");
-                    caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
+                    caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0], resp[i].tags);
                     caCol.appendChild(caBox);
                     document.getElementById("card-row-1").appendChild(caCol);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
@@ -2386,7 +2388,7 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
                     caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col");
-                    caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
+                    caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0], resp[i].tags);
                     caCol.appendChild(caBox);
                     document.getElementById(`card-row-${rowCount}`).appendChild(caCol);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
@@ -2410,8 +2412,38 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
 /* harmony export (immutable) */ __webpack_exports__["a"] = quizCard;
 
 
-function quizCard(title, description, date) {
-    return `<img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">
+const TAGS = [
+    "программирование", "информатика", "математика", "английский", "физика",
+    "история", "химия", "биология", "география", "литература", "русский"
+];
+
+const SRC = {
+    "программирование" : "img/tags/infa.png",
+    "информатика" : "img/tags/infa.png",
+    "математика" : "img/tags/math.png",
+    "английский" : "img/tags/eng.png",
+    "физика" : "img/tags/phy.png",
+    "история" : "img/tags/hist.png",
+    "химия" : "img/tags/chem.png",
+    "биология" : "img/tags/bio.png",
+    "география" : "img/tags/geo.png",
+    "литература" : "img/tags/lit.png",
+    "русский" : "img/tags/lit.png"
+};
+
+function quizCard(title, description, date, tags) {
+    console.log(tags);
+    let find_index = -1;
+    let src = "img/quiz_logo.png";
+    for (let i = 0; i < tags.length; i++) {
+        let tag = tags[i].toLowerCase().split(" ").join(""); // без пробелов
+        find_index = TAGS.indexOf(tag);
+        if (find_index !== -1) {
+            src = SRC[TAGS[find_index]];
+            break;
+        }
+    }
+    return `<img class="card-img-top" src=${src} alt="Card image cap">
             <div class="card-body pointer">
                 <h5 class="card-title">${title}</h5>
                 <p class="card-text">${description}</p>
