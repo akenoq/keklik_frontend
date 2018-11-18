@@ -25,7 +25,10 @@ export default function statisticItem(pin, quiz_name, game_date, org_name, group
                             ${content}
                         </div>
                         <div class="col col-sm-3 text-right">
-                            <button id=statistic-xls-by-pin-${pin} type="button" class="btn btn-sm btn-success btn-icon">
+                            <button id=statistic-xls-by-pin-${pin} type="button" 
+                            data-toggle="tooltip" data-placement="left"
+                            title="Скачать отчет по соревнованию в формате Excel"
+                            class="btn btn-sm btn-success btn-icon">
                                 <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
                             </button>                         
                         </div>

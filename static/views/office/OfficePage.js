@@ -87,10 +87,16 @@ export default class OfficePage extends Page {
                             running_game_box.appendChild(div);
                             div.innerHTML = `
                                 <div class="alert alert-light" role="alert">
-                                <button id="delete-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-danger">
+                                <button id="delete-managed-by-id-${managed_game[i].id}" type="button" 
+                                data-toggle="tooltip" data-placement="bottom"
+                                title="Удалить соревнование"
+                                class="btn btn-danger">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </button>&nbsp;
-                                <button id="select-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-success">
+                                <button id="select-managed-by-id-${managed_game[i].id}" type="button" 
+                                data-toggle="tooltip" data-placement="bottom"
+                                title="Продолжить управление соревнованием"
+                                class="btn btn-success">
                                     <i class="fa fa-play" aria-hidden="true"></i>
                                 </button> &nbsp;
                                 <red>&#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}</red>

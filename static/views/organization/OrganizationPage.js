@@ -68,7 +68,10 @@ export default class OrganizationPage extends Page {
                             htmlContent += `<div id="group-game-${running_games[i].id}" class="card-body">
                                 <h5 class="card-title"><u>PIN</u> ${running_games[i].id}</h5>
                                 <p class="card-text"><u>Название:</u> ${running_games[i].quiz.title}</p>
-                                <a id="to-group-game-btn-${running_games[i].id}" class="btn btn-success">Присоединиться</a>
+                                <a id="to-group-game-btn-${running_games[i].id}" 
+                                data-toggle="tooltip" data-placement="right"
+                                title="Участвовать в соревновании"
+                                class="btn btn-success">Присоединиться</a>
                               </div>
                               <hr>`;
                         }

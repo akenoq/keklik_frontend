@@ -23,8 +23,12 @@ export default function emptyQuizForm() {
                 <label>Метки викторины <red>&nbsp;*</red></label>
                 <input id="edit-quiz-form__tags" class="form-control necessary-field" type="text" placeholder="Математика, Физика">
             </div>
+            <red>
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                При составлении вопросов обратите внимание,
+                что варианты ответов во время соревнования будут перетасованы
+            </red>
             <hr>
-            <br>
             <div id="edit-quiz-form__questions">
                 <div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_0">
                     <h4>Вопрос 1<red>&nbsp;*</red></h4>

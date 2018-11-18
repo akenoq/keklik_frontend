@@ -246,7 +246,9 @@
                 <div class="input-group mb-3">
                     <input id="game-pin-input" type="number" class="form-control" placeholder="PIN">
                     <div class="input-group-append">
-                        <button id="join-game-btn" class="btn btn-success" type="button">Присоединиться по PIN</button>
+                        <button data-toggle="tooltip" data-placement="top"
+                                title="Присоединиться к активному соревнованию по номеру"
+                                id="join-game-btn" class="btn btn-success" type="button">Присоединиться по PIN</button>
                     </div>
                 </div>
             </div>
@@ -267,7 +269,7 @@
                 <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item">
-                                <span id="to-courses-btn" class="nav-link active card-header-green-tab pointer">Мои курсы</span>
+                                <span id="to-courses-btn" class="nav-link active card-header-green-tab pointer">Мои организации</span>
                             </li>
                             <li class="nav-item">
                                 <span id="to-quizzes-btn" class="nav-link card-header-green-tab pointer">Мои викторины</span>
@@ -423,7 +425,10 @@
                                         </div>
                                         <div id="profile-form-ok" class="form-group ok-box"></div>
                                         <div id="profile-form-error" class="form-group error-box"></div>
-                                        <input type="submit" value="Подтвердить изменения" id="profile-form-btn" class="btn btn-primary">
+                                        <input type="submit" value="Подтвердить изменения"
+                                               data-toggle="tooltip" data-placement="right"
+                                               title="Сохранить изменения впрофиле"
+                                               id="profile-form-btn" class="btn btn-success">
                                     </form>
                                 </div>
                             </div>
@@ -628,8 +633,14 @@
                         <label>Метки викторины <red>&nbsp;*</red></label>
                         <input id="edit-quiz-form__tags" class="form-control necessary-field" type="text" placeholder="Математика, Физика">
                     </div>
+                    <i style="color: #cccccc;">
+                        <red>
+                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            При составлении вопросов обратите внимание,
+                            что варианты ответов во время соревнования будут перетасованы
+                        </red>
+                    </i>
                     <hr>
-                    <br>
                     <div id="edit-quiz-form__questions">
                         <div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_0">
                             <h4>Вопрос 1<red>&nbsp;*</red></h4>
@@ -734,10 +745,16 @@
             </div>
             <div class="btn-toolbar" role="toolbar" aria-label="quiz-form-btn-add">
                 <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <button id="edit-quiz-form__add-question-btn" type="button" class="btn btn-info">Еще вопрос</button>
+                    <button id="edit-quiz-form__add-question-btn" type="button"
+                            data-toggle="tooltip" data-placement="top"
+                            title="Добавить новый вопрос к викторине"
+                            class="btn btn-info">Еще вопрос</button>
                 </div>
                 <div class="btn-group mr-2" role="group" aria-label="quiz-form-btn-ok">
-                    <button id="edit-quiz-form__send-btn" type="button" class="btn btn-success">Готово</button>
+                    <button id="edit-quiz-form__send-btn" type="button"
+                            data-toggle="tooltip" data-placement="top"
+                            title="Сохранить изменения в викторине"
+                            class="btn btn-success">Готово</button>
                 </div>
             </div>
         </div>
@@ -754,7 +771,10 @@
             <br>
             <h5>
                 <span id="question-preview"></span>
-                <button id="print-here-ans-btn" type="button" class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                <button id="print-here-ans-btn" type="button"
+                        data-toggle="tooltip" data-placement="right"
+                        title="Раскрыть правильный ответ"
+                        class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i></button>
             </h5>
             <h5 id="true-ans-box" class="text-success" hidden></h5>
             <div id="game-diagram-1" style="height: 370px; width: 100%;" hidden></div>
@@ -765,8 +785,14 @@
                     Ответили <ans>0</ans> из <all>0</all></span>
                 <span id="joined-counter" class="text-right">
                     Присоединились <all>0</all></span>
-                <button id="print-here-table-btn" type="button" class="btn btn-warning"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                <button id="show-ans-btn" type="button" class="btn btn-info"><i class="fa fa-paper-plane-o" aria-hidden="true"></i>Опубликовать ответ</button>
+                <button id="print-here-table-btn" type="button"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Раскрыть таблицу с ответами участников"
+                        class="btn btn-warning"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                <button id="show-ans-btn" type="button"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Раскрыть таблицу с ответами участников"
+                        class="btn btn-info"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Опубликовать ответ</button>
             </h3>
 
             <br>
@@ -801,5 +827,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="./res.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 </body>
 </html>

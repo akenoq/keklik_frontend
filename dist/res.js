@@ -72,7 +72,7 @@
 
 
 function debugLog(s) {
-    // console.log(s);
+    console.log(s);
 }
 
 /***/ }),
@@ -159,14 +159,24 @@ class Requester {
                     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().authWorker.deleteToken();
                 }
                 Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(xhr.status + ' from 400');
-                return callback(xhr, null);
+                callback(xhr, null);
+                $(document).ready(function(){
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
+                return;
             }
 
             if (method !== "DELETE") {
                 const response = JSON.parse(xhr.responseText);
                 callback(null, response);
+                $(document).ready(function(){
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
             } else {
                 callback(null, null);
+                $(document).ready(function(){
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
             }
         };
     }
@@ -1064,10 +1074,16 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                             running_game_box.appendChild(div);
                             div.innerHTML = `
                                 <div class="alert alert-light" role="alert">
-                                <button id="delete-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-danger">
+                                <button id="delete-managed-by-id-${managed_game[i].id}" type="button" 
+                                data-toggle="tooltip" data-placement="bottom"
+                                title="Удалить соревнование"
+                                class="btn btn-danger">
                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                                 </button>&nbsp;
-                                <button id="select-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-success">
+                                <button id="select-managed-by-id-${managed_game[i].id}" type="button" 
+                                data-toggle="tooltip" data-placement="bottom"
+                                title="Продолжить управление соревнованием"
+                                class="btn btn-success">
                                     <i class="fa fa-play" aria-hidden="true"></i>
                                 </button> &nbsp;
                                 <red>&#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}</red>
@@ -1369,6 +1385,9 @@ class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* defaul
             let caBox = document.createElement('div');
             caBox.setAttribute("id", `org-card-${resp[i].id}`);
             caBox.setAttribute("class", "card org-desk__org-card card-in-col pointer");
+            caBox.setAttribute("data-toggle", "tooltip");
+            caBox.setAttribute("title", "Просмотр запущенных соревнований на курсе");
+            caBox.setAttribute("data-placement", "top");
             let groups = [];
             let org_id = resp[i].id;
             groups = Object(__WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__["a" /* default */])(org_id);
@@ -1525,7 +1544,10 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
                             htmlContent += `<div id="group-game-${running_games[i].id}" class="card-body">
                                 <h5 class="card-title"><u>PIN</u> ${running_games[i].id}</h5>
                                 <p class="card-text"><u>Название:</u> ${running_games[i].quiz.title}</p>
-                                <a id="to-group-game-btn-${running_games[i].id}" class="btn btn-success">Присоединиться</a>
+                                <a id="to-group-game-btn-${running_games[i].id}" 
+                                data-toggle="tooltip" data-placement="right"
+                                title="Участвовать в соревновании"
+                                class="btn btn-success">Присоединиться</a>
                               </div>
                               <hr>`;
                         }
@@ -1740,7 +1762,7 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
 
     startQuizBtn(resp) {
         let startGameBtn = document.createElement('button');
-        startGameBtn.innerHTML = "Запуcтить";
+        startGameBtn.innerHTML = `<i class="fa fa-play" aria-hidden="true"></i> Запуcтить`;
         startGameBtn.setAttribute("id", "start-game-btn");
         startGameBtn.setAttribute("class", "btn btn-success start-btn");
         document.getElementById("quiz-editor-h3").appendChild(startGameBtn);
@@ -1756,7 +1778,9 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
     selectTargetGroupBtn(organizations) {
         let targetBox = document.getElementById("target-group-box");
         targetBox.innerHTML =
-            `<div class="btn-group org-btn-group list-btn">
+            `<div class="btn-group org-btn-group list-btn"
+            data-toggle="tooltip" data-placement="top"
+            title="Выберите организацию для публикации соревнования">
                 <button id="selected-org" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Выберите организацию...
                 </button>
@@ -1765,7 +1789,9 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
                     <!--<a class="dropdown-item" href="#">Школа 444</a>-->
                 </div>
             </div>
-            <div class="btn-group group-btn-group list-btn">
+            <div class="btn-group group-btn-group list-btn"
+            data-toggle="tooltip" data-placement="top"
+            title="Выберите группу в организации для публикации соревнования">
                 <button id="selected-group" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Выберите группу...
                 </button>
@@ -2090,6 +2116,7 @@ class Router {
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.signoutBtn = document.getElementById("nav-signout-btn");
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().nav.loginBox = document.getElementById("nav-login-box");
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn = document.getElementById("nav-office-btn");
+        Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.mainBtn = document.getElementById("nav-main-btn");
 
         let navBtnArr = document.getElementsByClassName('btnLink');
         for (let i = 0; i < navBtnArr.length; i++) {
@@ -2217,6 +2244,13 @@ class Router {
                                 Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
                                 return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office error router");
                             }
+                            try {
+                                Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.mainBtn.classList.remove('active');
+                            } catch(e){
+                                Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])(1);
+                            }
+
+                            Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn.classList.add('active');
                             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().officePage.render();
                             __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("office-page");
                             return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office norm router");
@@ -2313,7 +2347,7 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
     static newQuizCard() {
         return `<div id="card-row-1" class="row equal-height-col">
                     <div class="col-sm-4">
-                        <div id="new-quiz" class="new-quiz card card-in-col bg-success pointer">
+                        <div id="new-quiz" data-toggle="tooltip" title="Создать новую викторину" data-placement="top" class="new-quiz card card-in-col bg-success pointer">
                             <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
                             <div class="card-body text-white">
                                 <h5 class="card-title">Новая викторина</h5>
@@ -2375,6 +2409,9 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
                     caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col pointer");
+                    caBox.setAttribute("data-toggle", "tooltip");
+                    caBox.setAttribute("title", "Открыть викторину для запуска или редактирования");
+                    caBox.setAttribute("data-placement", "top");
                     caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0], resp[i].tags);
                     caCol.appendChild(caBox);
                     document.getElementById("card-row-1").appendChild(caCol);
@@ -2396,6 +2433,9 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
                     caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col pointer");
+                    caBox.setAttribute("data-toggle", "tooltip");
+                    caBox.setAttribute("title", "Открыть викторину для запуска или редактирования");
+                    caBox.setAttribute("data-placement", "top");
                     caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0], resp[i].tags);
                     caCol.appendChild(caBox);
                     document.getElementById(`card-row-${rowCount}`).appendChild(caCol);
@@ -2950,7 +2990,10 @@ function statisticItem(pin, quiz_name, game_date, org_name, group_name) {
                             ${content}
                         </div>
                         <div class="col col-sm-3 text-right">
-                            <button id=statistic-xls-by-pin-${pin} type="button" class="btn btn-sm btn-success btn-icon">
+                            <button id=statistic-xls-by-pin-${pin} type="button" 
+                            data-toggle="tooltip" data-placement="left"
+                            title="Скачать отчет по соревнованию в формате Excel"
+                            class="btn btn-sm btn-success btn-icon">
                                 <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
                             </button>                         
                         </div>
@@ -3105,8 +3148,12 @@ function emptyQuizForm() {
                 <label>Метки викторины <red>&nbsp;*</red></label>
                 <input id="edit-quiz-form__tags" class="form-control necessary-field" type="text" placeholder="Математика, Физика">
             </div>
+            <red>
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                При составлении вопросов обратите внимание,
+                что варианты ответов во время соревнования будут перетасованы
+            </red>
             <hr>
-            <br>
             <div id="edit-quiz-form__questions">
                 <div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_0">
                     <h4>Вопрос 1<red>&nbsp;*</red></h4>
@@ -3516,7 +3563,10 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
         let pin = game_data.id;
         document.getElementById("question-preview").innerHTML =
             `Соревнование завершено 
-                    <button id=xls-by-pin-${pin} type="button" class="btn btn-sm btn-success btn-icon">
+                    <button id=xls-by-pin-${pin} type="button" 
+                    data-toggle="tooltip" data-placement="right"
+                    title="Скачать отчет по соревнованию в формате Excel"
+                    class="btn btn-sm btn-success btn-icon">
                         <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
                     </button>`;
         document.getElementById(`xls-by-pin-${pin}`).onclick = function() {open(`http://api.keklik.xyz/media/games/${pin}/report`)};

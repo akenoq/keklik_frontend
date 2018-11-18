@@ -1531,7 +1531,7 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
 
     startQuizBtn(resp) {
         let startGameBtn = document.createElement('button');
-        startGameBtn.innerHTML = "Запуcтить";
+        startGameBtn.innerHTML = `<i class="fa fa-play" aria-hidden="true"></i> Запуcтить`;
         startGameBtn.setAttribute("id", "start-game-btn");
         startGameBtn.setAttribute("class", "btn btn-success start-btn");
         document.getElementById("quiz-editor-h3").appendChild(startGameBtn);

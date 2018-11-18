@@ -35,6 +35,7 @@ export default class Router {
         globalBus().btn.signoutBtn = document.getElementById("nav-signout-btn");
         globalBus().nav.loginBox = document.getElementById("nav-login-box");
         globalBus().btn.officeBtn = document.getElementById("nav-office-btn");
+        globalBus().btn.mainBtn = document.getElementById("nav-main-btn");
 
         let navBtnArr = document.getElementsByClassName('btnLink');
         for (let i = 0; i < navBtnArr.length; i++) {

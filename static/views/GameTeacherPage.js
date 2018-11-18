@@ -293,7 +293,10 @@ export default class GameTeacherPage extends Page {
         let pin = game_data.id;
         document.getElementById("question-preview").innerHTML =
             `Соревнование завершено 
-                    <button id=xls-by-pin-${pin} type="button" class="btn btn-sm btn-success btn-icon">
+                    <button id=xls-by-pin-${pin} type="button" 
+                    data-toggle="tooltip" data-placement="right"
+                    title="Скачать отчет по соревнованию в формате Excel"
+                    class="btn btn-sm btn-success btn-icon">
                         <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
                     </button>`;
         document.getElementById(`xls-by-pin-${pin}`).onclick = function() {open(`http://api.keklik.xyz/media/games/${pin}/report`)};

@@ -119,7 +119,7 @@ export default class QuizEditorPage extends Page {
 
     startQuizBtn(resp) {
         let startGameBtn = document.createElement('button');
-        startGameBtn.innerHTML = "Запуcтить";
+        startGameBtn.innerHTML = `<i class="fa fa-play" aria-hidden="true"></i> Запуcтить`;
         startGameBtn.setAttribute("id", "start-game-btn");
         startGameBtn.setAttribute("class", "btn btn-success start-btn");
         document.getElementById("quiz-editor-h3").appendChild(startGameBtn);
@@ -135,7 +135,9 @@ export default class QuizEditorPage extends Page {
     selectTargetGroupBtn(organizations) {
         let targetBox = document.getElementById("target-group-box");
         targetBox.innerHTML =
-            `<div class="btn-group org-btn-group list-btn">
+            `<div class="btn-group org-btn-group list-btn"
+            data-toggle="tooltip" data-placement="top"
+            title="Выберите организацию для публикации соревнования">
                 <button id="selected-org" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Выберите организацию...
                 </button>
@@ -144,7 +146,9 @@ export default class QuizEditorPage extends Page {
                     <!--<a class="dropdown-item" href="#">Школа 444</a>-->
                 </div>
             </div>
-            <div class="btn-group group-btn-group list-btn">
+            <div class="btn-group group-btn-group list-btn"
+            data-toggle="tooltip" data-placement="top"
+            title="Выберите группу в организации для публикации соревнования">
                 <button id="selected-group" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Выберите группу...
                 </button>

@@ -1,5 +1,5 @@
 "use strict";
 
 export default function debugLog(s) {
-    // console.log(s);
+    console.log(s);
 }

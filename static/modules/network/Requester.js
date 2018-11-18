@@ -57,14 +57,24 @@ export default class Requester {
                     globalBus().authWorker.deleteToken();
                 }
                 debugLog(xhr.status + ' from 400');
-                return callback(xhr, null);
+                callback(xhr, null);
+                $(document).ready(function(){
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
+                return;
             }
 
             if (method !== "DELETE") {
                 const response = JSON.parse(xhr.responseText);
                 callback(null, response);
+                $(document).ready(function(){
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
             } else {
                 callback(null, null);
+                $(document).ready(function(){
+                    $('[data-toggle="tooltip"]').tooltip();
+                });
             }
         };
     }
