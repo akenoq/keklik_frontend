@@ -39,7 +39,7 @@ export default class OrganizationDesk extends Page {
             caCol.setAttribute("class", "col-sm-4");
             let caBox = document.createElement('div');
             caBox.setAttribute("id", `org-card-${resp[i].id}`);
-            caBox.setAttribute("class", "card org-desk__org-card card-in-col");
+            caBox.setAttribute("class", "card org-desk__org-card card-in-col pointer");
             let groups = [];
             let org_id = resp[i].id;
             groups = userGroupsByOrgId(org_id);

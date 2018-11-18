@@ -1368,7 +1368,7 @@ class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* defaul
             caCol.setAttribute("class", "col-sm-4");
             let caBox = document.createElement('div');
             caBox.setAttribute("id", `org-card-${resp[i].id}`);
-            caBox.setAttribute("class", "card org-desk__org-card card-in-col");
+            caBox.setAttribute("class", "card org-desk__org-card card-in-col pointer");
             let groups = [];
             let org_id = resp[i].id;
             groups = Object(__WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__["a" /* default */])(org_id);
@@ -2305,7 +2305,7 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
     static newQuizCard() {
         return `<div id="card-row-1" class="row equal-height-col">
                     <div class="col-sm-4">
-                        <div id="new-quiz" class="new-quiz card card-in-col bg-success">
+                        <div id="new-quiz" class="new-quiz card card-in-col bg-success pointer">
                             <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
                             <div class="card-body text-white">
                                 <h5 class="card-title">Новая викторина</h5>
@@ -2366,7 +2366,7 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                     caCol.setAttribute("class", "col-sm-4");
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
-                    caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col");
+                    caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col pointer");
                     caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0], resp[i].tags);
                     caCol.appendChild(caBox);
                     document.getElementById("card-row-1").appendChild(caCol);
@@ -2387,7 +2387,7 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                     caCol.setAttribute("class", "col-sm-4");
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
-                    caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col");
+                    caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col pointer");
                     caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0], resp[i].tags);
                     caCol.appendChild(caBox);
                     document.getElementById(`card-row-${rowCount}`).appendChild(caCol);
@@ -2501,6 +2501,7 @@ class ProfileForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js_
     static validate(nameValue, emailValue, passwordValue, newPasswordValue, newPasswordValueRepeat) {
         return true;
     }
+
 
     setFormValues(resp) {
         this.clearFields(
