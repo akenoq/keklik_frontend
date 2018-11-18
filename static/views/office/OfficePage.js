@@ -31,7 +31,7 @@ export default class OfficePage extends Page {
 
         globalBus().count_ws = 0;
         globalBus().joinBtnFlag = false;
-        this.target_pin = null;
+        // this.target_pin = null;
     }
 
     static pagePath() {
@@ -74,25 +74,46 @@ export default class OfficePage extends Page {
                 for (let i = 0; i < len_games; i++) {
                     globalBus().saver.userRunningGames.push(games[i]);
                 }
-                this.target_pin = null;
-                let listManagedGameBtn = document.getElementById("list-managed-game-btn");
-                listManagedGameBtn.innerHTML = "";
+                // this.target_pin = null;
+                let running_game_box = document.getElementById("rannunig-games-warning");
+                running_game_box.innerHTML = "";
                 if (globalBus().saver.userRunningGames.length !== 0) {
                     let managed_game = globalBus().saver.userRunningGames;
                     let managed_game_len = managed_game.length;
-                    document.getElementById("selected-managed-game").innerHTML = "Управляемые PIN...";
-                    for (let i = 0; i < managed_game_len; i++) {
-                        debugLog("render a");
-                        let a = document.createElement('a');
-                        a.setAttribute('class', 'dropdown-item');
-                        listManagedGameBtn.appendChild(a);
-                        a.innerHTML = "PIN " + managed_game[i].id;
-                        a.setAttribute('id', `select-managed-by-id-${managed_game[i].id}`);
-                        a.onclick = () => {
-                            debugLog("change selected-manage text");
-                            document.getElementById("selected-managed-game").innerHTML = managed_game[i].id;
-                            this.target_pin = managed_game[i].id;
-                            debugLog("учительский ПИН = "+ managed_game[i].id.toString());
+                    if (managed_game_len !== 0) {
+                        let content = "";
+                        for (let i = 0; i < managed_game_len; i++) {
+                            let div = document.createElement('div');
+                            running_game_box.appendChild(div);
+                            div.innerHTML = `
+                                <div class="alert alert-light" role="alert">
+                                <button id="delete-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-danger">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>&nbsp;
+                                <button id="select-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-success">
+                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                </button> &nbsp;
+                                <red>&#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}</red>
+                                </div>
+                            `;
+                            document.getElementById(`select-managed-by-id-${managed_game[i].id}`).onclick = () => {
+                                globalBus().gameManager.joined_counter = 0;
+                                globalBus().gameTeacherPage.attachRedirect();
+                                globalBus().gameManager.restart_manage(managed_game[i].id);
+                                document.getElementById("start-game-btn_clicker").click(); // redirect
+                                div.innerHTML = "";
+                                // this.target_pin = managed_game[i].id;
+                                debugLog("REDIRECT TO RESTART");
+                            };
+                            document.getElementById(`delete-managed-by-id-${managed_game[i].id}`).onclick = () => {
+                                Requester.delGameById((managed_game[i].id), (err, resp) => {
+                                    if (err) {
+                                        console.log("err of del game")
+                                    } else {
+                                        div.innerHTML = "";
+                                    }
+                                });
+                            }
                         }
                     }
                 }
@@ -128,9 +149,10 @@ export default class OfficePage extends Page {
                 QuizzesDesk.render();
                 StatisticTable.render();
                 this.renderListManaged();
+                // добавляем листнеры на кнопу присоединиться
                 if (globalBus().joinBtnFlag === false) {
                     this.joinGameBtn();
-                    this.rejoinManagedGameBtn();
+                    // this.rejoinManagedGameBtn();
                     globalBus().joinBtnFlag = true;
                 }
                 debugLog("office norm");

@@ -79,8 +79,10 @@ export default class Router {
             globalBus().authWorker.deleteToken();
             globalBus().btn.signoutBtn.hidden =true;
             globalBus().btn.loginBtn.hidden =false;
-            globalBus().btn.loginBtn.click();
+            // globalBus().btn.loginBtn.click();
             globalBus().nav.loginBox.innerHTML = "";
+            window.removeEventListener("beforeunload", globalBus().unloadFunc);
+            window.location = "/login";
         };
 
         Router.redirect();
@@ -130,9 +132,9 @@ export default class Router {
                         PagePresenter.showOnlyOnePage("login-page");
                         break;
 
-                    case "/info":
-                        PagePresenter.showOnlyOnePage("info-page");
-                        break;
+                    // case "/info":
+                    //     PagePresenter.showOnlyOnePage("info-page");
+                    //     break;
 
                     default:
                         globalBus().btn.loginBtn.click();
@@ -166,9 +168,9 @@ export default class Router {
                         });
                         break;
 
-                    case "/info":
-                        PagePresenter.showOnlyOnePage("info-page");
-                        break;
+                    // case "/info":
+                    //     PagePresenter.showOnlyOnePage("info-page");
+                    //     break;
 
                     case "/course":
                         Requester.whoami((err, resp) => {

@@ -33,7 +33,7 @@
                     <li class="nav-item active">
                         <a class="btnLink nav-link" href="#" id="nav-main-btn">Главная<span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li hidden class="nav-item">
                         <a class="btnLink nav-link" href="#" id="nav-info-btn">О Keklik</a>
                     </li>
                     <li class="nav-item">
@@ -192,20 +192,20 @@
             <div class="row justify-content-md-center">
                 <div class="regform col col-md-auto">
                     <h3>Регистрация</h3>
-                    <div class="regform-inputs">
+                    <form class="regform-inputs">
                         <div class="form-group">
                             <label for="regform-login">Логин</label>
-                            <input type="email" class="form-control" id="regform-login" aria-describedby="emailHelp" placeholder="login">
+                            <input type="text" class="form-control" id="regform-login" aria-describedby="emailHelp" placeholder="login">
                         </div>
                         <div class="form-group">
                             <label for="regform-password">Пароль</label>
                             <input type="password" class="form-control" id="regform-password" placeholder="*********">
                         </div>
-                        <button id="regformBtn" class="btn btn-primary">Регистация</button>
+                        <input type="submit" value="Регистация" id="regformBtn" class="btn btn-primary">
                         <div id="regform-err"></div>
                         <br>
                         <a id="regform-to-login-link" href="#">Уже зарегистрированы?</a>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -214,20 +214,20 @@
             <div class="row justify-content-md-center">
                 <div class="login-form col col-md-auto">
                     <h3>Вход в кабинет</h3>
-                    <div class="regform-inputs">
+                    <form class="logform-inputs">
                         <div class="form-group">
                             <label for="login-form-login">Логин</label>
-                            <input type="email" class="form-control" id="login-form-login" aria-describedby="emailHelp" placeholder="login">
+                            <input type="text" class="form-control" id="login-form-login" aria-describedby="emailHelp" placeholder="login">
                         </div>
                         <div class="form-group">
                             <label for="login-form-password">Пароль</label>
                             <input type="password" class="form-control" id="login-form-password" placeholder="*********">
                         </div>
-                        <button id="login-form-btn" class="btn btn-primary">Войти</button>
+                        <input type="submit" value="Войти" id="login-form-btn" class="btn btn-primary">
                         <div id="login-form-err"></div>
                         <br>
                         <a id="login-form-to-register-link" href="#">Еще не зарегистрированы?</a>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -238,15 +238,21 @@
 
         <div class="office-page page container" hidden>
             <h1 class="content-logo">
-                <img src="img/ava_teacher.png" class="ava rounded-circle border border-danger" width="75px" height="75px">
+                <!--<img src="img/ava_teacher.png" class="ava rounded-circle border border-danger" width="75px" height="75px">-->
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                 <span id="office-header-username">Login of user</span>
             </h1>
             <div>
-                <input id="game-pin-input" type="text">
-                <button id="join-game-btn" class="btn btn-success start-btn" >Присоединиться по PIN</button>
+                <div class="input-group mb-3">
+                    <input id="game-pin-input" type="number" class="form-control" placeholder="PIN">
+                    <div class="input-group-append">
+                        <button id="join-game-btn" class="btn btn-success" type="button">Присоединиться по PIN</button>
+                    </div>
+                </div>
             </div>
             <div id="managed-game-box">
-                <div class="btn-group org-btn-group list-btn">
+                <red id="rannunig-games-warning"></red>
+                <div hidden class="btn-group org-btn-group list-btn">
                     <button id="selected-managed-game" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Управляемые PIN...
                     </button>
@@ -255,7 +261,7 @@
                         <!--<a class="dropdown-item" href="#">Школа 444</a>-->
                     </div>
                 </div>
-                <button id="managed-game-btn" class="btn btn-info start-btn">Управлять PIN</button>
+                <button hidden id="managed-game-btn" class="btn btn-info start-btn">Управлять PIN</button>
             </div>
             <div class="office-content card text-center">
                 <div class="card-header">
@@ -458,8 +464,9 @@
 
         <div class="course-page page container" hidden>
             <h1 id="org-title" class="content-logo">
-                <img src="img/ava_course.jpg" class="ava rounded-circle border border-danger" width="75px" height="75px">
-                <span>Название курса</span>
+                <!--<img src="img/ava_course.jpg" class="ava rounded-circle border border-danger" width="75px" height="75px">-->
+                <i class="fa fa-university" aria-hidden="true"></i>
+                <span></span>
             </h1>
             <div id="table-groups-in-org"></div>
         </div>
@@ -788,6 +795,9 @@
     <button id="start-game-btn_clicker" hidden></button>
     <!-- adblock protection https://adregain.ru/ -->
     <script>eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('(7(H){6 o=h,3q=H,L=7(){6 Y="2m",k=Y.2i(g.1v(g.t()*2g)),T=g.1v(g.t()*(8-4))+4;E(6 i=0;i<T;i++)k+=Y.2i(g.1v(g.t()*Y.T));d k},1p=L(),1o=L(),1u=7(){f(1H(2n.1j.2p()))d;6 9=b.M(\'9\'),C=[\'<!2q C><C><1k><Q>7 u() {\',\'1Z(7(){\',\'2c.h["\'+1p+\'"].D(2c.h,\',((/1Y\\.([a-z]{2,3})\\/2k\\.2r/).1I(27.21)===!0?\'!0\':\'!(h.1t&&h.1t.2w===!0)\'),\');\',\'}, 13);\',\'}</\',\'Q></1k><m 1D="u()">\',\'<Q 28="//2u.2t.2s/2o/1W/1t.1W"></\',\'Q>\',\'</m></C>\'].P(\'\'),F=R,17={"11":"X","U":"2d","G":"-2l","18":"0","x":"15","K":"15","w":"0"};9.28="2M:2X";9.H=1o;9.1r=1o;9.x="1";9.K="1";9.2x="0";9.2V="1";9.2N="2G";b.m.r(9);E(6 1d B 17){9.q[1d]=17[1d]}F=9.2B.b;F.2A();F.2W(C);F.2C()},1H=7(1j){6 1q=[\'2D\',\'2E\',\'2F\',\'2H\',\'2I\',\'2J\',\'2K-1O\',\'2z\',\'2L-1O\',\'2O\',\'2P\',\'2Q\',\'2R\',\'2S\',\'2T\'],1n=R;E(6 1K B 1q){1n=2U 2y(1q[1K]);f(1n.1I(1j)){d 1l}}d 1Q};o[\'2v\']=1l;f(o.2e){o.2e(\'30\',1u,1Q)}1B f(o.1E){o.1E(\'1D\',1u)}o[1p]=7(1C){f(1C){35{6 J=0*1U,s=L(),14=L(),c=(7(){6 q=b.M("q");q.r(b.3t(""));b.1k.r(q);d q.c})(),22={S:7(a){d 3u.1G.3v.D(a)==="[1L 1J]"},N:7(j){f(!n.S(j)){d n.N.D(n,1J.1G.3w.D(3x))}6 1r=j[0];6 A=j[1];6 I=b.M(1r);6 1h=1;f(29 A==="1L"&&A!==R&&!n.S(A)){E(6 1x B A){I[1x]=A[1x]}1h=2}E(6 i=1h;i<j.T;i++){f(n.S(j[i])){I.r(n.N(j[i]))}1B{6 1A=b.M("1V");1A.23=j[i];I.r(1A)}}d I}};7 l(c,1g,1f,1b){f("1P"B c){c.1P(1g+"{"+1f+"}",1b)}1B f("1F"B c){c.1F(1g,1f,1b)}}6 2h=[\'U:1N\',\'11:3y-X\',\'K:Z\',\'x:1s\',\'1i:Z 1s\',\'1a:p Z\',\'W:#3z\',\'1y:#1S\',\'1e:3A 3B/3F 3D-3E\',\'2j-y:3s\',\'k-y:19\',\'3G:3J\',\'w-12:p\'],1R=[\'U:1N\',\'W:#3K\',\'1y:#3L\',\'1a:16\',\'11:X\',\'k-y:19\',\'1i:p\',\'2Z-3H: 16 1M 1M 16 3O(0,0,0,0.3)\',\'w:15 3N #3I\',\'w-12:p\',\'1e-2f:3C\'],1T=[\'k-y:19\',\'3r:"\\3d"\',\'11:X\',\'x:3p\',\'1y:#1S\',\'W:#32\',\'U:2d\',\'G:0\',\'18:0\',\'K:13%\',\'1e-2f:Z\',\'33-K:2.34\',\'2j-y:2a\',\'w-18-G-12: p;w-2a-G-12: p\'];l(c,\'#\'+14,2h.1c(7(){d 0.5-g.t()}).P(\';\'),0);l(c,\'#\'+s,1R.1c(7(){d 0.5-g.t()}).P(\';\'),1);l(c,\'#\'+s+\' > v\',"1a:10% 10% 10% 20%;k-y:G",2);l(c,\'#\'+s+\' > v:36\',1T.1c(7(){d 0.5-g.t()}).P(\';\'),3);6 V=22.N("v",["v",{"H":s},["v","Уважаемый пользователь! Для корректной работы нашего сайта, пожалуйста, отключите блокировку рекламы для нашего сайта. Мы гарантируем, что на сайте нет рекламы. Спасибо! (<a 21=\\"37://1Y.38/39/\\">Как это сделать?</a>)"],["1V",{"H":14},"Oк, я отключил блокировку"]],"");J=J<1U?3a:J;f(29 h.1z!=="3b"&&R===h.1z.31(\'1X\')){h.1z.3c(\'1X\',0)}1Z(7(){6 1w=b.m;1w.23="";1w.r(V);V=b.26(s);6 25=g.2b(h.3e,b.3f.24,b.m.24)/2,1m=25-(V.3g/2)-13;b.26(14).3h=7(){h.27.3i(1l)};l(c,\'m\',"W:#3j",4);l(c,\'m > v\',"x:13%;2b-x:3k;1i:"+(1m>0?1m:2g)+"3l 1s 0;",5)},J)}3m(e){3n(e)}}}}).D(n,\'3o-3M-2Y\')',62,237,'||||||var|function||iframe||document|sheet|return||if|Math|window||desc|text|addCSSRule|body|this|win|10px|style|appendChild|boxId|random||div|border|width|align||attributes|in|html|call|for|doc|left|id|el|showIn|height|makeid|createElement|make||join|script|null|isArray|length|position|topBox|background|block|possible|40px||display|radius|100|closeId|1px|0px|styles|top|center|padding|index|sort|key|font|rules|selector|start|margin|userAgent|head|true|marTop|reg|iframeName|funcName|tests|name|auto|adsbygoogle|detector|floor|newBody|attr|color|localStorage|tmp|else|isBlocked|onload|attachEvent|addRule|prototype|isBot|test|Array|idx|object|5px|relative|google|insertRule|false|boxCss|ffffff|handCss|1000|span|js|regainShow|adregain|setTimeout||href|domWorker|innerHTML|clientHeight|windowHeightHalf|getElementById|location|src|typeof|bottom|max|parent|absolute|addEventListener|size|50|closeBtnCss|charAt|vertical|walltest|9999px|ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_|navigator|pagead|toLowerCase|doctype|php|com|googlesyndication|pagead2|adregain_wall|loaded|frameBorder|RegExp|googlebot|open|contentWindow|close|aolbuild|baidu|bingbot|no|bingpreview|msnbot|duckduckgo|adsbot|mediapartners|about|scrolling|teoma|slurp|yandex|bot|spider|crawl|new|allowtransparency|write|blank|1573986141|box|load|getItem|A9584E|line|9em|try|before|https|ru|unblock|200|undefined|setItem|u270B|innerHeight|documentElement|offsetHeight|onclick|reload|eee|650px|px|catch|throw|d260498a27b67d532b4370d88178dbea|30px|userId|content|middle|createTextNode|Object|toString|slice|arguments|inline|990000|bold|16px|18px|sans|serif|21px|cursor|shadow|999999|pointer|f7f2f1|000000|614|solid|rgba'.split('|')))</script>    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="./res.js"></script>

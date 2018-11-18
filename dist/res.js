@@ -83,7 +83,11 @@ function debugLog(s) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = globalBus;
 
 
-const GLOBAL_BUS = {};
+const GLOBAL_BUS = {
+    saver: {
+        userOrg: []
+    }
+};
 
 function globalBus() {
     return GLOBAL_BUS;
@@ -140,7 +144,7 @@ class Requester {
         xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
         xhr.setRequestHeader("Authorization", Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().authWorker.getToken());
 
-        if (method === "GET") {
+        if (method === "GET" || method === "DELETE") {
             xhr.send(null);
         } else {
             xhr.send(body);
@@ -158,9 +162,12 @@ class Requester {
                 return callback(xhr, null);
             }
 
-            const response = JSON.parse(xhr.responseText);
-
-            callback(null, response);
+            if (method !== "DELETE") {
+                const response = JSON.parse(xhr.responseText);
+                callback(null, response);
+            } else {
+                callback(null, null);
+            }
         };
     }
 
@@ -264,8 +271,14 @@ class Requester {
         Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
 
-    static getGameByUser(callback) {
-        Requester.requestToHost("GET", "api/games/my/", null, callback);
+    static getGameByUser(url_to_page, callback) {
+        let url = "api/" + url_to_page.split("/api/")[1];
+        // https://api.example.org/accounts/?limit=100&offset=400
+        Requester.requestToHost("GET", url, null, callback);
+    }
+
+    static delGameById(id, callback) {
+        Requester.requestToHost("DELETE", `api/games/${id}/`, null, callback)
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Requester;
@@ -772,7 +785,8 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
 
     addEventsToButtons() {
 
-        document.querySelector("#regformBtn").addEventListener("click", () => {
+        document.querySelector("#regformBtn").addEventListener("click", (event) => {
+            event.preventDefault();
             this.loginValue = document.querySelector("#regform-login").value;
             this.passwordValue = document.querySelector("#regform-password").value;
             this.errorBox = document.querySelector("#regform-err");
@@ -927,7 +941,8 @@ class LoginForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__[
 
     addEventsToButtons() {
 
-        document.querySelector("#login-form-btn").addEventListener("click", () => {
+        document.querySelector("#login-form-btn").addEventListener("click", (event) => {
+            event.preventDefault();
             this.loginValue = document.querySelector("#login-form-login").value;
             this.passwordValue = document.querySelector("#login-form-password").value;
             this.errorBox = document.querySelector("#login-form-err");
@@ -993,7 +1008,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
 
         Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().count_ws = 0;
         Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag = false;
-        this.target_pin = null;
+        // this.target_pin = null;
     }
 
     static pagePath() {
@@ -1036,25 +1051,46 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 for (let i = 0; i < len_games; i++) {
                     Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames.push(games[i]);
                 }
-                this.target_pin = null;
-                let listManagedGameBtn = document.getElementById("list-managed-game-btn");
-                listManagedGameBtn.innerHTML = "";
+                // this.target_pin = null;
+                let running_game_box = document.getElementById("rannunig-games-warning");
+                running_game_box.innerHTML = "";
                 if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames.length !== 0) {
                     let managed_game = Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames;
                     let managed_game_len = managed_game.length;
-                    document.getElementById("selected-managed-game").innerHTML = "Управляемые PIN...";
-                    for (let i = 0; i < managed_game_len; i++) {
-                        Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("render a");
-                        let a = document.createElement('a');
-                        a.setAttribute('class', 'dropdown-item');
-                        listManagedGameBtn.appendChild(a);
-                        a.innerHTML = "PIN " + managed_game[i].id;
-                        a.setAttribute('id', `select-managed-by-id-${managed_game[i].id}`);
-                        a.onclick = () => {
-                            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("change selected-manage text");
-                            document.getElementById("selected-managed-game").innerHTML = managed_game[i].id;
-                            this.target_pin = managed_game[i].id;
-                            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("учительский ПИН = "+ managed_game[i].id.toString());
+                    if (managed_game_len !== 0) {
+                        let content = "";
+                        for (let i = 0; i < managed_game_len; i++) {
+                            let div = document.createElement('div');
+                            running_game_box.appendChild(div);
+                            div.innerHTML = `
+                                <div class="alert alert-light" role="alert">
+                                <button id="delete-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-danger">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>&nbsp;
+                                <button id="select-managed-by-id-${managed_game[i].id}" type="button" class="btn btn-success">
+                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                </button> &nbsp;
+                                <red>&#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}</red>
+                                </div>
+                            `;
+                            document.getElementById(`select-managed-by-id-${managed_game[i].id}`).onclick = () => {
+                                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.joined_counter = 0;
+                                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameTeacherPage.attachRedirect();
+                                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.restart_manage(managed_game[i].id);
+                                document.getElementById("start-game-btn_clicker").click(); // redirect
+                                div.innerHTML = "";
+                                // this.target_pin = managed_game[i].id;
+                                Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("REDIRECT TO RESTART");
+                            };
+                            document.getElementById(`delete-managed-by-id-${managed_game[i].id}`).onclick = () => {
+                                __WEBPACK_IMPORTED_MODULE_3__modules_network_Requester__["a" /* default */].delGameById((managed_game[i].id), (err, resp) => {
+                                    if (err) {
+                                        console.log("err of del game")
+                                    } else {
+                                        div.innerHTML = "";
+                                    }
+                                });
+                            }
                         }
                     }
                 }
@@ -1090,9 +1126,10 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 __WEBPACK_IMPORTED_MODULE_4__quizzes_QuizzesDesk__["a" /* default */].render();
                 __WEBPACK_IMPORTED_MODULE_9__statistic_StaticticTable__["a" /* default */].render();
                 this.renderListManaged();
+                // добавляем листнеры на кнопу присоединиться
                 if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag === false) {
                     this.joinGameBtn();
-                    this.rejoinManagedGameBtn();
+                    // this.rejoinManagedGameBtn();
                     Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag = true;
                 }
                 Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("office norm");
@@ -1458,11 +1495,6 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
 
         for (let i = 0; i < groups_len; i++) {
             table_groups.innerHTML += `<div id="group-card-${groups[i].group.id}" class="card game-card-in-group">
-              <!--<div class="card-body">-->
-                <!--<h5 class="card-title">Актуальные соревнования</h5>-->
-                <!--&lt;!&ndash;<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>&ndash;&gt;-->
-                <!--&lt;!&ndash;<a href="#" class="btn btn-primary">Go somewhere</a>&ndash;&gt;-->
-              <!--</div>-->
             </div>`;
 
             __WEBPACK_IMPORTED_MODULE_2__modules_network_Requester__["a" /* default */].getRunningGameByGroupId(groups[i].group.id, (err, resp) => {
@@ -1955,9 +1987,16 @@ function startApp() {
     let router = Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().router;
     // router = router.getMe(router);
     // router.sendRouter();
-    document.body.onbeforeunload = () => {
-        return "try to go away";
+
+    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().unloadFunc = (event) => {
+        event.preventDefault();
+        event.returnValue = '';
     };
+
+    window.addEventListener("beforeunload", Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().unloadFunc);
+    // document.body.onbeforeunload = () => {
+    //     return "try to go away";
+    // };
 }
 
 function changingColor() {
@@ -2087,8 +2126,10 @@ class Router {
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().authWorker.deleteToken();
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.signoutBtn.hidden =true;
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.hidden =false;
-            Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
+            // globalBus().btn.loginBtn.click();
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().nav.loginBox.innerHTML = "";
+            window.removeEventListener("beforeunload", Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().unloadFunc);
+            window.location = "/login";
         };
 
         Router.redirect();
@@ -2138,9 +2179,9 @@ class Router {
                         __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("login-page");
                         break;
 
-                    case "/info":
-                        __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("info-page");
-                        break;
+                    // case "/info":
+                    //     PagePresenter.showOnlyOnePage("info-page");
+                    //     break;
 
                     default:
                         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
@@ -2174,9 +2215,9 @@ class Router {
                         });
                         break;
 
-                    case "/info":
-                        __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("info-page");
-                        break;
+                    // case "/info":
+                    //     PagePresenter.showOnlyOnePage("info-page");
+                    //     break;
 
                     case "/course":
                         __WEBPACK_IMPORTED_MODULE_8__network_Requester__["a" /* default */].whoami((err, resp) => {
@@ -2302,9 +2343,12 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
     static render() {
         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("Quiz Desk");
         let quizzesDesk = document.getElementById("quizzes-desk");
-        quizzesDesk.innerHTML = "";
-        QuizzesDesk.renderNewQuizCard(quizzesDesk);
-        QuizzesDesk.quizzesReq((resp) => {
+        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].quizzesOfUser((err, resp) => {
+            quizzesDesk.innerHTML = "";
+            QuizzesDesk.renderNewQuizCard(quizzesDesk);
+            if (err) {
+                return console.log(" error");
+            }
             Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(resp);
             let cardsInRow = 1;
             let rowCount = 1;
@@ -2352,18 +2396,6 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                 }
             }
             document.getElementById("new-quiz").hidden = false;
-        });
-    }
-
-    static quizzesReq(callback) {
-        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].quizzesOfUser(function(err, resp) {
-            if (err) {
-                return console.log(" error");
-            }
-            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("quizzes of user norm");
-            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(err);
-            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(resp);
-            callback(resp);
         });
     }
 }
@@ -2767,15 +2799,18 @@ class WsController {
 
 class StaticticTable extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */] {
 
-    static render() {
+    static render(url="http://api.keklik.xyz/api/games/my/?limit=5&offset=0") {
         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("Statictic Table");
         let statDesk = document.getElementById("table-statistic");
-        statDesk.innerHTML = "";
 
-        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].getGameByUser((err, resp) => {
+        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].getGameByUser(url, (err, resp) => {
             if (err) {
                 Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("err load user games");
             } else {
+                statDesk.innerHTML = "";
+                let next_page = resp.next;
+                let prev_page = resp.previous;
+                resp = resp.results;
                 if (resp.length === 0) {
                     statDesk.innerHTML = "<h3>Вы не провели ни одного соревнования</h3>";
                 } else {
@@ -2785,10 +2820,45 @@ class StaticticTable extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default 
                     for (let i = 0; i < len; i++) {
                         let game = resp[i];
                         content += Object(__WEBPACK_IMPORTED_MODULE_4__statisticItem__["a" /* default */])(game.id, game.quiz.title, game.created_at.split("T")[0],
-                            game.group !== null ? game.group.organization.name : "─",
-                            game.group !== null ? game.group.name : "─");
+                            game.group !== null ? game.group.organization.name : null,
+                            game.group !== null ? game.group.name : null);
                     }
-                    statDesk.innerHTML = content;
+
+                    let paginator = `<nav aria-label="Page navigation example">
+                                  <ul class="pagination justify-content-center">
+                                    <li id="prev-page-statistic" class="page-item">
+                                      <span class="page-link"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+                                    </li>
+                                    <li id="next-page-statistic" class="page-item">
+                                      <span class="page-link"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                                    </li>
+                                  </ul>
+                                </nav>`;
+
+                    statDesk.innerHTML = content + "<br>" + paginator;
+                    for (let i = 0; i < len; i++) {
+                        let game = resp[i];
+                        document.getElementById(`statistic-xls-by-pin-${game.id}`)
+                            .onclick = function() {open(`http://api.keklik.xyz/media/games/${game.id}/report`)};
+                    }
+
+                    if (next_page === null) {
+                        document.getElementById("next-page-statistic").setAttribute('class','page-item disabled');
+                    } else {
+                        document.getElementById("next-page-statistic").setAttribute('class','page-item');
+                        document.getElementById("next-page-statistic").onclick = () => {
+                            StaticticTable.render(next_page);
+                        }
+                    }
+
+                    if (prev_page === null) {
+                        document.getElementById("prev-page-statistic").setAttribute('class','page-item disabled');
+                    } else {
+                        document.getElementById("prev-page-statistic").setAttribute('class','page-item');
+                        document.getElementById("prev-page-statistic").onclick = () => {
+                            StaticticTable.render(prev_page);
+                        }
+                    }
                 }
             }
         });
@@ -2806,6 +2876,15 @@ class StaticticTable extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default 
 
 
 function statisticItem(pin, quiz_name, game_date, org_name, group_name) {
+    let content = "";
+    if (org_name !== null || group_name !== null) {
+        content = `<small class="mb-1 text-left"><u>Организация:</u> ${org_name}</small><br>
+                   <small class="text-left"><u>Группа:</u> ${group_name}</small>`
+    } else {
+        content = `<small class="mb-1 text-left">&nbsp;</small><br>
+                   <small class="text-left">&nbsp;</small>`
+    }
+
     return `<div class="list-group-item  align-items-start">
                 <div class="container">
                     <div class="text-left d-flex justify-content-between row">
@@ -2818,15 +2897,12 @@ function statisticItem(pin, quiz_name, game_date, org_name, group_name) {
                     </div>
                     <div class="text-left row">
                         <div class="col col-sm-9">
-                            <small class="mb-1 text-left"><u>Организация:</u> ${org_name}</small><br>
-                            <small class="text-left"><u>Группа:</u> ${group_name}</small>
+                            ${content}
                         </div>
                         <div class="col col-sm-3 text-right">
-                            <a href="http://api.keklik.xyz/media/games/${pin}/report">
-                                <button type="button" class="btn btn-sm btn-success btn-icon">
-                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
-                                </button>
-                            </a>
+                            <button id=statistic-xls-by-pin-${pin} type="button" class="btn btn-sm btn-success btn-icon">
+                                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
+                            </button>                         
                         </div>
                     </div>
                 </div>
@@ -3140,7 +3216,14 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.switchNext();
             document.getElementById("game-table-question").innerHTML = "";
             this.game_table_answered = [];
+            document.getElementById("next-question-btn").setAttribute("disabled", "true");
+
+            const nextButton = () => {
+                document.getElementById("next-question-btn").removeAttribute("disabled");
+            };
+            setTimeout(nextButton, 1000);
         };
+
         document.getElementById("print-here-ans-btn").onclick = () => {
             let trueBox = document.getElementById("true-ans-box");
             trueBox.hidden = !trueBox.hidden;
@@ -3383,11 +3466,11 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
         let pin = game_data.id;
         document.getElementById("question-preview").innerHTML =
             `Соревнование завершено 
-                <a href="http://api.keklik.xyz/media/games/${pin}/report">
-                    <button type="button" class="btn btn-sm btn-success btn-icon">
+                    <button id=xls-by-pin-${pin} type="button" class="btn btn-sm btn-success btn-icon">
                         <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
-                    </button>
-                </a>`;
+                    </button>`;
+        document.getElementById(`xls-by-pin-${pin}`).onclick = function() {open(`http://api.keklik.xyz/media/games/${pin}/report`)};
+
         document.getElementById("next-question-btn").hidden = true;
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = true;

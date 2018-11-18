@@ -42,7 +42,7 @@ export default class Requester {
         xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
         xhr.setRequestHeader("Authorization", globalBus().authWorker.getToken());
 
-        if (method === "GET") {
+        if (method === "GET" || method === "DELETE") {
             xhr.send(null);
         } else {
             xhr.send(body);
@@ -60,9 +60,12 @@ export default class Requester {
                 return callback(xhr, null);
             }
 
-            const response = JSON.parse(xhr.responseText);
-
-            callback(null, response);
+            if (method !== "DELETE") {
+                const response = JSON.parse(xhr.responseText);
+                callback(null, response);
+            } else {
+                callback(null, null);
+            }
         };
     }
 
@@ -166,7 +169,13 @@ export default class Requester {
         Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
 
-    static getGameByUser(callback) {
-        Requester.requestToHost("GET", "api/games/my/", null, callback);
+    static getGameByUser(url_to_page, callback) {
+        let url = "api/" + url_to_page.split("/api/")[1];
+        // https://api.example.org/accounts/?limit=100&offset=400
+        Requester.requestToHost("GET", url, null, callback);
+    }
+
+    static delGameById(id, callback) {
+        Requester.requestToHost("DELETE", `api/games/${id}/`, null, callback)
     }
 }

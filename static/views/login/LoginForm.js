@@ -84,7 +84,8 @@ export default class LoginForm extends FormValidator {
 
     addEventsToButtons() {
 
-        document.querySelector("#login-form-btn").addEventListener("click", () => {
+        document.querySelector("#login-form-btn").addEventListener("click", (event) => {
+            event.preventDefault();
             this.loginValue = document.querySelector("#login-form-login").value;
             this.passwordValue = document.querySelector("#login-form-password").value;
             this.errorBox = document.querySelector("#login-form-err");
