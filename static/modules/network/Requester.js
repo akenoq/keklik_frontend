@@ -58,23 +58,23 @@ export default class Requester {
                 }
                 debugLog(xhr.status + ' from 400');
                 callback(xhr, null);
-                $(document).ready(function(){
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
                 return;
             }
 
             if (method !== "DELETE") {
                 const response = JSON.parse(xhr.responseText);
                 callback(null, response);
-                $(document).ready(function(){
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
             } else {
                 callback(null, null);
-                $(document).ready(function(){
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
             }
         };
     }
