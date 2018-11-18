@@ -51,11 +51,18 @@ export default class ProfileForm extends FormValidator {
         document.querySelector("#profile-email").value = resp.email;
     }
 
+    static clearMessages() {
+        document.getElementById("profile-form-ok").innerHTML = "";
+        document.getElementById("profile-form-error").innerHTML = "";
+    }
+
     sendRequest() {
         Requester.changeUserData(this.nameValue, this.emailValue, (err, resp) => {
+            ProfileForm.clearMessages();
             if (err) {
-                document.getElementById("profile-form-error").innerHTML = "patch err";
-                return console.log("patch err");
+                document.getElementById("profile-form-error").innerHTML = "Некорректный ввод";
+                console.log("Некорректный ввод");
+                return;
             }
             this.setFormValues(resp);
             document.getElementById("profile-form-ok").innerHTML = ProfileForm.msgSuccess();
@@ -64,9 +71,11 @@ export default class ProfileForm extends FormValidator {
 
     sendRequestChangePswd() {
         Requester.changePassword(this.passwordValue, this.newPasswordValue, (err, resp) => {
+            ProfileForm.clearMessages();
             if (err) {
-                document.getElementById("profile-form-error").innerHTML = "pswd err";
-                return console.log("pswd err");
+                document.getElementById("profile-form-error").innerHTML = "Ошибка смены пароля";
+                console.log("Ошибка смены пароля");
+                return;
             }
             document.getElementById("profile-form-ok").innerHTML = ProfileForm.msgSuccess();
         });
@@ -74,7 +83,8 @@ export default class ProfileForm extends FormValidator {
 
     addEventsToButtons() {
 
-        document.querySelector("#profile-form-btn").addEventListener("click", () => {
+        document.querySelector("#profile-form-btn").addEventListener("click", (event) => {
+            event.preventDefault();
             this.nameValue = document.querySelector("#profile-name").value;
             this.emailValue = document.querySelector("#profile-email").value;
             this.passwordValue = document.querySelector("#profile-old-password").value;
