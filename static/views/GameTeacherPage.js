@@ -124,6 +124,12 @@ export default class GameTeacherPage extends Page {
             }
         });
         document.getElementById("true-ans-box").innerHTML = `<u>Правильный ответ:</u> ${ans}`;
+        document.getElementById("true-ans-box").hidden = true;
+        document.getElementById("game-table-question").hidden = true;
+        document.getElementById("print-here-ans-btn")
+            .querySelector("i").setAttribute('class', 'fa fa-eye');
+        document.getElementById("print-here-table-btn")
+            .querySelector("i").setAttribute('class', 'fa fa-eye');
     }
 
     renderQuizNum(game_id) {
