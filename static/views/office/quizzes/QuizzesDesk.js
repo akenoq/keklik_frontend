@@ -50,9 +50,12 @@ export default class QuizzesDesk extends Page {
     static render() {
         debugLog("Quiz Desk");
         let quizzesDesk = document.getElementById("quizzes-desk");
-        quizzesDesk.innerHTML = "";
-        QuizzesDesk.renderNewQuizCard(quizzesDesk);
-        QuizzesDesk.quizzesReq((resp) => {
+        Requester.quizzesOfUser((err, resp) => {
+            quizzesDesk.innerHTML = "";
+            QuizzesDesk.renderNewQuizCard(quizzesDesk);
+            if (err) {
+                return console.log(" error");
+            }
             debugLog(resp);
             let cardsInRow = 1;
             let rowCount = 1;
@@ -100,18 +103,6 @@ export default class QuizzesDesk extends Page {
                 }
             }
             document.getElementById("new-quiz").hidden = false;
-        });
-    }
-
-    static quizzesReq(callback) {
-        Requester.quizzesOfUser(function(err, resp) {
-            if (err) {
-                return console.log(" error");
-            }
-            debugLog("quizzes of user norm");
-            debugLog(err);
-            debugLog(resp);
-            callback(resp);
         });
     }
 }

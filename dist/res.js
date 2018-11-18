@@ -83,7 +83,11 @@ function debugLog(s) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = globalBus;
 
 
-const GLOBAL_BUS = {};
+const GLOBAL_BUS = {
+    saver: {
+        userOrg: []
+    }
+};
 
 function globalBus() {
     return GLOBAL_BUS;
@@ -2339,9 +2343,12 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
     static render() {
         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("Quiz Desk");
         let quizzesDesk = document.getElementById("quizzes-desk");
-        quizzesDesk.innerHTML = "";
-        QuizzesDesk.renderNewQuizCard(quizzesDesk);
-        QuizzesDesk.quizzesReq((resp) => {
+        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].quizzesOfUser((err, resp) => {
+            quizzesDesk.innerHTML = "";
+            QuizzesDesk.renderNewQuizCard(quizzesDesk);
+            if (err) {
+                return console.log(" error");
+            }
             Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(resp);
             let cardsInRow = 1;
             let rowCount = 1;
@@ -2389,18 +2396,6 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                 }
             }
             document.getElementById("new-quiz").hidden = false;
-        });
-    }
-
-    static quizzesReq(callback) {
-        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].quizzesOfUser(function(err, resp) {
-            if (err) {
-                return console.log(" error");
-            }
-            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("quizzes of user norm");
-            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(err);
-            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(resp);
-            callback(resp);
         });
     }
 }
