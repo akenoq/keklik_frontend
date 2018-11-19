@@ -20,7 +20,6 @@ const SRC = {
 };
 
 export default function quizCard(title, description, date, tags) {
-    console.log(tags);
     let find_index = -1;
     let src = "img/quiz_logo.png";
     for (let i = 0; i < tags.length; i++) {
