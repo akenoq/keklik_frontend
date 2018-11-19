@@ -188,4 +188,8 @@ export default class Requester {
     static delGameById(id, callback) {
         Requester.requestToHost("DELETE", `api/games/${id}/`, null, callback)
     }
+
+    static getNumberGames(callback) {
+        Requester.requestToHost("GET", "api/stats/", null, callback)
+    }
 }

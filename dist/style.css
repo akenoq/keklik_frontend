@@ -310,6 +310,7 @@ td {
 .game-card-in-group {
     margin-top: 15px;
     margin-bottom: 15px;
+    cursor: default;
 }
 
 .btn-success{
@@ -375,4 +376,35 @@ td {
 
 .landing-header-btn:hover {
     box-shadow: 0 0 30px rgb(255, 240, 251);
+}
+
+.mokup {
+    height: auto;
+    width: 100%;
+    display: block;
+}
+
+.features {
+    padding-top: 50px;
+}
+
+header.masthead {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+.white-border {
+    border: 5px white solid !important;
+}
+
+#landing-counter {
+    color: white;
+    background: #ee0979;
+    border-radius: 20px;
+    padding: 7px;
+    box-shadow: 0 0 30px rgb(255, 240, 251);
+}
+
+footer {
+    background: #553f50 !important;
 }

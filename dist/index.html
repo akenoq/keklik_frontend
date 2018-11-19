@@ -70,15 +70,46 @@
                 <div class="masthead-content">
                     <div class="container">
                         <h1 class="masthead-heading mb-0">Keklik</h1>
-                        <h2 class="masthead-subheading mb-0">Real-time викторины для уроков </h2>
+                        <h2 class="masthead-subheading mb-0">Сделайте обучение интересным!</h2>
+                        <h3 style="margin-top: 20px;">Создавайте викторины, проводите и участвуйте в соревнованиях</h3>
                         <a id="participate-btn" href="#" class="btn btn-outline-primary btn-xl rounded-pill mt-5 landing-header-btn">Участвовать!</a>
+                        <h3 style="margin-top: 20px;">Проведено соревнований <b id="landing-counter"></b></h3>
                     </div>
                 </div>
-                <!--<div class="bg-circle-1 bg-circle"></div>-->
-                <!--<div class="bg-circle-2 bg-circle"></div>-->
-                <!--<div class="bg-circle-3 bg-circle"></div>-->
-                <!--<div class="bg-circle-4 bg-circle"></div>-->
             </header>
+            <div style="background: #a583da3d;">
+                <div class="container features">
+                    <h2 class="text-center">Для чего использовать Keklik?</h2><br>
+                    <div style="padding-bottom: 20px" class="row text-center">
+                        <div class="col-lg-4 text-center">
+                            <img class="rounded-circle" src="./img/landing/brain.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">Усвоение знаний</h4>
+                            <p style="text-align: center">
+                                Дети не могут долго концентрировать своё внимание на чём-то одном,
+                                и поэтому они часто скучают на уроках.
+                                Следовательно, новая информация может плохо усваиваться.
+                                Переключайте внимание детей на весёлые викторина с помощью Keklik.
+                            </p>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <img class="rounded-circle" src="./img/landing/mark.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">Оценка знаний</h4>
+                            <p style="text-align: center">
+                                Проводите контроль знаний и мониторинг усвоения детьми материала чаще и проще,
+                                не нагружая учеников тяжёлыми мыслями о контрольных.
+                            </p>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <img class="rounded-circle" src="./img/landing/statistic.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">Статистика</h4>
+                            <p style="text-align: center">
+                                Получайте статистику знаний учеников по истории результатов проведённых вами соревнований.
+                                Статистика формируется в удобном для официальной отчётности формате Excel.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div id="carousel-main" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
@@ -111,81 +142,96 @@
                 </div>
             </div>
 
-            <img src="./img/mockup1.png" class="img-fluid" alt="mokup">
+            <img class="img-fluid mokup" src="./img/mockup1.png" data-holder-rendered="true">
 
-            <!--<div class="text-center" align="center">-->
-                <!--<br>-->
-                <!--GameToEdu-интегратор <strong>Keklik!</strong>-->
-                <!--<br><br>-->
-                <!--&lt;!&ndash;<button id="participate-btn" class="btn btn-success">Участвовать!</button>&ndash;&gt;-->
-            <!--</div>-->
-
-            <section>
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 order-lg-2">
-                            <div class="p-5">
-                                <img class="img-fluid rounded-circle" src="./img/manual_1.png" alt="">
-                            </div>
+            <div style="background: #a583da3d;">
+                <div class="container features">
+                    <h2 class="text-center"><i class="fa fa-magic" aria-hidden="true"></i> Быстрый старт</h2><br>
+                    <div style="padding-bottom: 20px" class="row text-center">
+                        <div class="col-lg-3 text-center">
+                            <img class="rounded-circle" src="./img/landing/create.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">✔ Создайте викторину</h4>
+                            <p style="text-align: center">
+                                В личном кабинете во вкладке "Мои викторины" можно
+                                выбрать уже имеющуюся виктоину или создать и сохранить новую.
+                            </p>
                         </div>
-                        <div class="col-lg-6 order-lg-1">
-                            <div class="p-2">
-                                <h2 class="wrap-text">Создайте викторину</h2>
-                                <p>В личном кабинете во вкладке "Мои викторины" можно
-                                    выбрать уже имеющуюся виктоину или создать и сохранить новую</p>
-                            </div>
+                        <div class="col-lg-3 text-center">
+                            <img class="rounded-circle" src="./img/landing/play.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">✔ Запустите соревнование</h4>
+                            <p style="text-align: center">
+                                В личном кабинете во вкладке "Мои викторины" выберите викторину,
+                                на основе которой будет соревнование и нажмите "Запустить"
+                            </p>
+                        </div>
+                        <div class="col-lg-3 text-center">
+                            <img class="rounded-circle" src="./img/landing/rupor.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">✔ Сообщите номер соревнования участникам</h4>
+                            <p style="text-align: center">
+                                Соревнование запущено, но еще не началось.
+                                Для начала необходимо сообщить участникам номер соревнования (PIN) и подождать их присоединения.
+                            </p>
+                        </div>
+                        <div class="col-lg-3 text-center">
+                            <img class="rounded-circle" src="./img/landing/connect.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">✔ Подключение участников</h4>
+                            <p style="text-align: center">
+                                В своем кабинете участник может присоединиться по этому PIN к соревнованию.
+                                Когда все участники присоединились нажмите "Запустить соревнование"
+                            </p>
+                        </div>
+                    </div>
+                    <div align="center" style="padding-bottom: 2rem">
+                        <a id="download-manual" style="cursor: pointer; color: dimgray;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <u>Подробная инструкция</u></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container features">
+                <h2 class="text-center"><i class="fa fa-bank" aria-hidden="true"></i> Система организаций</h2>
+                <div style="padding-bottom: 50px; margin-top: 2rem;" class="row text-center">
+                    <div class="col-12 text-center">
+                        <p>
+                            Для систематизации соревнований по организациям и группам внутри них закрепитесь
+                            за организацией в качестве учителя, написав администратору на электронную почту
+                            <i><u>prog.bmstu@yandex.ru</u></i>. Получите доступ к проведению/участию в соревнованих организации.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #a583da3d;">
+                <div class="container features">
+                    <h2 class="text-center">Опыт преподавателей «Инжинириум МГТУ им.Н.Э.Баумана»</h2><br>
+                    <div style="padding-bottom: 20px" class="row text-center">
+                        <div class="col-lg-6 text-center">
+                            <img class="rounded-circle white-border" src="./img/landing/ava/gleb.png" width="150" height="150">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;"></h4>
+                            <p style="text-align: center">
+                                Преподаю web-программирование у детей. Особые проблемы возникают с детьми до 8 класса,
+                                так как они часто отвлекаются.
+                                Данный сервис позволил в середине урока «отвлекать» детей с пользой.
+                                Теперь дети проводят свое время за решением тестовых задач, а не за игрой в телефон.
+                            </p>
+                        </div>
+                        <div class="col-lg-6 text-center">
+                            <img class="rounded-circle white-border" src="./img/landing/ava/tamerlan.png" width="150" height="150">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;"></h4>
+                            <p style="text-align: center">
+                                Я учитель по Unity3D у школьников младших классов. Часто сталкивался
+                                с необходимостью в свободное время проверять контрольные работы своих учеников.
+                                Благодаря приложению Keklik я смог очень быстро получать результаты
+                                самостоятельных работ каждого ученика, а также видеть проблемные вопросы по различным темам.
+                            </p>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <section>
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6">
-                            <div class="p-5">
-                                <img class="img-fluid rounded-circle" src="img/manual_2.png" alt="">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="p-2">
-                                <h2 class="wrap-text">Запустите соревнование</h2>
-                                <p>В личном кабинете во вкладке "Мои викторины" выберите викторину,
-                                    на основе которой будет соревнование и нажмите "Запустить"</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 order-lg-2">
-                            <div class="p-5">
-                                <img class="img-fluid rounded-circle" src="img/manual_3.jpeg" alt="">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 order-lg-1">
-                            <div class="p-2">
-                                <h2 class="wrap-text">Сообщите номер соревнования участникам</h2>
-                                <p>Соревнование запущено, но еще не началось.
-                                    Для начала необходимо сообщить участникам номер соревнования (PIN) и подождать их присоединения.
-                                    В своем кабинете участник может присоединиться по этому PIN к соревнованию.
-                                    Когда все участники присоединились нажмите "Запустить соревнование"
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Footer -->
-            <footer class="py-5 bg-black">
+            <footer class="py-5">
                 <div class="container">
                     <p class="m-0 text-center text-white small">&copy; Keklik 2018</p>
                 </div>
-                <!-- /.container -->
             </footer>
 
         </div>
@@ -829,10 +875,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="./res.js"></script>
-    <script>
-        $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
+    <!--<script>-->
+        <!--$(document).ready(function(){-->
+            <!--$('[data-toggle="tooltip"]').tooltip();-->
+        <!--});-->
+    <!--</script>-->
 </body>
 </html>

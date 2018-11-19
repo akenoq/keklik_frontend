@@ -160,23 +160,23 @@ class Requester {
                 }
                 Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(xhr.status + ' from 400');
                 callback(xhr, null);
-                $(document).ready(function(){
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
                 return;
             }
 
             if (method !== "DELETE") {
                 const response = JSON.parse(xhr.responseText);
                 callback(null, response);
-                $(document).ready(function(){
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
             } else {
                 callback(null, null);
-                $(document).ready(function(){
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
             }
         };
     }
@@ -289,6 +289,10 @@ class Requester {
 
     static delGameById(id, callback) {
         Requester.requestToHost("DELETE", `api/games/${id}/`, null, callback)
+    }
+
+    static getNumberGames(callback) {
+        Requester.requestToHost("GET", "api/stats/", null, callback)
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Requester;
@@ -2021,7 +2025,18 @@ function startApp() {
     let router = Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().router;
     // router = router.getMe(router);
     // router.sendRouter();
-
+    document.getElementById("download-manual").onclick = function() {
+        open(`./img/landing/Keklik_quick_start.pdf`)
+    };
+    __WEBPACK_IMPORTED_MODULE_9__network_Requester_js__["a" /* default */].getNumberGames((err, resp) => {
+        let num = 435;
+        if (err) {
+            console.log("err counter");
+        } else {
+            num = resp.games_count;
+        }
+        document.getElementById("landing-counter").innerHTML = num;
+    });
     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().unloadFunc = (event) => {
         event.preventDefault();
         event.returnValue = '';
@@ -3387,6 +3402,12 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             }
         });
         document.getElementById("true-ans-box").innerHTML = `<u>Правильный ответ:</u> ${ans}`;
+        document.getElementById("true-ans-box").hidden = true;
+        document.getElementById("game-table-question").hidden = true;
+        document.getElementById("print-here-ans-btn")
+            .querySelector("i").setAttribute('class', 'fa fa-eye');
+        document.getElementById("print-here-table-btn")
+            .querySelector("i").setAttribute('class', 'fa fa-eye');
     }
 
     renderQuizNum(game_id) {

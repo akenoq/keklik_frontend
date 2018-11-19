@@ -20,7 +20,18 @@ function startApp() {
     let router = globalBus().router;
     // router = router.getMe(router);
     // router.sendRouter();
-
+    document.getElementById("download-manual").onclick = function() {
+        open(`./img/landing/Keklik_quick_start.pdf`)
+    };
+    Requester.getNumberGames((err, resp) => {
+        let num = 435;
+        if (err) {
+            console.log("err counter");
+        } else {
+            num = resp.games_count;
+        }
+        document.getElementById("landing-counter").innerHTML = num;
+    });
     globalBus().unloadFunc = (event) => {
         event.preventDefault();
         event.returnValue = '';
