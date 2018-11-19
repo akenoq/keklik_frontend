@@ -3156,7 +3156,7 @@ function emptyQuizForm() {
                 <label>Метки викторины <red>&nbsp;*</red></label>
                 <input id="edit-quiz-form__tags" class="form-control necessary-field" type="text" placeholder="Математика, Физика">
             </div>
-            <red>
+            <red class="text-info">
                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                 При составлении вопросов обратите внимание,
                 что варианты ответов во время соревнования будут перетасованы
