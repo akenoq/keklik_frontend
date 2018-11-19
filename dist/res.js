@@ -2170,6 +2170,11 @@ class Router {
 
         document.getElementById("participate-btn").onclick = () => {
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn.click();
+            Router.navigate(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn);
+        };
+
+        document.getElementById("nav-logo-btn").onclick = () => {
+            Router.navigate(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.mainBtn);
         };
 
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.signoutBtn.onclick = () => {
@@ -2192,8 +2197,12 @@ class Router {
         });
     }
 
-    navigate() {
-
+    static navigate(btn_active) {
+        let navBtnArr = document.getElementsByClassName('btnLink');
+        for (let j = 0; j < navBtnArr.length; j++) {
+            navBtnArr[j].parentNode.setAttribute('class', 'nav-item');
+        }
+        btn_active.parentNode.setAttribute('class', 'nav-item active');
     }
 
     addRedirectOnNavBtn(...buttons) {
@@ -2259,6 +2268,7 @@ class Router {
                                 Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
                                 return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office error router");
                             }
+                            Router.navigate(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn);
                             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().officePage.render();
                             __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("office-page");
                             return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office norm router");
@@ -2488,7 +2498,6 @@ const SRC = {
 };
 
 function quizCard(title, description, date, tags) {
-    console.log(tags);
     let find_index = -1;
     let src = "img/quiz_logo.png";
     for (let i = 0; i < tags.length; i++) {

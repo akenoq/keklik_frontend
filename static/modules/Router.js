@@ -74,6 +74,11 @@ export default class Router {
 
         document.getElementById("participate-btn").onclick = () => {
             globalBus().btn.officeBtn.click();
+            Router.navigate(globalBus().btn.officeBtn);
+        };
+
+        document.getElementById("nav-logo-btn").onclick = () => {
+            Router.navigate(globalBus().btn.mainBtn);
         };
 
         globalBus().btn.signoutBtn.onclick = () => {
@@ -96,8 +101,12 @@ export default class Router {
         });
     }
 
-    navigate() {
-
+    static navigate(btn_active) {
+        let navBtnArr = document.getElementsByClassName('btnLink');
+        for (let j = 0; j < navBtnArr.length; j++) {
+            navBtnArr[j].parentNode.setAttribute('class', 'nav-item');
+        }
+        btn_active.parentNode.setAttribute('class', 'nav-item active');
     }
 
     addRedirectOnNavBtn(...buttons) {
@@ -163,6 +172,7 @@ export default class Router {
                                 globalBus().btn.loginBtn.click();
                                 return debugLog("office error router");
                             }
+                            Router.navigate(globalBus().btn.officeBtn);
                             globalBus().officePage.render();
                             PagePresenter.showOnlyOnePage("office-page");
                             return debugLog("office norm router");
