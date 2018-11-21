@@ -3420,7 +3420,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     }
 
     renderQuizNum(game_id) {
-        document.getElementById("game-num").innerHTML = `Ход соревнования ${game_id}`;
+        document.getElementById("game-num").innerHTML = `Ход соревнования <span class="badge badge-secondary">${game_id}</span>`;
         document.getElementById("next-question-btn").hidden = false;
     }
 
