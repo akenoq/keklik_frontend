@@ -133,7 +133,7 @@ export default class GameTeacherPage extends Page {
     }
 
     renderQuizNum(game_id) {
-        document.getElementById("game-num").innerHTML = `Ход соревнования ${game_id}`;
+        document.getElementById("game-num").innerHTML = `Ход соревнования <span class="badge badge-secondary">${game_id}</span>`;
         document.getElementById("next-question-btn").hidden = false;
     }
 
