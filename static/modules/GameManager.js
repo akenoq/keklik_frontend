@@ -86,6 +86,11 @@ export default class GameManager {
         this.ws_controller.sendNextMessage(this.game_id);
     }
 
+    showTrueAnswer() {
+        debugLog("true ans send");
+        this.ws_controller.sendTrueAnsForAll(this.game_id);
+    }
+
     sendAnswer(var_index, cur_question_id) {
         this.ws_controller.sendAnswerMessage(this.game_id, var_index, cur_question_id);
         globalBus().gameStudentPage.renderWaitingNext();

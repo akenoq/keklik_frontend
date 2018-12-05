@@ -39,9 +39,42 @@ export default class GameTeacherPage extends Page {
 
     addEventsOnButtons() {
         document.getElementById("next-question-btn").onclick = () => {
+            document.getElementById("true-ans-box").innerHTML = "";
             globalBus().gameManager.switchNext();
             document.getElementById("game-table-question").innerHTML = "";
             this.game_table_answered = [];
+            document.getElementById("next-question-btn").setAttribute("disabled", "true");
+
+            const nextButton = () => {
+                document.getElementById("next-question-btn").removeAttribute("disabled");
+            };
+            setTimeout(nextButton, 1000);
+        };
+
+        document.getElementById("print-here-ans-btn").onclick = () => {
+            let trueBox = document.getElementById("true-ans-box");
+            trueBox.hidden = !trueBox.hidden;
+            if (trueBox.hidden) {
+                document.getElementById("print-here-ans-btn")
+                    .querySelector("i").setAttribute('class', 'fa fa-eye')
+            } else {
+                document.getElementById("print-here-ans-btn")
+                    .querySelector("i").setAttribute('class', 'fa fa-eye-slash')
+            }
+        };
+        document.getElementById("print-here-table-btn").onclick = () => {
+            let ansTable = document.getElementById("game-table-question");
+            ansTable.hidden = !ansTable.hidden;
+            if (ansTable.hidden) {
+                document.getElementById("print-here-table-btn")
+                    .querySelector("i").setAttribute('class', 'fa fa-eye')
+            } else {
+                document.getElementById("print-here-table-btn")
+                    .querySelector("i").setAttribute('class', 'fa fa-eye-slash')
+            }
+        };
+        document.getElementById("show-ans-btn").onclick = () => {
+            globalBus().gameManager.showTrueAnswer();
         };
     }
 
@@ -51,6 +84,11 @@ export default class GameTeacherPage extends Page {
         document.getElementById("game-diagram-1").hidden = true;
         document.getElementById("game-diagram-2").hidden = true;
         document.getElementById("exit-game-btn").hidden = true;
+
+        document.getElementById("print-here-ans-btn").hidden = true;
+        document.getElementById("print-here-table-btn").hidden = true;
+        document.getElementById("show-ans-btn").hidden = true;
+
         document.getElementById("question-preview").innerHTML = "";
         document.getElementById("next-question-btn").innerHTML = "Запустить соревнование >>";
         document.getElementById("answered-counter").hidden = true;
@@ -65,18 +103,37 @@ export default class GameTeacherPage extends Page {
         document.getElementById("joined-counter").hidden = true;
         document.getElementById("answered-counter").hidden = false;
         document.getElementById("game-table").hidden = false;
+        document.getElementById("print-here-ans-btn").hidden = false;
+        document.getElementById("print-here-table-btn").hidden = false;
+        document.getElementById("show-ans-btn").hidden = false;
     }
 
     renderQuestion(ws_dataObj) {
         document.getElementById("question-preview").innerHTML =
-            "Вопрос "+
+            "<u>Вопрос "+
             ws_dataObj.payload.data.current_question.number + "/<b>" +
-            ws_dataObj.payload.data.quiz.questions.length + "</b>" + ": " +
+            ws_dataObj.payload.data.quiz.questions.length + "</b>" + ":</u> " +
             htmlEntities(ws_dataObj.payload.data.current_question.question);
+
+        let game_data = ws_dataObj.payload.data;
+        let true_id = game_data.current_question.answer[0];
+        let ans = "";
+        game_data.current_question.variants.forEach((elem) => {
+            if (elem.id === true_id) {
+                ans = elem.variant;
+            }
+        });
+        document.getElementById("true-ans-box").innerHTML = `<u>Правильный ответ:</u> ${ans}`;
+        document.getElementById("true-ans-box").hidden = true;
+        document.getElementById("game-table-question").hidden = true;
+        document.getElementById("print-here-ans-btn")
+            .querySelector("i").setAttribute('class', 'fa fa-eye');
+        document.getElementById("print-here-table-btn")
+            .querySelector("i").setAttribute('class', 'fa fa-eye');
     }
 
     renderQuizNum(game_id) {
-        document.getElementById("game-num").innerHTML = `Ход соревнования ${game_id}`;
+        document.getElementById("game-num").innerHTML = `Ход соревнования <span class="badge badge-secondary">${game_id}</span>`;
         document.getElementById("next-question-btn").hidden = false;
     }
 
@@ -165,6 +222,11 @@ export default class GameTeacherPage extends Page {
     }
 
     renderFinish(ws_dataObj) {
+        let game_data = ws_dataObj.payload.data;
+
+        document.getElementById("print-here-ans-btn").hidden = true;
+        document.getElementById("print-here-table-btn").hidden = true;
+        document.getElementById("show-ans-btn").hidden = true;
         // считаем соотношение ответов
         let all_ans_countObj = this.countAllAnswers(ws_dataObj);
         let all_ans_len = 0;
@@ -234,7 +296,17 @@ export default class GameTeacherPage extends Page {
         });
         chart_1.render();
         chart_2.render();
-        document.getElementById("question-preview").innerHTML = "Соревнование завершено";
+        let pin = game_data.id;
+        document.getElementById("question-preview").innerHTML =
+            `Соревнование завершено 
+                    <button id=xls-by-pin-${pin} type="button" 
+                    data-toggle="tooltip" data-placement="right"
+                    title="Скачать отчет по соревнованию в формате Excel"
+                    class="btn btn-sm btn-success btn-icon">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
+                    </button>`;
+        document.getElementById(`xls-by-pin-${pin}`).onclick = function() {open(`http://api.keklik.xyz/media/games/${pin}/report`)};
+
         document.getElementById("next-question-btn").hidden = true;
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = true;

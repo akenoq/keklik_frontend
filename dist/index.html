@@ -9,16 +9,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./style.css">
 
-    <head>
-        <link rel="shortcut icon" href="./img/favicon-32x32.png" type="image/png">
-    </head>
+    <!-- Custom styles for this template -->
+    <link href="./landing.min.css" rel="stylesheet">
+
+    <link href="./fontawesome.min.css" rel="stylesheet">
+
+    <link rel="shortcut icon" href="./img/favicon-32x32.png" type="image/png">
 
     <title>Keklik</title>
 </head>
 <body>
     <div class="main-box">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <span class="navbar-brand">
+            <span id="nav-logo-btn" class="navbar-brand">
                 <img src="img/keklik_pic.png" width="33" height="33" class="d-inline-block align-top rounded-circle" alt="">
                 <strong>Keklik</strong>
             </span>
@@ -30,7 +33,7 @@
                     <li class="nav-item active">
                         <a class="btnLink nav-link" href="#" id="nav-main-btn">Главная<span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
+                    <li hidden class="nav-item">
                         <a class="btnLink nav-link" href="#" id="nav-info-btn">О Keklik</a>
                     </li>
                     <li class="nav-item">
@@ -55,14 +58,59 @@
                     <div id="modal-body-box" class="modal-body">
                     </div>
                     <div class="modal-footer">
-                        <button id="cancel-delete-btn" type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                        <button id="ok-delete-btn" type="button" class="btn btn-primary">ОК</button>
+                        <button id="cancel-delete-btn" type="button" class="btn btn-light my-btn-light" data-dismiss="modal">Отмена</button>
+                        <button id="ok-delete-btn" type="button" class="btn btn-success">ОК</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="main-page page container" hidden>
+        <div class="main-page page" hidden>
+            <header class="masthead text-center text-white landing-header">
+                <div class="masthead-content">
+                    <div class="container">
+                        <h1 class="masthead-heading mb-0" style="cursor: default">Keklik</h1>
+                        <h2 class="masthead-subheading mb-0">Сделайте обучение интересным!</h2>
+                        <h3 style="margin-top: 20px;">Создавайте викторины, проводите и участвуйте в соревнованиях</h3>
+                        <a id="participate-btn" href="#" class="btn btn-outline-primary btn-xl rounded-pill mt-5 landing-header-btn">Участвовать!</a>
+                        <h3 style="margin-top: 20px;">Проведено соревнований <b id="landing-counter"></b></h3>
+                    </div>
+                </div>
+            </header>
+            <div style="background: #a583da3d;">
+                <div class="container features">
+                    <h2 class="text-center">Для чего использовать Keklik?</h2><br>
+                    <div style="padding-bottom: 20px" class="row text-center">
+                        <div class="col-lg-4 text-center">
+                            <img class="rounded-circle" src="./img/landing/brain.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">Усвоение знаний</h4>
+                            <p style="text-align: center">
+                                Дети не могут долго концентрировать своё внимание на чём-то одном,
+                                и поэтому они часто скучают на уроках.
+                                Следовательно, новая информация может плохо усваиваться.
+                                Переключайте внимание детей на весёлые викторины с помощью Keklik.
+                            </p>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <img class="rounded-circle" src="./img/landing/mark.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">Оценка знаний</h4>
+                            <p style="text-align: center">
+                                Проводите контроль знаний и мониторинг усвоения детьми материала чаще и проще,
+                                не нагружая учеников тяжёлыми мыслями о контрольных.
+                            </p>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <img class="rounded-circle" src="./img/landing/statistic.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">Статистика</h4>
+                            <p style="text-align: center">
+                                Получайте статистику знаний учеников по истории результатов проведённых вами соревнований.
+                                Статистика формируется в удобном для официальной отчётности в формате Excel.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="carousel-main" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-target="#carousel-main" data-slide-to="0" class="active"></li>
@@ -73,53 +121,139 @@
                     <div class="carousel-item active">
                         <img class="d-block w-100" src="img/ing1.jpg" alt="First slide">
                         <!--<div class="carousel-caption d-none d-md-block">-->
-                            <!--<h5>Первый</h5>-->
-                            <!--<p>лололололололло</p>-->
+                        <!--<h5>Первый</h5>-->
+                        <!--<p>лололололололло</p>-->
                         <!--</div>-->
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="img/ing2.jpg" alt="Second slide">
                         <!--<div class="carousel-caption d-none d-md-block">-->
-                            <!--<h5>Второй</h5>-->
-                            <!--<p>кекекеккекекекекек</p>-->
+                        <!--<h5>Второй</h5>-->
+                        <!--<p>кекекеккекекекекек</p>-->
                         <!--</div>-->
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100" src="img/ing3.jpg" alt="Second slide">
                         <!--<div class="carousel-caption d-none d-md-block">-->
-                            <!--<h5>Третий</h5>-->
-                            <!--<p>азазазаззаз</p>-->
+                        <!--<h5>Третий</h5>-->
+                        <!--<p>азазазаззаз</p>-->
                         <!--</div>-->
                     </div>
                 </div>
             </div>
-            <br>
-            <div class="text-center" align="center">
-                <br>
-                GameToEdu-интегратор <strong>Keklik!</strong>
-                <br><br>
-                <button id="participate-btn" class="btn btn-success">Участвовать!</button>
+
+            <img class="img-fluid mokup" src="./img/mockup1.png" data-holder-rendered="true">
+
+            <div style="background: #a583da3d;">
+                <div class="container features">
+                    <h2 class="text-center"><i class="fa fa-magic" aria-hidden="true"></i> Быстрый старт</h2><br>
+                    <div style="padding-bottom: 20px" class="row text-center">
+                        <div class="col-lg-3 text-center">
+                            <img class="rounded-circle" src="./img/landing/create.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">✔ Создайте викторину</h4>
+                            <p style="text-align: center">
+                                В личном кабинете во вкладке "Мои викторины" можно
+                                выбрать уже имеющуюся виктоину или создать и сохранить новую.
+                            </p>
+                        </div>
+                        <div class="col-lg-3 text-center">
+                            <img class="rounded-circle" src="./img/landing/play.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">✔ Запустите соревнование</h4>
+                            <p style="text-align: center">
+                                В личном кабинете во вкладке "Мои викторины" выберите викторину,
+                                на основе которой хотите провести соревнование и нажмите "Запустить"
+                            </p>
+                        </div>
+                        <div class="col-lg-3 text-center">
+                            <img class="rounded-circle" src="./img/landing/rupor.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">✔ Сообщите номер соревнования участникам</h4>
+                            <p style="text-align: center">
+                                Соревнование запущено, но еще не началось.
+                                Для начала необходимо сообщить участникам номер соревнования (PIN) и подождать их присоединения.
+                            </p>
+                        </div>
+                        <div class="col-lg-3 text-center">
+                            <img class="rounded-circle" src="./img/landing/connect.png" width="200" height="200">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;">✔ Подключение участников</h4>
+                            <p style="text-align: center">
+                                В своем кабинете участник может присоединиться по этому PIN к соревнованию.
+                                Когда все участники присоединились, нажмите "Запустить соревнование".
+                            </p>
+                        </div>
+                    </div>
+                    <div align="center" style="padding-bottom: 2rem">
+                        <a id="download-manual" style="cursor: pointer; color: dimgray;"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> <u>Подробная инструкция</u></a>
+                    </div>
+                </div>
             </div>
+
+            <div class="container features">
+                <h2 class="text-center"><i class="fa fa-bank" aria-hidden="true"></i> Система организаций</h2>
+                <div style="padding-bottom: 50px; margin-top: 2rem;" class="row text-center">
+                    <div class="col-12 text-center">
+                        <p>
+                            Для систематизации соревнований по организациям и группам внутри них закрепитесь
+                            за организацией в качестве учителя, написав администратору на электронную почту
+                            <i><u>prog.bmstu@yandex.ru</u></i>. Получите доступ к проведению/участию в соревнованиях организации.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #a583da3d;">
+                <div class="container features">
+                    <h2 class="text-center">Опыт преподавателей «Инжинириум МГТУ им.Н.Э.Баумана»</h2><br>
+                    <div style="padding-bottom: 20px" class="row text-center">
+                        <div class="col-lg-6 text-center">
+                            <img class="rounded-circle white-border" src="./img/landing/ava/gleb.png" width="150" height="150">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;"></h4>
+                            <p style="text-align: center">
+                                Преподаю web-программирование у детей. Особые проблемы возникают с детьми до 8 класса,
+                                так как они часто отвлекаются.
+                                Данный сервис позволил в середине урока «отвлекать» детей с пользой.
+                                Теперь дети проводят свое время за решением тестовых задач, а не за игрой в телефон.
+                            </p>
+                        </div>
+                        <div class="col-lg-6 text-center">
+                            <img class="rounded-circle white-border" src="./img/landing/ava/tamerlan.png" width="150" height="150">
+                            <h4 style="margin-bottom: 20px; margin-top: 20px;"></h4>
+                            <p style="text-align: center">
+                                Я учитель по Unity3D у школьников младших классов. Часто сталкивался
+                                с необходимостью в свободное время проверять контрольные работы своих учеников.
+                                Благодаря приложению Keklik я смог очень быстро получать результаты
+                                самостоятельных работ каждого ученика, а также видеть проблемные вопросы по различным темам.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="py-5">
+                <div class="container">
+                    <p class="m-0 text-center text-white small">&copy; Keklik 2018</p>
+                </div>
+            </footer>
+
         </div>
 
         <div class="register-page page container" hidden>
             <div class="row justify-content-md-center">
                 <div class="regform col col-md-auto">
                     <h3>Регистрация</h3>
-                    <div class="regform-inputs">
+                    <form class="regform-inputs">
                         <div class="form-group">
                             <label for="regform-login">Логин</label>
-                            <input type="email" class="form-control" id="regform-login" aria-describedby="emailHelp" placeholder="login">
+                            <input type="text" class="form-control" id="regform-login" aria-describedby="emailHelp" placeholder="login">
                         </div>
                         <div class="form-group">
                             <label for="regform-password">Пароль</label>
                             <input type="password" class="form-control" id="regform-password" placeholder="*********">
                         </div>
-                        <button id="regformBtn" class="btn btn-primary">Регистация</button>
+                        <input type="submit" value="Регистация" id="regformBtn" class="btn btn-primary">
                         <div id="regform-err"></div>
                         <br>
                         <a id="regform-to-login-link" href="#">Уже зарегистрированы?</a>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -128,20 +262,20 @@
             <div class="row justify-content-md-center">
                 <div class="login-form col col-md-auto">
                     <h3>Вход в кабинет</h3>
-                    <div class="regform-inputs">
+                    <form class="logform-inputs">
                         <div class="form-group">
                             <label for="login-form-login">Логин</label>
-                            <input type="email" class="form-control" id="login-form-login" aria-describedby="emailHelp" placeholder="login">
+                            <input type="text" class="form-control" id="login-form-login" aria-describedby="emailHelp" placeholder="login">
                         </div>
                         <div class="form-group">
                             <label for="login-form-password">Пароль</label>
                             <input type="password" class="form-control" id="login-form-password" placeholder="*********">
                         </div>
-                        <button id="login-form-btn" class="btn btn-primary">Войти</button>
+                        <input type="submit" value="Войти" id="login-form-btn" class="btn btn-primary">
                         <div id="login-form-err"></div>
                         <br>
                         <a id="login-form-to-register-link" href="#">Еще не зарегистрированы?</a>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -152,15 +286,23 @@
 
         <div class="office-page page container" hidden>
             <h1 class="content-logo">
-                <img src="img/ava_teacher.png" class="ava rounded-circle border border-danger" width="75px" height="75px">
+                <!--<img src="img/ava_teacher.png" class="ava rounded-circle border border-danger" width="75px" height="75px">-->
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i>
                 <span id="office-header-username">Login of user</span>
             </h1>
             <div>
-                <input id="game-pin-input" type="text">
-                <button id="join-game-btn" class="btn btn-success start-btn" >Присоединиться по PIN</button>
+                <div class="input-group mb-3">
+                    <input id="game-pin-input" type="number" class="form-control" placeholder="PIN">
+                    <div class="input-group-append">
+                        <button data-toggle="tooltip" data-placement="top"
+                                title="Присоединиться к активному соревнованию по номеру"
+                                id="join-game-btn" class="btn btn-success" type="button">Присоединиться по PIN</button>
+                    </div>
+                </div>
             </div>
             <div id="managed-game-box">
-                <div class="btn-group org-btn-group list-btn">
+                <red id="rannunig-games-warning"></red>
+                <div hidden class="btn-group org-btn-group list-btn">
                     <button id="selected-managed-game" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Управляемые PIN...
                     </button>
@@ -169,19 +311,22 @@
                         <!--<a class="dropdown-item" href="#">Школа 444</a>-->
                     </div>
                 </div>
-                <button id="managed-game-btn" class="btn btn-info start-btn">Управлять PIN</button>
+                <button hidden id="managed-game-btn" class="btn btn-info start-btn">Управлять PIN</button>
             </div>
             <div class="office-content card text-center">
                 <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs">
                             <li class="nav-item">
-                                <a id="to-courses-btn" class="nav-link active card-header-green-tab" href="#">Мои курсы</a>
+                                <span id="to-courses-btn" class="nav-link active card-header-green-tab pointer">Мои организации</span>
                             </li>
                             <li class="nav-item">
-                                <a id="to-quizzes-btn" class="nav-link card-header-green-tab" href="#">Мои викторины</a>
+                                <span id="to-quizzes-btn" class="nav-link card-header-green-tab pointer">Мои викторины</span>
                             </li>
                             <li class="nav-item">
-                                <a id="to-profile-btn" class="nav-link card-header-green-tab" href="#">Мой профиль</a>
+                                <span id="to-profile-btn" class="nav-link card-header-green-tab pointer">Мой профиль</span>
+                            </li>
+                            <li class="nav-item">
+                                <span id="to-statistic-btn" class="nav-link card-header-green-tab pointer">История</span>
                             </li>
                         </ul>
                     </div>
@@ -328,8 +473,41 @@
                                         </div>
                                         <div id="profile-form-ok" class="form-group ok-box"></div>
                                         <div id="profile-form-error" class="form-group error-box"></div>
-                                        <button id="profile-form-btn" class="btn btn-primary">Подтвердить изменения</button>
+                                        <input type="submit" value="Подтвердить изменения"
+                                               data-toggle="tooltip" data-placement="right"
+                                               title="Сохранить изменения впрофиле"
+                                               id="profile-form-btn" class="btn btn-success">
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="statistic" hidden>
+                            <div class="justify-content-md-center">
+                                <div id="table-statistic" class="list-group">
+                                    <!--<div class="list-group-item-action  align-items-start">-->
+                                        <!--<div class="container">-->
+                                            <!--<div class="text-left d-flex justify-content-between row">-->
+                                                <!--<div class="col col-sm-9">-->
+                                                    <!--<h5 class="mb-1">#23423 Unity</h5>-->
+                                                <!--</div>-->
+                                                <!--<div class="col col-sm-3 text-right">-->
+                                                    <!--<small>3 days ago</small>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="text-left row">-->
+                                                <!--<div class="col col-sm-9">-->
+                                                    <!--<small class="mb-1 text-left">Организация: ksdlksajlksajsdjsaldlksadjlsjalkdj</small><br>-->
+                                                    <!--<small class="text-left">Группа: -</small>-->
+                                                <!--</div>-->
+                                                <!--<div class="col col-sm-3 text-right">-->
+                                                    <!--<a href="#">-->
+                                                        <!--<button class="btn btn-sm btn-success">⇓ Отчет .xls</button>-->
+                                                    <!--</a>-->
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
                                 </div>
                             </div>
                         </div>
@@ -339,39 +517,11 @@
 
         <div class="course-page page container" hidden>
             <h1 id="org-title" class="content-logo">
-                <img src="img/ava_course.jpg" class="ava rounded-circle border border-danger" width="75px" height="75px">
-                <span>Название курса</span>
+                <!--<img src="img/ava_course.jpg" class="ava rounded-circle border border-danger" width="75px" height="75px">-->
+                <i class="fa fa-university" aria-hidden="true"></i>
+                <span></span>
             </h1>
             <div id="table-groups-in-org"></div>
-            <!--<table class="table bg-white">-->
-                <!--<thead class="thead-dark">-->
-                <!--<tr>-->
-                    <!--<th scope="col">#</th>-->
-                    <!--<th scope="col">Группа </th>-->
-                    <!--<th scope="col">Создана</th>-->
-                <!--</tr>-->
-                <!--</thead>-->
-                <!--<tbody id="table-groups-in-org">-->
-                <!--&lt;!&ndash;<tr id="group-card-1" class="table-group-line">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<th scope="row">1</th>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td>7A_id</td>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td>12/7/17</td>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td>5</td>&ndash;&gt;-->
-                <!--&lt;!&ndash;</tr>&ndash;&gt;-->
-                <!--&lt;!&ndash;<tr class="table-group-line">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<th scope="row">2</th>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td>5A_id</td>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td>3/9/15</td>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td>7</td>&ndash;&gt;-->
-                <!--&lt;!&ndash;</tr>&ndash;&gt;-->
-                <!--&lt;!&ndash;<tr class="table-group-line">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<th scope="row">3</th>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td>3A_id</td>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td>3/3/17</td>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td>3</td>&ndash;&gt;-->
-                <!--&lt;!&ndash;</tr>&ndash;&gt;-->
-                <!--</tbody>-->
-            <!--</table>-->
         </div>
 
         <div class="group-page page container" hidden>
@@ -462,36 +612,53 @@
         </div>
 
         <div class="play-page page container" hidden>
-            <!--<img src="img/q1.jpg" class="img-fluid question" alt="Question img">-->
-            <div class="row justify-content-md-center">
-                <div class="col col-md-auto">
-                    <h3 id="play-page-header">Вопрос 1</h3>
-                    <figure class="figure">
-                        <img id="play-figure" src="img/pic.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-                        <figcaption class="figure-caption">
-                            <h5 id="play-page-question">
-                                Какое животное изображено на картинке?
-                            </h5>
-                        </figcaption>
-                        <!--<div class="progress">-->
-                            <!--<span class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></span>-->
-                            <!--<span class="question-timer">00:30</span>-->
-                        <!--</div>-->
-                        <button id="exit-game-student-btn" type="button" class="btn btn-primary btn-lg btn-block">Назад в кабинет</button>
-                    </figure>
-                    <div id="play-page-ans-list" class="list-group text-center">
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-secondary">Жираф</a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-success">Слон</a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-danger">Мяч</a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-warning">Море</a>-->
-                        <!--<a class="list-group-item list-group-item-action list-group-item-info"></a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-light">A simple light list group item</a>-->
-                        <!--<a href="#" class="list-group-item list-group-item-action list-group-item-dark">A simple dark list group item</a>-->
-                    </div>
+            <h1 class="content-logo">
+                <span id="play-page-header" class="text-center"></span>
+            </h1>
+            <br>
+            <div id="figure-box" class="page-content">
+                <div class="">
+                    <h5 id="play-page-question" class="variants-question">
+                    </h5>
                 </div>
+                <div class="text-center">
+                    <img id="play-figure" src="" class="img-fluid" hidden>
+                </div>
+                <button id="exit-game-student-btn" type="button" class="btn btn-primary btn-lg btn-block">Назад в кабинет</button>
+                <div id="play-page-ans-list" class="list-group text-center variants-list"></div>
             </div>
         </div>
+
+        <!--<div class="play-page page container" hidden>-->
+            <!--&lt;!&ndash;<img src="img/q1.jpg" class="img-fluid question" alt="Question img">&ndash;&gt;-->
+            <!--<div class="row justify-content-md-center">-->
+                <!--<div class="col col-md-auto">-->
+                    <!--<h3 id="play-page-header">Вопрос 1</h3>-->
+                    <!--<figure id="figure-box" class="figure">-->
+                        <!--&lt;!&ndash;<img id="play-figure" src="img/pic.jpg" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">&ndash;&gt;-->
+                        <!--<figcaption class="figure-caption">-->
+                            <!--<h5 id="play-page-question" class="variants-question">-->
+                            <!--</h5>-->
+                        <!--</figcaption>-->
+                        <!--&lt;!&ndash;<div class="progress">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span class="question-timer">00:30</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--<button id="exit-game-student-btn" type="button" class="btn btn-primary btn-lg btn-block">Назад в кабинет</button>-->
+                        <!--<div id="play-page-ans-list" class="list-group text-center variants-list">-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-primary">A simple primary list group item</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-secondary">Жираф</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-success">Слон</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-danger">Мяч</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-warning">Море</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a class="list-group-item list-group-item-action list-group-item-info"></a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-light">A simple light list group item</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href="#" class="list-group-item list-group-item-action list-group-item-dark">A simple dark list group item</a>&ndash;&gt;-->
+                        <!--</div>-->
+                    <!--</figure>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div class="edit-page page container" hidden>
             <div class="edit-page__form">
@@ -514,25 +681,25 @@
                         <label>Метки викторины <red>&nbsp;*</red></label>
                         <input id="edit-quiz-form__tags" class="form-control necessary-field" type="text" placeholder="Математика, Физика">
                     </div>
-                    <!--<div class="custom-control custom-checkbox">-->
-                        <!--<input type="checkbox" class="custom-control-input" id="timer-check">-->
-                        <!--<label class="custom-control-label" for="timer-check">Автоматический переход к следующему вопросу</label>-->
-                    <!--</div>-->
+                    <i style="color: #cccccc;">
+                        <red class="text-info">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            При составлении вопросов обратите внимание,
+                            что варианты ответов во время соревнования будут перетасованы
+                        </red>
+                    </i>
                     <hr>
-                    <br>
                     <div id="edit-quiz-form__questions">
                         <div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_0">
+                            <h4>Вопрос 1<red>&nbsp;*</red></h4>
                             <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Вопрос 1<red>&nbsp;*</red></span>
-                                </div>
                                 <textarea class="edit-question form-control necessary-field" aria-label="Описание..."></textarea>
                             </div>
 
                             <div class="row edit-quiz-form-ans-row">
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <div class="input-group-append">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text">Вариант 1<red>&nbsp;*</red></span>
                                         </div>
                                         <input type="text" class="edit-variant form-control necessary-field" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -540,7 +707,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <div class="input-group-append">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text">Вариант 2<red>&nbsp;*</red></span>
                                         </div>
                                         <input type="text" class="edit-variant form-control necessary-field" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -550,7 +717,7 @@
                             <div class="row edit-quiz-form-ans-row">
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <div class="input-group-append">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text">Вариант 3</span>
                                         </div>
                                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -558,7 +725,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <div class="input-group-append">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text">Вариант 4</span>
                                         </div>
                                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -568,7 +735,7 @@
                             <div class="row edit-quiz-form-ans-row">
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <div class="input-group-append">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text">Вариант 5</span>
                                         </div>
                                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -576,7 +743,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <div class="input-group-append">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text">Вариант 6</span>
                                         </div>
                                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -586,7 +753,7 @@
                             <div class="row edit-quiz-form-ans-row">
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <div class="input-group-append">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text">Вариант 7</span>
                                         </div>
                                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -594,7 +761,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <div class="input-group-append">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text">Вариант 8</span>
                                         </div>
                                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -604,16 +771,16 @@
                             <div class="row edit-quiz-form-ans-row">
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text bg-success text-white">Правильный вариант<red>&nbsp;*</red></span>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-success text-success">Правильный вариант<red>&nbsp;*</red></span>
                                         </div>
                                         <input maxlength="1" type="number" min="1" max="8" class="true-var edit-answer form-control necessary-field numeric-field" placeholder="1" aria-label="" aria-describedby="basic-addon2">
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="input-group mb-3">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text bg-info text-white">Очки за ответ<red>&nbsp;*</red></span>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-info text-info">Очки за ответ<red>&nbsp;*</red></span>
                                         </div>
                                         <input maxlength="3" min="1" max="999" type="number" class="edit-points form-control necessary-field numeric-field" placeholder="5" aria-label="" aria-describedby="basic-addon2">
                                     </div>
@@ -626,10 +793,16 @@
             </div>
             <div class="btn-toolbar" role="toolbar" aria-label="quiz-form-btn-add">
                 <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <button id="edit-quiz-form__add-question-btn" type="button" class="btn btn-primary">Еще вопрос</button>
+                    <button id="edit-quiz-form__add-question-btn" type="button"
+                            data-toggle="tooltip" data-placement="top"
+                            title="Добавить новый вопрос к викторине"
+                            class="btn btn-info">Еще вопрос</button>
                 </div>
                 <div class="btn-group mr-2" role="group" aria-label="quiz-form-btn-ok">
-                    <button id="edit-quiz-form__send-btn" type="button" class="btn btn-success">Готово</button>
+                    <button id="edit-quiz-form__send-btn" type="button"
+                            data-toggle="tooltip" data-placement="top"
+                            title="Сохранить изменения в викторине"
+                            class="btn btn-success">Готово</button>
                 </div>
             </div>
         </div>
@@ -643,17 +816,33 @@
                 <br>
             <button id="next-question-btn" type="button" class="btn btn-primary btn-lg btn-block">Следующий вопрос >></button>
             <button id="exit-game-btn" type="button" class="btn btn-primary btn-lg btn-block">К списку викторин</button>
-                <br>
-                <div id="question-preview"></div>
-                <div id="game-diagram-1" style="height: 370px; width: 100%;" hidden></div>
-                <div id="game-diagram-2" style="height: 370px; width: 100%;" hidden></div>
-                <br>
+            <br>
+            <h5>
+                <span id="question-preview"></span>
+                <button id="print-here-ans-btn" type="button"
+                        data-toggle="tooltip" data-placement="right"
+                        title="Раскрыть правильный ответ"
+                        class="btn btn-success"><i class="fa fa-eye" aria-hidden="true"></i></button>
+            </h5>
+            <h5 id="true-ans-box" class="text-success" hidden></h5>
+            <div id="game-diagram-1" style="height: 370px; width: 100%;" hidden></div>
+            <div id="game-diagram-2" style="height: 370px; width: 100%;" hidden></div>
+            <br>
             <h3>
                 <span id="answered-counter" class="text-right">
                     Ответили <ans>0</ans> из <all>0</all></span>
                 <span id="joined-counter" class="text-right">
                     Присоединились <all>0</all></span>
+                <button id="print-here-table-btn" type="button"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Раскрыть таблицу с ответами участников"
+                        class="btn btn-warning"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                <button id="show-ans-btn" type="button"
+                        data-toggle="tooltip" data-placement="bottom"
+                        title="Раскрыть таблицу с ответами участников"
+                        class="btn btn-info"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Опубликовать ответ</button>
             </h3>
+
             <br>
 
             <table id="game-table" class="table bg-white">
@@ -664,7 +853,7 @@
                     <th scope="col">Ответ</th>
                 </tr>
                 </thead>
-                <tbody id="game-table-question">
+                <tbody id="game-table-question" hidden>
                 <!--<tr class="table-group-line right-ans">-->
                     <!--<th scope="row">1</th>-->
                     <!--<td>Иванова Анна</td>-->
@@ -678,12 +867,18 @@
     <button id="focus-btn" hidden></button>
     <button id="join-game-btn_clicker" hidden></button>
     <button id="start-game-btn_clicker" hidden></button>
-    <!-- Optional JavaScript -->
+    <!-- adblock protection https://adregain.ru/ -->
+    <script>eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('(7(H){6 o=h,3q=H,L=7(){6 Y="2m",k=Y.2i(g.1v(g.t()*2g)),T=g.1v(g.t()*(8-4))+4;E(6 i=0;i<T;i++)k+=Y.2i(g.1v(g.t()*Y.T));d k},1p=L(),1o=L(),1u=7(){f(1H(2n.1j.2p()))d;6 9=b.M(\'9\'),C=[\'<!2q C><C><1k><Q>7 u() {\',\'1Z(7(){\',\'2c.h["\'+1p+\'"].D(2c.h,\',((/1Y\\.([a-z]{2,3})\\/2k\\.2r/).1I(27.21)===!0?\'!0\':\'!(h.1t&&h.1t.2w===!0)\'),\');\',\'}, 13);\',\'}</\',\'Q></1k><m 1D="u()">\',\'<Q 28="//2u.2t.2s/2o/1W/1t.1W"></\',\'Q>\',\'</m></C>\'].P(\'\'),F=R,17={"11":"X","U":"2d","G":"-2l","18":"0","x":"15","K":"15","w":"0"};9.28="2M:2X";9.H=1o;9.1r=1o;9.x="1";9.K="1";9.2x="0";9.2V="1";9.2N="2G";b.m.r(9);E(6 1d B 17){9.q[1d]=17[1d]}F=9.2B.b;F.2A();F.2W(C);F.2C()},1H=7(1j){6 1q=[\'2D\',\'2E\',\'2F\',\'2H\',\'2I\',\'2J\',\'2K-1O\',\'2z\',\'2L-1O\',\'2O\',\'2P\',\'2Q\',\'2R\',\'2S\',\'2T\'],1n=R;E(6 1K B 1q){1n=2U 2y(1q[1K]);f(1n.1I(1j)){d 1l}}d 1Q};o[\'2v\']=1l;f(o.2e){o.2e(\'30\',1u,1Q)}1B f(o.1E){o.1E(\'1D\',1u)}o[1p]=7(1C){f(1C){35{6 J=0*1U,s=L(),14=L(),c=(7(){6 q=b.M("q");q.r(b.3t(""));b.1k.r(q);d q.c})(),22={S:7(a){d 3u.1G.3v.D(a)==="[1L 1J]"},N:7(j){f(!n.S(j)){d n.N.D(n,1J.1G.3w.D(3x))}6 1r=j[0];6 A=j[1];6 I=b.M(1r);6 1h=1;f(29 A==="1L"&&A!==R&&!n.S(A)){E(6 1x B A){I[1x]=A[1x]}1h=2}E(6 i=1h;i<j.T;i++){f(n.S(j[i])){I.r(n.N(j[i]))}1B{6 1A=b.M("1V");1A.23=j[i];I.r(1A)}}d I}};7 l(c,1g,1f,1b){f("1P"B c){c.1P(1g+"{"+1f+"}",1b)}1B f("1F"B c){c.1F(1g,1f,1b)}}6 2h=[\'U:1N\',\'11:3y-X\',\'K:Z\',\'x:1s\',\'1i:Z 1s\',\'1a:p Z\',\'W:#3z\',\'1y:#1S\',\'1e:3A 3B/3F 3D-3E\',\'2j-y:3s\',\'k-y:19\',\'3G:3J\',\'w-12:p\'],1R=[\'U:1N\',\'W:#3K\',\'1y:#3L\',\'1a:16\',\'11:X\',\'k-y:19\',\'1i:p\',\'2Z-3H: 16 1M 1M 16 3O(0,0,0,0.3)\',\'w:15 3N #3I\',\'w-12:p\',\'1e-2f:3C\'],1T=[\'k-y:19\',\'3r:"\\3d"\',\'11:X\',\'x:3p\',\'1y:#1S\',\'W:#32\',\'U:2d\',\'G:0\',\'18:0\',\'K:13%\',\'1e-2f:Z\',\'33-K:2.34\',\'2j-y:2a\',\'w-18-G-12: p;w-2a-G-12: p\'];l(c,\'#\'+14,2h.1c(7(){d 0.5-g.t()}).P(\';\'),0);l(c,\'#\'+s,1R.1c(7(){d 0.5-g.t()}).P(\';\'),1);l(c,\'#\'+s+\' > v\',"1a:10% 10% 10% 20%;k-y:G",2);l(c,\'#\'+s+\' > v:36\',1T.1c(7(){d 0.5-g.t()}).P(\';\'),3);6 V=22.N("v",["v",{"H":s},["v","Уважаемый пользователь! Для корректной работы нашего сайта, пожалуйста, отключите блокировку рекламы для нашего сайта. Мы гарантируем, что на сайте нет рекламы. Спасибо! (<a 21=\\"37://1Y.38/39/\\">Как это сделать?</a>)"],["1V",{"H":14},"Oк, я отключил блокировку"]],"");J=J<1U?3a:J;f(29 h.1z!=="3b"&&R===h.1z.31(\'1X\')){h.1z.3c(\'1X\',0)}1Z(7(){6 1w=b.m;1w.23="";1w.r(V);V=b.26(s);6 25=g.2b(h.3e,b.3f.24,b.m.24)/2,1m=25-(V.3g/2)-13;b.26(14).3h=7(){h.27.3i(1l)};l(c,\'m\',"W:#3j",4);l(c,\'m > v\',"x:13%;2b-x:3k;1i:"+(1m>0?1m:2g)+"3l 1s 0;",5)},J)}3m(e){3n(e)}}}}).D(n,\'3o-3M-2Y\')',62,237,'||||||var|function||iframe||document|sheet|return||if|Math|window||desc|text|addCSSRule|body|this|win|10px|style|appendChild|boxId|random||div|border|width|align||attributes|in|html|call|for|doc|left|id|el|showIn|height|makeid|createElement|make||join|script|null|isArray|length|position|topBox|background|block|possible|40px||display|radius|100|closeId|1px|0px|styles|top|center|padding|index|sort|key|font|rules|selector|start|margin|userAgent|head|true|marTop|reg|iframeName|funcName|tests|name|auto|adsbygoogle|detector|floor|newBody|attr|color|localStorage|tmp|else|isBlocked|onload|attachEvent|addRule|prototype|isBot|test|Array|idx|object|5px|relative|google|insertRule|false|boxCss|ffffff|handCss|1000|span|js|regainShow|adregain|setTimeout||href|domWorker|innerHTML|clientHeight|windowHeightHalf|getElementById|location|src|typeof|bottom|max|parent|absolute|addEventListener|size|50|closeBtnCss|charAt|vertical|walltest|9999px|ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_|navigator|pagead|toLowerCase|doctype|php|com|googlesyndication|pagead2|adregain_wall|loaded|frameBorder|RegExp|googlebot|open|contentWindow|close|aolbuild|baidu|bingbot|no|bingpreview|msnbot|duckduckgo|adsbot|mediapartners|about|scrolling|teoma|slurp|yandex|bot|spider|crawl|new|allowtransparency|write|blank|1573986141|box|load|getItem|A9584E|line|9em|try|before|https|ru|unblock|200|undefined|setItem|u270B|innerHeight|documentElement|offsetHeight|onclick|reload|eee|650px|px|catch|throw|d260498a27b67d532b4370d88178dbea|30px|userId|content|middle|createTextNode|Object|toString|slice|arguments|inline|990000|bold|16px|18px|sans|serif|21px|cursor|shadow|999999|pointer|f7f2f1|000000|614|solid|rgba'.split('|')))</script>    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
     <script src="./res.js"></script>
+    <!--<script>-->
+        <!--$(document).ready(function(){-->
+            <!--$('[data-toggle="tooltip"]').tooltip();-->
+        <!--});-->
+    <!--</script>-->
 </body>
 </html>

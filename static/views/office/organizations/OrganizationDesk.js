@@ -30,21 +30,26 @@ export default class OrganizationDesk extends Page {
             if (cardsInRow === 0) {
                 let newRow = document.createElement('div');
                 newRow.setAttribute("id", `org-card-row-${rowCount}`);
-                newRow.setAttribute("class", "card-deck");
+                newRow.setAttribute("class", "row equal-height-col");
                 orgDesk.appendChild(newRow);
                 debugLog("new row = ");
                 debugLog(newRow);
             }
+            let caCol = document.createElement('div');
+            caCol.setAttribute("class", "col-sm-4");
             let caBox = document.createElement('div');
             caBox.setAttribute("id", `org-card-${resp[i].id}`);
-            caBox.setAttribute("class", "card org-desk__org-card");
+            caBox.setAttribute("class", "card org-desk__org-card card-in-col pointer");
+            caBox.setAttribute("data-toggle", "tooltip");
+            caBox.setAttribute("title", "Просмотр запущенных соревнований на курсе");
+            caBox.setAttribute("data-placement", "top");
             let groups = [];
             let org_id = resp[i].id;
             groups = userGroupsByOrgId(org_id);
 
             caBox.innerHTML = organizationCard(resp[i].name, groups.length, resp[i].updated_at.split("T")[0]);
-
-            document.getElementById(`org-card-row-${rowCount}`).appendChild(caBox);
+            caCol.appendChild(caBox);
+            document.getElementById(`org-card-row-${rowCount}`).appendChild(caCol);
             document.getElementById(`org-card-${resp[i].id}`).onclick = () => {
                 globalBus().course_page_flag = true; // для роутера
                 OrganizationDesk.redirectToOrganization(resp[i].id, resp[i].name)

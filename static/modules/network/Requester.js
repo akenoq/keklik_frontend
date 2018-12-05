@@ -42,7 +42,7 @@ export default class Requester {
         xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
         xhr.setRequestHeader("Authorization", globalBus().authWorker.getToken());
 
-        if (method === "GET") {
+        if (method === "GET" || method === "DELETE") {
             xhr.send(null);
         } else {
             xhr.send(body);
@@ -57,12 +57,25 @@ export default class Requester {
                     globalBus().authWorker.deleteToken();
                 }
                 debugLog(xhr.status + ' from 400');
-                return callback(xhr, null);
+                callback(xhr, null);
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
+                return;
             }
 
-            const response = JSON.parse(xhr.responseText);
-
-            callback(null, response);
+            if (method !== "DELETE") {
+                const response = JSON.parse(xhr.responseText);
+                callback(null, response);
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
+            } else {
+                callback(null, null);
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
+            }
         };
     }
 
@@ -164,5 +177,19 @@ export default class Requester {
 
     static getGameById(id, callback) {
         Requester.requestToHost("GET", `api/games/${id}`, null, callback);
+    }
+
+    static getGameByUser(url_to_page, callback) {
+        let url = "api/" + url_to_page.split("/api/")[1];
+        // https://api.example.org/accounts/?limit=100&offset=400
+        Requester.requestToHost("GET", url, null, callback);
+    }
+
+    static delGameById(id, callback) {
+        Requester.requestToHost("DELETE", `api/games/${id}/`, null, callback)
+    }
+
+    static getNumberGames(callback) {
+        Requester.requestToHost("GET", "api/stats/", null, callback)
     }
 }

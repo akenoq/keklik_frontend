@@ -83,7 +83,11 @@ function debugLog(s) {
 /* harmony export (immutable) */ __webpack_exports__["a"] = globalBus;
 
 
-const GLOBAL_BUS = {};
+const GLOBAL_BUS = {
+    saver: {
+        userOrg: []
+    }
+};
 
 function globalBus() {
     return GLOBAL_BUS;
@@ -140,7 +144,7 @@ class Requester {
         xhr.setRequestHeader("Content-Type", "application/json; charset=utf8");
         xhr.setRequestHeader("Authorization", Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().authWorker.getToken());
 
-        if (method === "GET") {
+        if (method === "GET" || method === "DELETE") {
             xhr.send(null);
         } else {
             xhr.send(body);
@@ -155,12 +159,25 @@ class Requester {
                     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().authWorker.deleteToken();
                 }
                 Object(__WEBPACK_IMPORTED_MODULE_1__debugLog__["a" /* default */])(xhr.status + ' from 400');
-                return callback(xhr, null);
+                callback(xhr, null);
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
+                return;
             }
 
-            const response = JSON.parse(xhr.responseText);
-
-            callback(null, response);
+            if (method !== "DELETE") {
+                const response = JSON.parse(xhr.responseText);
+                callback(null, response);
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
+            } else {
+                callback(null, null);
+                // $(document).ready(function(){
+                //     $('[data-toggle="tooltip"]').tooltip();
+                // });
+            }
         };
     }
 
@@ -262,6 +279,20 @@ class Requester {
 
     static getGameById(id, callback) {
         Requester.requestToHost("GET", `api/games/${id}`, null, callback);
+    }
+
+    static getGameByUser(url_to_page, callback) {
+        let url = "api/" + url_to_page.split("/api/")[1];
+        // https://api.example.org/accounts/?limit=100&offset=400
+        Requester.requestToHost("GET", url, null, callback);
+    }
+
+    static delGameById(id, callback) {
+        Requester.requestToHost("DELETE", `api/games/${id}/`, null, callback)
+    }
+
+    static getNumberGames(callback) {
+        Requester.requestToHost("GET", "api/stats/", null, callback)
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Requester;
@@ -464,7 +495,7 @@ class FormValidator {
         if (!login) {
             return FormValidator.responseEmpty();
         }
-        const loginRegexp = /^[\w\d]{3,10}$/;
+        const loginRegexp = /^[\w\d]{1,100}$/;
         return (loginRegexp.test(login)) ? FormValidator.responseOk() : FormValidator.responseIncorrect();
     }
 
@@ -473,7 +504,7 @@ class FormValidator {
             return FormValidator.responseEmpty();
         }
         // const passwordRegexp = /\S{3,16}$/;
-        const passwordRegexp = /^[\w\d]{3,10}$/;
+        const passwordRegexp = /^[\w\d]{1,100}$/;
         return (passwordRegexp.test(password)) ? FormValidator.responseOk() : FormValidator.responseIncorrect();
     }
 
@@ -527,10 +558,10 @@ class FormValidator {
             if (variants < 2)
                 empty_flag = true;
                 // errors.push(i + "_variants_empty");
-            let true_var_num = parseInt(document.getElementById(`edit-quiz-form__question-box_${i}`)
-                .querySelector(".true-var").value);
             let true_var_box = document.getElementById(`edit-quiz-form__question-box_${i}`)
                 .querySelector(".true-var");
+            let true_var_num = true_var_box.value;
+
             if (true_var_num > variants.length) {
                 true_var_box.setAttribute('data-nec', 'big');
                 errors.push(`&#9888; Номер правильного варианта в вопосе ${i+1} превышает количество вариантов`);
@@ -583,8 +614,30 @@ let fieldsCleaner = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = userGroupsByOrgId;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_globalBus__ = __webpack_require__(1);
+
+
+
+
+function userGroupsByOrgId(org_id) {
+    let groups = [];
+    let len_groups = Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups.length;
+    for (let i = 0; i < len_groups; i++) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups[i].group.organization.id === org_id) {
+            groups.push(Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups[i]);
+        }
+    }
+    return groups;
+}
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__RegisterForm_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__RegisterForm_js__ = __webpack_require__(11);
 
 
 
@@ -617,7 +670,7 @@ class RegisterPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -641,9 +694,10 @@ const messagesRegisterForm = {
     INCORRECT_MESSAGE : "Использованы недопустимые символы",
     RESPONSE_MESSAGE : "Некорректный ввод или логин уже существует",
     UNIQUE_MESSAGE: "Пользователь с таким логином<br>уже существует",
-    TOO_SHORT_LOGIN: "Пароль должен содержать<br>не менее 4х символов",
+    TOO_SHORT_PASSWORD: "Пароль должен содержать<br>не менее 4х символов",
     SUCCESS_SIGN_UP_MESSAGE : "Вы успешо зарегистрировались!",
-    CONTENT_SHOULD_BE: "Логин и пароль должны состоять<br>из латинских букв и цифр"
+    CONTENT_SHOULD_BE: "Логин и пароль должны состоять<br>из латинских букв и цифр",
+    INV_PASSWORD: "Некорректный пароль"
 };
 
 class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__["a" /* default */] {
@@ -667,7 +721,7 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
     }
 
     static msgTooShortPassword() {
-        return messagesRegisterForm.TOO_SHORT_LOGIN;
+        return messagesRegisterForm.TOO_SHORT_PASSWORD;
     }
 
     static msgNotUniqueLogin() {
@@ -680,6 +734,10 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
 
     static msgSignUpSuccess() {
         return messagesRegisterForm.SUCCESS_SIGN_UP_MESSAGE;
+    }
+
+    static msgInvalidPassword() {
+        return messagesRegisterForm.INV_PASSWORD;
     }
 
     static validate(loginValue, passwordValue, errorBox) {
@@ -720,9 +778,12 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
                         msg = RegisterForm.msgNotUniqueLogin();
                     }
                 } else if (err.password !== undefined) {
+                    if (err.password[0].code === "password_too_short") {
+                        msg = RegisterForm.msgTooShortPassword();
+                    }
                     if (err.password[0].code === "invalid") {
                         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("INV = ");
-                        msg = RegisterForm.msgTooShortPassword();
+                        msg = RegisterForm.msgInvalidPassword();
                     }
                 }
                 return this.errorBox.innerHTML = msg;
@@ -738,7 +799,8 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
 
     addEventsToButtons() {
 
-        document.querySelector("#regformBtn").addEventListener("click", () => {
+        document.querySelector("#regformBtn").addEventListener("click", (event) => {
+            event.preventDefault();
             this.loginValue = document.querySelector("#regform-login").value;
             this.passwordValue = document.querySelector("#regform-password").value;
             this.errorBox = document.querySelector("#regform-err");
@@ -759,12 +821,12 @@ class RegisterForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LoginForm_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LoginForm_js__ = __webpack_require__(13);
 
 
 
@@ -797,7 +859,7 @@ class RegisterPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -819,7 +881,7 @@ class RegisterPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default
 const messagesLoginForm = {
     EMPTY_MESSAGE : "Заполнены не все поля",
     INCORRECT_MESSAGE : "Использованы недопустимые символы",
-    RESPONSE_MESSAGE : "Некорректный ввод или логина не существует",
+    RESPONSE_MESSAGE : "Неправильный логин или пароль",
     SUCCESS_SIGN_IN_MESSAGE : "Вы вошли на сайт!"
 };
 
@@ -893,7 +955,8 @@ class LoginForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__[
 
     addEventsToButtons() {
 
-        document.querySelector("#login-form-btn").addEventListener("click", () => {
+        document.querySelector("#login-form-btn").addEventListener("click", (event) => {
+            event.preventDefault();
             this.loginValue = document.querySelector("#login-form-login").value;
             this.passwordValue = document.querySelector("#login-form-password").value;
             this.errorBox = document.querySelector("#login-form-err");
@@ -912,7 +975,7 @@ class LoginForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__[
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -922,9 +985,11 @@ class LoginForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js__[
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_network_Requester__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__quizzes_QuizzesDesk__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ProfileForm__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_GameManager__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__organizations_OrganizationDesk__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_GameManager__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__organizations_OrganizationDesk__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_debugLog__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__statistic_StaticticTable__ = __webpack_require__(28);
+
 
 
 
@@ -957,7 +1022,7 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
 
         Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().count_ws = 0;
         Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag = false;
-        this.target_pin = null;
+        // this.target_pin = null;
     }
 
     static pagePath() {
@@ -1000,25 +1065,52 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 for (let i = 0; i < len_games; i++) {
                     Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames.push(games[i]);
                 }
-                this.target_pin = null;
-                let listManagedGameBtn = document.getElementById("list-managed-game-btn");
-                listManagedGameBtn.innerHTML = "";
+                // this.target_pin = null;
+                let running_game_box = document.getElementById("rannunig-games-warning");
+                running_game_box.innerHTML = "";
                 if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames.length !== 0) {
                     let managed_game = Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().saver.userRunningGames;
                     let managed_game_len = managed_game.length;
-                    document.getElementById("selected-managed-game").innerHTML = "Управляемые PIN...";
-                    for (let i = 0; i < managed_game_len; i++) {
-                        Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("render a");
-                        let a = document.createElement('a');
-                        a.setAttribute('class', 'dropdown-item');
-                        listManagedGameBtn.appendChild(a);
-                        a.innerHTML = "PIN " + managed_game[i].id;
-                        a.setAttribute('id', `select-managed-by-id-${managed_game[i].id}`);
-                        a.onclick = () => {
-                            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("change selected-manage text");
-                            document.getElementById("selected-managed-game").innerHTML = managed_game[i].id;
-                            this.target_pin = managed_game[i].id;
-                            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("учительский ПИН = "+ managed_game[i].id.toString());
+                    if (managed_game_len !== 0) {
+                        let content = "";
+                        for (let i = 0; i < managed_game_len; i++) {
+                            let div = document.createElement('div');
+                            running_game_box.appendChild(div);
+                            div.innerHTML = `
+                                <div class="alert alert-light" role="alert">
+                                <button id="delete-managed-by-id-${managed_game[i].id}" type="button" 
+                                data-toggle="tooltip" data-placement="bottom"
+                                title="Удалить соревнование"
+                                class="btn btn-danger">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>&nbsp;
+                                <button id="select-managed-by-id-${managed_game[i].id}" type="button" 
+                                data-toggle="tooltip" data-placement="bottom"
+                                title="Продолжить управление соревнованием"
+                                class="btn btn-success">
+                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                </button> &nbsp;
+                                <red>&#9888; У вас есть запущенное вами соревнование PIN ${managed_game[i].id}</red>
+                                </div>
+                            `;
+                            document.getElementById(`select-managed-by-id-${managed_game[i].id}`).onclick = () => {
+                                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.joined_counter = 0;
+                                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameTeacherPage.attachRedirect();
+                                Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.restart_manage(managed_game[i].id);
+                                document.getElementById("start-game-btn_clicker").click(); // redirect
+                                div.innerHTML = "";
+                                // this.target_pin = managed_game[i].id;
+                                Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("REDIRECT TO RESTART");
+                            };
+                            document.getElementById(`delete-managed-by-id-${managed_game[i].id}`).onclick = () => {
+                                __WEBPACK_IMPORTED_MODULE_3__modules_network_Requester__["a" /* default */].delGameById((managed_game[i].id), (err, resp) => {
+                                    if (err) {
+                                        console.log("err of del game")
+                                    } else {
+                                        div.innerHTML = "";
+                                    }
+                                });
+                            }
                         }
                     }
                 }
@@ -1052,10 +1144,12 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
                 this.profileForm.setFormValues(resp);
                 __WEBPACK_IMPORTED_MODULE_7__organizations_OrganizationDesk__["a" /* default */].render();
                 __WEBPACK_IMPORTED_MODULE_4__quizzes_QuizzesDesk__["a" /* default */].render();
+                __WEBPACK_IMPORTED_MODULE_9__statistic_StaticticTable__["a" /* default */].render();
                 this.renderListManaged();
+                // добавляем листнеры на кнопу присоединиться
                 if (Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag === false) {
                     this.joinGameBtn();
-                    this.rejoinManagedGameBtn();
+                    // this.rejoinManagedGameBtn();
                     Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().joinBtnFlag = true;
                 }
                 Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("office norm");
@@ -1072,6 +1166,8 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
             document.getElementById("to-courses-btn").classList.add("active");
             document.getElementById("profile").hidden = true;
             document.getElementById("to-profile-btn").classList.remove("active");
+            document.getElementById("statistic").hidden = true;
+            document.getElementById("to-statistic-btn").classList.remove("active");
         };
 
         document.getElementById("to-quizzes-btn").onclick = () => {
@@ -1082,6 +1178,8 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
             document.getElementById("to-courses-btn").classList.remove("active");
             document.getElementById("profile").hidden = true;
             document.getElementById("to-profile-btn").classList.remove("active");
+            document.getElementById("statistic").hidden = true;
+            document.getElementById("to-statistic-btn").classList.remove("active");
         };
 
         document.getElementById("to-profile-btn").onclick = () => {
@@ -1092,14 +1190,28 @@ class OfficePage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default *
             document.getElementById("to-courses-btn").classList.remove("active");
             document.getElementById("profile").hidden = false;
             document.getElementById("to-profile-btn").classList.add("active");
-        }
+            document.getElementById("statistic").hidden = true;
+            document.getElementById("to-statistic-btn").classList.remove("active");
+        };
+
+        document.getElementById("to-statistic-btn").onclick = () => {
+            Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("C1");
+            document.getElementById("org-desk").hidden = true;
+            document.getElementById("to-quizzes-btn").classList.remove("active");
+            document.getElementById("quizzes-desk").hidden = true;
+            document.getElementById("to-courses-btn").classList.remove("active");
+            document.getElementById("profile").hidden = true;
+            document.getElementById("to-profile-btn").classList.remove("active");
+            document.getElementById("statistic").hidden = false;
+            document.getElementById("to-statistic-btn").classList.add("active");
+        };
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = OfficePage;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1195,6 +1307,11 @@ class GameManager {
         this.ws_controller.sendNextMessage(this.game_id);
     }
 
+    showTrueAnswer() {
+        Object(__WEBPACK_IMPORTED_MODULE_3__debugLog__["a" /* default */])("true ans send");
+        this.ws_controller.sendTrueAnsForAll(this.game_id);
+    }
+
     sendAnswer(var_index, cur_question_id) {
         this.ws_controller.sendAnswerMessage(this.game_id, var_index, cur_question_id);
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameStudentPage.renderWaitingNext();
@@ -1218,7 +1335,7 @@ class GameManager {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1226,10 +1343,10 @@ class GameManager {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_linkOnButtons__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_globalBus_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__organizationCard__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__organizationCard__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_network_AuthWorker__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(9);
 
 
 
@@ -1262,21 +1379,26 @@ class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* defaul
             if (cardsInRow === 0) {
                 let newRow = document.createElement('div');
                 newRow.setAttribute("id", `org-card-row-${rowCount}`);
-                newRow.setAttribute("class", "card-deck");
+                newRow.setAttribute("class", "row equal-height-col");
                 orgDesk.appendChild(newRow);
                 Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("new row = ");
                 Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(newRow);
             }
+            let caCol = document.createElement('div');
+            caCol.setAttribute("class", "col-sm-4");
             let caBox = document.createElement('div');
             caBox.setAttribute("id", `org-card-${resp[i].id}`);
-            caBox.setAttribute("class", "card org-desk__org-card");
+            caBox.setAttribute("class", "card org-desk__org-card card-in-col pointer");
+            caBox.setAttribute("data-toggle", "tooltip");
+            caBox.setAttribute("title", "Просмотр запущенных соревнований на курсе");
+            caBox.setAttribute("data-placement", "top");
             let groups = [];
             let org_id = resp[i].id;
             groups = Object(__WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__["a" /* default */])(org_id);
 
             caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_4__organizationCard__["a" /* default */])(resp[i].name, groups.length, resp[i].updated_at.split("T")[0]);
-
-            document.getElementById(`org-card-row-${rowCount}`).appendChild(caBox);
+            caCol.appendChild(caBox);
+            document.getElementById(`org-card-row-${rowCount}`).appendChild(caCol);
             document.getElementById(`org-card-${resp[i].id}`).onclick = () => {
                 Object(__WEBPACK_IMPORTED_MODULE_3__modules_globalBus_js__["a" /* default */])().course_page_flag = true; // для роутера
                 OrganizationDesk.redirectToOrganization(resp[i].id, resp[i].name)
@@ -1317,7 +1439,7 @@ class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* defaul
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1325,36 +1447,22 @@ class OrganizationDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* defaul
 
 
 function organizationCard(name, group_len, date) {
-    return `<img class="card-img-top" src="img/course_logo.png" alt="Card image cap">
-            <div class="card-body">
+    let src_ava = "img/school.jpg";
+    if (name === "Школа 218")
+        src_ava = "img/org/218_ava.jpg";
+    if (name === "Школа 444")
+        src_ava = "img/org/444_ava.jpg";
+    if (name === "Инжинириум МГТУ им.Баумана")
+        src_ava = "img/org/ing_ava.png";
+
+    return `<img class="card-img-top" src=${src_ava} alt="Card image cap">
+            <div class="card-body pointer">
                 <h5 class="card-title">${name}</h5>
                 <p class="card-text">${group_len} групп на курсе</p>
             </div>
             <div class="card-footer">
                 <small class="text-muted">Дата изменения ${date}</small>
             </div>`
-}
-
-/***/ }),
-/* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = userGroupsByOrgId;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modules_globalBus__ = __webpack_require__(1);
-
-
-
-
-function userGroupsByOrgId(org_id) {
-    let groups = [];
-    let len_groups = Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups.length;
-    for (let i = 0; i < len_groups; i++) {
-        if (Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups[i].group.organization.id === org_id) {
-            groups.push(Object(__WEBPACK_IMPORTED_MODULE_0__modules_globalBus__["a" /* default */])().saver.userGroups[i]);
-        }
-    }
-    return groups;
 }
 
 /***/ }),
@@ -1368,8 +1476,8 @@ function userGroupsByOrgId(org_id) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_globalBus__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_network_AuthWorker__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__office_organizations_organizationCard__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__office_organizations_organizationCard__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(9);
 
 
 
@@ -1418,11 +1526,6 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
 
         for (let i = 0; i < groups_len; i++) {
             table_groups.innerHTML += `<div id="group-card-${groups[i].group.id}" class="card game-card-in-group">
-              <!--<div class="card-body">-->
-                <!--<h5 class="card-title">Актуальные соревнования</h5>-->
-                <!--&lt;!&ndash;<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>&ndash;&gt;-->
-                <!--&lt;!&ndash;<a href="#" class="btn btn-primary">Go somewhere</a>&ndash;&gt;-->
-              <!--</div>-->
             </div>`;
 
             __WEBPACK_IMPORTED_MODULE_2__modules_network_Requester__["a" /* default */].getRunningGameByGroupId(groups[i].group.id, (err, resp) => {
@@ -1445,7 +1548,10 @@ class OrganizationPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* def
                             htmlContent += `<div id="group-game-${running_games[i].id}" class="card-body">
                                 <h5 class="card-title"><u>PIN</u> ${running_games[i].id}</h5>
                                 <p class="card-text"><u>Название:</u> ${running_games[i].quiz.title}</p>
-                                <a id="to-group-game-btn-${running_games[i].id}" class="btn btn-success">Присоединиться</a>
+                                <a id="to-group-game-btn-${running_games[i].id}" 
+                                data-toggle="tooltip" data-placement="right"
+                                title="Участвовать в соревновании"
+                                class="btn btn-success">Присоединиться</a>
                               </div>
                               <hr>`;
                         }
@@ -1535,10 +1641,10 @@ class GroupPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* default */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_fieldsCleaner_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_PagePresenter__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Page__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__questionBox__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__emptyQuizForm__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__questionBox__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__emptyQuizForm__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__modules_debugLog__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__office_organizations_OrganizationDesk__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__office_organizations_OrganizationDesk__ = __webpack_require__(16);
 
 
 
@@ -1660,7 +1766,7 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
 
     startQuizBtn(resp) {
         let startGameBtn = document.createElement('button');
-        startGameBtn.innerHTML = "Запуcтить";
+        startGameBtn.innerHTML = `<i class="fa fa-play" aria-hidden="true"></i> Запуcтить`;
         startGameBtn.setAttribute("id", "start-game-btn");
         startGameBtn.setAttribute("class", "btn btn-success start-btn");
         document.getElementById("quiz-editor-h3").appendChild(startGameBtn);
@@ -1676,7 +1782,9 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
     selectTargetGroupBtn(organizations) {
         let targetBox = document.getElementById("target-group-box");
         targetBox.innerHTML =
-            `<div class="btn-group org-btn-group list-btn">
+            `<div class="btn-group org-btn-group list-btn"
+            data-toggle="tooltip" data-placement="top"
+            title="Выберите организацию для публикации соревнования">
                 <button id="selected-org" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Выберите организацию...
                 </button>
@@ -1685,8 +1793,10 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
                     <!--<a class="dropdown-item" href="#">Школа 444</a>-->
                 </div>
             </div>
-            <div class="btn-group group-btn-group list-btn">
-                <button id="selected-group" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="btn-group group-btn-group list-btn"
+            data-toggle="tooltip" data-placement="top"
+            title="Выберите группу в организации для публикации соревнования">
+                <button id="selected-group" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Выберите группу...
                 </button>
 
@@ -1699,8 +1809,8 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
         listOrgBtn.innerHTML = "";
         let listGroupBtn = document.getElementById("list-group-btn");
         listGroupBtn.innerHTML = "";
-        document.getElementById("selected-org").innerHTML = "Выберете организацию...";
-        document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        document.getElementById("selected-org").innerHTML = "Выберите организацию...";
+        document.getElementById("selected-group").innerHTML = "Выберите группу...";
         for (let i = 0; i < org_len; i++) {
             let a = document.createElement('a');
             a.setAttribute('class', 'dropdown-item');
@@ -1728,7 +1838,7 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
         let groups_len = groups.length;
         let listGroupBtn = document.getElementById("list-group-btn");
         listGroupBtn.innerHTML = "";
-        document.getElementById("selected-group").innerHTML = "Выберете группу...";
+        document.getElementById("selected-group").innerHTML = "Выберите группу...";
         this.target_group_id = null;
 
         for (let i = 0; i < groups_len; i++) {
@@ -1754,7 +1864,7 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
         Object(__WEBPACK_IMPORTED_MODULE_8__modules_debugLog__["a" /* default */])("ID = " + id);
         this.editQuizById = id;
         // добавить id викторины в заголовок
-        document.getElementById("quiz-editor-h3").innerHTML = `Викторина ${this.editQuizById}`;
+        document.getElementById("quiz-editor-h3").innerHTML = `Моя викторина`;
         // кнопка запуска викторины
         this.startQuizBtn(resp);
         this.selectTargetGroupBtn(Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus_js__["a" /* default */])().saver.userTeacherOrg);
@@ -1853,6 +1963,7 @@ class QuizEditorPage extends __WEBPACK_IMPORTED_MODULE_5__Page__["a" /* default 
 /* harmony export (immutable) */ __webpack_exports__["a"] = QuizEditorPage;
 
 
+
 /***/ }),
 /* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1882,11 +1993,11 @@ function htmlEntities(s) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Router_js__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_registion_RegisterPage_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__views_registion_RegisterForm_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_login_LoginPage_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_login_LoginForm_js__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_office_OfficePage_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_registion_RegisterPage_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__views_registion_RegisterForm_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_login_LoginPage_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_login_LoginForm_js__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_office_OfficePage_js__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_organization_OrganizationPage_js__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__views_GroupPage_js__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__network_Requester_js__ = __webpack_require__(2);
@@ -1914,6 +2025,27 @@ function startApp() {
     let router = Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().router;
     // router = router.getMe(router);
     // router.sendRouter();
+    document.getElementById("download-manual").onclick = function() {
+        open(`./img/landing/Keklik_quick_start.pdf`)
+    };
+    __WEBPACK_IMPORTED_MODULE_9__network_Requester_js__["a" /* default */].getNumberGames((err, resp) => {
+        let num = 435;
+        if (err) {
+            console.log("err counter");
+        } else {
+            num = resp.games_count;
+        }
+        document.getElementById("landing-counter").innerHTML = num;
+    });
+    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().unloadFunc = (event) => {
+        event.preventDefault();
+        event.returnValue = '';
+    };
+
+    window.addEventListener("beforeunload", Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().unloadFunc);
+    // document.body.onbeforeunload = () => {
+    //     return "try to go away";
+    // };
 }
 
 function changingColor() {
@@ -1947,21 +2079,21 @@ window.addEventListener("load", function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__globalBus_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__views_registion_RegisterPage_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_login_LoginPage_js__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__views_registion_RegisterPage_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__views_login_LoginPage_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__linkOnButtons_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_office_OfficePage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__views_office_OfficePage__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__views_organization_OrganizationPage__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__views_GroupPage__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__network_Requester__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__views_edit_quiz_QuizEditorPage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__GameManager__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_GameTeacherPage__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_GameStudentPage__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_ModalWindow__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__GameManager__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__views_GameTeacherPage__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__views_GameStudentPage__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__views_ModalWindow__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__debugLog__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__saveUserMembership__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__saveUserMembership__ = __webpack_require__(35);
 
 
 
@@ -1986,6 +2118,7 @@ class Router {
 
         this.addRedirectOnNavBtn(
             {button: "nav-main-btn", nextPage: "main-page", pagePath: "/main"},
+            {button: "nav-logo-btn", nextPage: "main-page", pagePath: "/main"},
             {button: "nav-login-btn", nextPage: "login-page", pagePath: "/login"},
             {button: "nav-info-btn", nextPage: "info-page", pagePath: "/info"},
             {button: "nav-office-btn", nextPage: "office-page", pagePath: "/office"}
@@ -1998,6 +2131,7 @@ class Router {
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.signoutBtn = document.getElementById("nav-signout-btn");
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().nav.loginBox = document.getElementById("nav-login-box");
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn = document.getElementById("nav-office-btn");
+        Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.mainBtn = document.getElementById("nav-main-btn");
 
         let navBtnArr = document.getElementsByClassName('btnLink');
         for (let i = 0; i < navBtnArr.length; i++) {
@@ -2036,14 +2170,21 @@ class Router {
 
         document.getElementById("participate-btn").onclick = () => {
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn.click();
+            Router.navigate(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn);
+        };
+
+        document.getElementById("nav-logo-btn").onclick = () => {
+            Router.navigate(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.mainBtn);
         };
 
         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.signoutBtn.onclick = () => {
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().authWorker.deleteToken();
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.signoutBtn.hidden =true;
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.hidden =false;
-            Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
+            // globalBus().btn.loginBtn.click();
             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().nav.loginBox.innerHTML = "";
+            window.removeEventListener("beforeunload", Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().unloadFunc);
+            window.location = "/login";
         };
 
         Router.redirect();
@@ -2056,8 +2197,12 @@ class Router {
         });
     }
 
-    navigate() {
-
+    static navigate(btn_active) {
+        let navBtnArr = document.getElementsByClassName('btnLink');
+        for (let j = 0; j < navBtnArr.length; j++) {
+            navBtnArr[j].parentNode.setAttribute('class', 'nav-item');
+        }
+        btn_active.parentNode.setAttribute('class', 'nav-item active');
     }
 
     addRedirectOnNavBtn(...buttons) {
@@ -2093,9 +2238,9 @@ class Router {
                         __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("login-page");
                         break;
 
-                    case "/info":
-                        __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("info-page");
-                        break;
+                    // case "/info":
+                    //     PagePresenter.showOnlyOnePage("info-page");
+                    //     break;
 
                     default:
                         Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
@@ -2123,15 +2268,16 @@ class Router {
                                 Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.loginBtn.click();
                                 return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office error router");
                             }
+                            Router.navigate(Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().btn.officeBtn);
                             Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().officePage.render();
                             __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("office-page");
                             return Object(__WEBPACK_IMPORTED_MODULE_14__debugLog__["a" /* default */])("office norm router");
                         });
                         break;
 
-                    case "/info":
-                        __WEBPACK_IMPORTED_MODULE_3__PagePresenter_js__["a" /* default */].showOnlyOnePage("info-page");
-                        break;
+                    // case "/info":
+                    //     PagePresenter.showOnlyOnePage("info-page");
+                    //     break;
 
                     case "/course":
                         __WEBPACK_IMPORTED_MODULE_8__network_Requester__["a" /* default */].whoami((err, resp) => {
@@ -2217,15 +2363,18 @@ class Router {
 class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */] {
 
     static newQuizCard() {
-        return `<div id="card-row-1" class="card-deck">
-                                <div id="new-quiz" class="card new-quiz">
-                                    <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
-                                    <div class="card-body text-white">
-                                        <h5 class="card-title">Новая викторина</h5>
-                                        <hr>
-                                        <p class="card-text">Создание нового набора вопросов</p>
-                                    </div>
-                                </div>`
+        return `<div id="card-row-1" class="row equal-height-col">
+                    <div class="col-sm-4">
+                        <div id="new-quiz" data-toggle="tooltip" title="Создать новую викторину" data-placement="top" class="new-quiz card card-in-col bg-success pointer">
+                            <img class="card-img-top" src="img/add_quiz.png" alt="Card image cap">
+                            <div class="card-body text-white">
+                                <h5 class="card-title">Новая викторина</h5>
+                                <hr>
+                                <p class="card-text">Создание нового набора вопросов</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`
     }
 
     static redirectToQuiz(id) {
@@ -2254,10 +2403,15 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
     static render() {
         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("Quiz Desk");
         let quizzesDesk = document.getElementById("quizzes-desk");
-        quizzesDesk.innerHTML = "";
-        QuizzesDesk.renderNewQuizCard(quizzesDesk);
-        QuizzesDesk.quizzesReq((resp) => {
+        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].quizzesOfUser((err, resp) => {
+            quizzesDesk.innerHTML = "";
+            QuizzesDesk.renderNewQuizCard(quizzesDesk);
+            if (err) {
+                return console.log(" error");
+            }
             Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(resp);
+            console.log(resp);
+            console.log(resp.tags);
             let cardsInRow = 1;
             let rowCount = 1;
             for (let i = 0; i < resp.length; i++) {
@@ -2267,12 +2421,18 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                 }
                 if (rowCount === 1 && cardsInRow < 3) {
                     Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("first str");
-                    let caBox = document.createElement('div');
+                    let caCol = document.createElement('div');
                     // <div id="quiz-card-${id}" class="card quizzes-desk__quiz-card">
+                    caCol.setAttribute("class", "col-sm-4");
+                    let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
-                    caBox.setAttribute("class", "card quizzes-desk__quiz-card");
-                    caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
-                    document.getElementById("card-row-1").appendChild(caBox);
+                    caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col pointer");
+                    caBox.setAttribute("data-toggle", "tooltip");
+                    caBox.setAttribute("title", "Открыть викторину для запуска или редактирования");
+                    caBox.setAttribute("data-placement", "top");
+                    caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0], resp[i].tags);
+                    caCol.appendChild(caBox);
+                    document.getElementById("card-row-1").appendChild(caCol);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
                         QuizzesDesk.redirectToQuiz(resp[i].id)
                     };
@@ -2281,16 +2441,22 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                     if (cardsInRow === 0) {
                         let newRow = document.createElement('div');
                         newRow.setAttribute("id", `card-row-${rowCount}`);
-                        newRow.setAttribute("class", "card-deck");
+                        newRow.setAttribute("class", "row equal-height-col");
                         quizzesDesk.appendChild(newRow);
                         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("new row = ");
                         Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(newRow);
                     }
+                    let caCol = document.createElement('div');
+                    caCol.setAttribute("class", "col-sm-4");
                     let caBox = document.createElement('div');
                     caBox.setAttribute("id", `quiz-card-${resp[i].id}`);
-                    caBox.setAttribute("class", "card quizzes-desk__quiz-card");
-                    caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0]);
-                    document.getElementById(`card-row-${rowCount}`).appendChild(caBox);
+                    caBox.setAttribute("class", "card quizzes-desk__quiz-card card-in-col pointer");
+                    caBox.setAttribute("data-toggle", "tooltip");
+                    caBox.setAttribute("title", "Открыть викторину для запуска или редактирования");
+                    caBox.setAttribute("data-placement", "top");
+                    caBox.innerHTML = Object(__WEBPACK_IMPORTED_MODULE_2__quizCard__["a" /* default */])(resp[i].title, resp[i].description, resp[i].version_date.split("T")[0], resp[i].tags);
+                    caCol.appendChild(caBox);
+                    document.getElementById(`card-row-${rowCount}`).appendChild(caCol);
                     document.getElementById(`quiz-card-${resp[i].id}`).onclick = () => {
                         QuizzesDesk.redirectToQuiz(resp[i].id)
                     };
@@ -2298,18 +2464,6 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                 }
             }
             document.getElementById("new-quiz").hidden = false;
-        });
-    }
-
-    static quizzesReq(callback) {
-        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].quizzesOfUser(function(err, resp) {
-            if (err) {
-                return console.log(" error");
-            }
-            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("quizzes of user norm");
-            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(err);
-            Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(resp);
-            callback(resp);
         });
     }
 }
@@ -2324,9 +2478,38 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
 /* harmony export (immutable) */ __webpack_exports__["a"] = quizCard;
 
 
-function quizCard(title, description, date) {
-    return `<img class="card-img-top" src="img/quiz_logo.png" alt="Card image cap">
-            <div class="card-body">
+const TAGS = [
+    "программирование", "информатика", "математика", "английский", "физика",
+    "история", "химия", "биология", "география", "литература", "русский"
+];
+
+const SRC = {
+    "программирование" : "img/tags/infa.png",
+    "информатика" : "img/tags/infa.png",
+    "математика" : "img/tags/math.png",
+    "английский" : "img/tags/eng.png",
+    "физика" : "img/tags/phy.png",
+    "история" : "img/tags/hist.png",
+    "химия" : "img/tags/chem.png",
+    "биология" : "img/tags/bio.png",
+    "география" : "img/tags/geo.png",
+    "литература" : "img/tags/lit.png",
+    "русский" : "img/tags/lit.png"
+};
+
+function quizCard(title, description, date, tags) {
+    let find_index = -1;
+    let src = "img/quiz_logo.png";
+    for (let i = 0; i < tags.length; i++) {
+        let tag = tags[i].toLowerCase().split(" ").join(""); // без пробелов
+        find_index = TAGS.indexOf(tag);
+        if (find_index !== -1) {
+            src = SRC[TAGS[find_index]];
+            break;
+        }
+    }
+    return `<img class="card-img-top" src=${src} alt="Card image cap">
+            <div class="card-body pointer">
                 <h5 class="card-title">${title}</h5>
                 <p class="card-text">${description}</p>
             </div>
@@ -2398,11 +2581,18 @@ class ProfileForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js_
         document.querySelector("#profile-email").value = resp.email;
     }
 
+    static clearMessages() {
+        document.getElementById("profile-form-ok").innerHTML = "";
+        document.getElementById("profile-form-error").innerHTML = "";
+    }
+
     sendRequest() {
         __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].changeUserData(this.nameValue, this.emailValue, (err, resp) => {
+            ProfileForm.clearMessages();
             if (err) {
-                document.getElementById("profile-form-error").innerHTML = "patch err";
-                return console.log("patch err");
+                document.getElementById("profile-form-error").innerHTML = "Некорректный ввод";
+                console.log("Некорректный ввод");
+                return;
             }
             this.setFormValues(resp);
             document.getElementById("profile-form-ok").innerHTML = ProfileForm.msgSuccess();
@@ -2411,9 +2601,11 @@ class ProfileForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js_
 
     sendRequestChangePswd() {
         __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].changePassword(this.passwordValue, this.newPasswordValue, (err, resp) => {
+            ProfileForm.clearMessages();
             if (err) {
-                document.getElementById("profile-form-error").innerHTML = "pswd err";
-                return console.log("pswd err");
+                document.getElementById("profile-form-error").innerHTML = "Ошибка смены пароля";
+                console.log("Ошибка смены пароля");
+                return;
             }
             document.getElementById("profile-form-ok").innerHTML = ProfileForm.msgSuccess();
         });
@@ -2421,7 +2613,8 @@ class ProfileForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js_
 
     addEventsToButtons() {
 
-        document.querySelector("#profile-form-btn").addEventListener("click", () => {
+        document.querySelector("#profile-form-btn").addEventListener("click", (event) => {
+            event.preventDefault();
             this.nameValue = document.querySelector("#profile-name").value;
             this.emailValue = document.querySelector("#profile-email").value;
             this.passwordValue = document.querySelector("#profile-old-password").value;
@@ -2475,6 +2668,7 @@ const ACTIONS = {
     "subscribe" : "subscribe",
     "join" : "join",
     "next_question" : "next_question",
+    "check" : "check",
     "answer" : "answer",
     "finish" : "finish"
 };
@@ -2544,6 +2738,9 @@ class WsController {
                 ws_dataObj.payload.data.state !== STATE.finish) {
                     Object(__WEBPACK_IMPORTED_MODULE_2__debugLog__["a" /* default */])(ws_dataObj.payload.data.current_question + "_STUDENT_____________________________");
                     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameStudentPage.renderQuestion(ws_dataObj);
+                } else if (ws_dataObj.payload.action === ACTIONS.check &&
+                    ws_dataObj.payload.data.state !== STATE.finish) {
+                    Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameStudentPage.renderAnswer(ws_dataObj);
                 } else if (ws_dataObj.payload.action === ACTIONS.finish) {
                     Object(__WEBPACK_IMPORTED_MODULE_2__debugLog__["a" /* default */])("_________________FINISH___________________");
                     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameStudentPage.renderFinish(ws_dataObj);
@@ -2618,6 +2815,17 @@ class WsController {
                     "action": "subscribe",
                     "pk": game_id,
                     "data": {
+                        "action": "check"
+                    }
+                }
+            }));
+        this.socket.send(JSON.stringify(
+            {
+                "stream": "games",
+                "payload": {
+                    "action": "subscribe",
+                    "pk": game_id,
+                    "data": {
                         "action": "finish"
                     }
                 }
@@ -2634,6 +2842,18 @@ class WsController {
                 "pk": game_id
             }
         }));
+    }
+
+    sendTrueAnsForAll(game_id) {
+        Object(__WEBPACK_IMPORTED_MODULE_2__debugLog__["a" /* default */])("GAME ID in sending = " + game_id);
+        this.socket.send(
+            JSON.stringify({
+                "stream": "games",
+                "payload": {
+                    "action": "check",
+                    "pk": game_id
+                }
+            }));
     }
 
     sendAnswerMessage(game_id, ans_var_index, cur_question_id) {
@@ -2665,26 +2885,164 @@ class WsController {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_linkOnButtons__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_globalBus_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__statisticItem__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__modules_debugLog__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__modules_network_AuthWorker__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__userGroupsByOrgId__ = __webpack_require__(9);
+
+
+
+
+
+
+
+
+
+
+
+class StaticticTable extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */] {
+
+    static render(url="http://api.keklik.xyz/api/games/my/?limit=5&offset=0") {
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("Statictic Table");
+        let statDesk = document.getElementById("table-statistic");
+
+        __WEBPACK_IMPORTED_MODULE_1__modules_network_Requester_js__["a" /* default */].getGameByUser(url, (err, resp) => {
+            if (err) {
+                Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])("err load user games");
+            } else {
+                statDesk.innerHTML = "";
+                let next_page = resp.next;
+                let prev_page = resp.previous;
+                resp = resp.results;
+                if (resp.length === 0) {
+                    statDesk.innerHTML = "<h3>Вы не провели ни одного соревнования</h3>";
+                } else {
+                    let content = "";
+                    // до 10
+                    let len = resp.length < 10 ? resp.length : 10;
+                    for (let i = 0; i < len; i++) {
+                        let game = resp[i];
+                        content += Object(__WEBPACK_IMPORTED_MODULE_4__statisticItem__["a" /* default */])(game.id, game.quiz.title, game.created_at.split("T")[0],
+                            game.group !== null ? game.group.organization.name : null,
+                            game.group !== null ? game.group.name : null);
+                    }
+
+                    let paginator = `<nav aria-label="Page navigation example">
+                                  <ul class="pagination justify-content-center">
+                                    <li id="prev-page-statistic" class="page-item">
+                                      <span class="page-link"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+                                    </li>
+                                    <li id="next-page-statistic" class="page-item">
+                                      <span class="page-link"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                                    </li>
+                                  </ul>
+                                </nav>`;
+
+                    statDesk.innerHTML = content + "<br>" + paginator;
+                    for (let i = 0; i < len; i++) {
+                        let game = resp[i];
+                        document.getElementById(`statistic-xls-by-pin-${game.id}`)
+                            .onclick = function() {open(`http://api.keklik.xyz/media/games/${game.id}/report`)};
+                    }
+
+                    if (next_page === null) {
+                        document.getElementById("next-page-statistic").setAttribute('class','page-item disabled');
+                    } else {
+                        document.getElementById("next-page-statistic").setAttribute('class','page-item');
+                        document.getElementById("next-page-statistic").onclick = () => {
+                            StaticticTable.render(next_page);
+                        }
+                    }
+
+                    if (prev_page === null) {
+                        document.getElementById("prev-page-statistic").setAttribute('class','page-item disabled');
+                    } else {
+                        document.getElementById("prev-page-statistic").setAttribute('class','page-item');
+                        document.getElementById("prev-page-statistic").onclick = () => {
+                            StaticticTable.render(prev_page);
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = StaticticTable;
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = statisticItem;
+
+
+function statisticItem(pin, quiz_name, game_date, org_name, group_name) {
+    let content = "";
+    if (org_name !== null || group_name !== null) {
+        content = `<small class="mb-1 text-left"><u>Организация:</u> ${org_name}</small><br>
+                   <small class="text-left"><u>Группа:</u> ${group_name}</small>`
+    } else {
+        content = `<small class="mb-1 text-left">&nbsp;</small><br>
+                   <small class="text-left">&nbsp;</small>`
+    }
+
+    return `<div class="list-group-item  align-items-start">
+                <div class="container">
+                    <div class="text-left d-flex justify-content-between row">
+                        <div class="col col-sm-9">
+                            <h5 class="mb-1"><u>PIN </u>${pin} ${quiz_name}</h5>
+                        </div>
+                        <div class="col col-sm-3 text-right">
+                            <small><u>Дата проведения:</u> ${game_date}</small>
+                        </div>
+                    </div>
+                    <div class="text-left row">
+                        <div class="col col-sm-9">
+                            ${content}
+                        </div>
+                        <div class="col col-sm-3 text-right">
+                            <button id=statistic-xls-by-pin-${pin} type="button" 
+                            data-toggle="tooltip" data-placement="left"
+                            title="Скачать отчет по соревнованию в формате Excel"
+                            class="btn btn-sm btn-success btn-icon">
+                                <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
+                            </button>                         
+                        </div>
+                    </div>
+                </div>
+            </div>`
+}
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = questionBox;
 
 
 function questionBox(index) {
     return (
         `<div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_${index}">
-             <button id="delete-question-box_${index}" type="button" class="delete-question-box close" data-dismiss="alert" aria-label="Close">
+            <button id="delete-question-box_${index}" type="button" class="delete-question-box close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">×</span>
-             </button>
+            </button>
+            <h4 id=q_num_${index} class="q_num_span">Вопрос ${index + 1} <red>&nbsp;*</red></h4>
             <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span id=q_num_${index} class="q_num_span input-group-text">Вопрос ${index + 1} <red>&nbsp;*</red></span>
-                </div>
                 <textarea class="edit-question form-control necessary-field" data-nec="true" aria-label="Описание..."></textarea>
             </div>
 
             <div class="row edit-quiz-form-ans-row">
                 <div class="col">
                     <div class="input-group mb-3">
-                        <div class="input-group-append">
+                        <div class="input-group-prepend">
                             <span class="input-group-text">Вариант 1<red>&nbsp;*</red></span>
                         </div>
                         <input type="text" class="edit-variant form-control necessary-field" data-nec="true" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2692,7 +3050,7 @@ function questionBox(index) {
                 </div>
                 <div class="col">
                     <div class="input-group mb-3">
-                        <div class="input-group-append">
+                        <div class="input-group-prepend">
                             <span class="input-group-text">Вариант 2<red>&nbsp;*</red></span>
                         </div>
                         <input type="text" class="edit-variant form-control necessary-field" data-nec="true" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2702,7 +3060,7 @@ function questionBox(index) {
             <div class="row edit-quiz-form-ans-row">
                 <div class="col">
                     <div class="input-group mb-3">
-                        <div class="input-group-append">
+                        <div class="input-group-prepend">
                             <span class="input-group-text">Вариант 3</span>
                         </div>
                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2710,7 +3068,7 @@ function questionBox(index) {
                 </div>
                 <div class="col">
                     <div class="input-group mb-3">
-                        <div class="input-group-append">
+                        <div class="input-group-prepend">
                             <span class="input-group-text">Вариант 4</span>
                         </div>
                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2720,7 +3078,7 @@ function questionBox(index) {
             <div class="row edit-quiz-form-ans-row">
                 <div class="col">
                     <div class="input-group mb-3">
-                        <div class="input-group-append">
+                        <div class="input-group-prepend">
                             <span class="input-group-text">Вариант 5</span>
                         </div>
                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2728,7 +3086,7 @@ function questionBox(index) {
                 </div>
                 <div class="col">
                     <div class="input-group mb-3">
-                        <div class="input-group-append">
+                        <div class="input-group-prepend">
                             <span class="input-group-text">Вариант 6</span>
                         </div>
                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2738,7 +3096,7 @@ function questionBox(index) {
             <div class="row edit-quiz-form-ans-row">
                 <div class="col">
                     <div class="input-group mb-3">
-                        <div class="input-group-append">
+                        <div class="input-group-prepend">
                             <span class="input-group-text">Вариант 7</span>
                         </div>
                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2746,7 +3104,7 @@ function questionBox(index) {
                 </div>
                 <div class="col">
                     <div class="input-group mb-3">
-                        <div class="input-group-append">
+                        <div class="input-group-prepend">
                             <span class="input-group-text">Вариант 8</span>
                         </div>
                         <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2756,16 +3114,16 @@ function questionBox(index) {
             <div class="row edit-quiz-form-ans-row">
                 <div class="col">
                     <div class="input-group mb-3">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-success text-white">Правильный вариант<red>&nbsp;*</red></span>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light text-success">Правильный вариант<red>&nbsp;*</red></span>
                         </div>
                         <input maxlength="1" type="number"  min="1" max="8" class="true-var edit-answer form-control necessary-field numeric-field" data-nec="true" placeholder="1" aria-label="" aria-describedby="basic-addon2">
                     </div>
                 </div>
                 <div class="col">
                     <div class="input-group mb-3">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-info text-white">Очки за ответ<red>&nbsp;*</red></span>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light text-info">Очки за ответ<red>&nbsp;*</red></span>
                         </div>
                         <input maxlength="3" type="number" min="1" max="999" class="edit-points form-control necessary-field numeric-field" data-nec="true" placeholder="5" aria-label="" aria-describedby="basic-addon2">
                     </div>
@@ -2777,7 +3135,7 @@ function questionBox(index) {
 }
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2807,21 +3165,23 @@ function emptyQuizForm() {
                 <label>Метки викторины <red>&nbsp;*</red></label>
                 <input id="edit-quiz-form__tags" class="form-control necessary-field" type="text" placeholder="Математика, Физика">
             </div>
+            <red class="text-info">
+                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                При составлении вопросов обратите внимание,
+                что варианты ответов во время соревнования будут перетасованы
+            </red>
             <hr>
-            <br>
             <div id="edit-quiz-form__questions">
                 <div class="edit-quiz-form__question-box" id="edit-quiz-form__question-box_0">
+                    <h4>Вопрос 1<red>&nbsp;*</red></h4>
                     <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Вопрос 1<red>&nbsp;*</red></span>
-                        </div>
                         <textarea class="edit-question form-control necessary-field" aria-label="Описание..."></textarea>
                     </div>
 
                     <div class="row edit-quiz-form-ans-row">
                         <div class="col">
                             <div class="input-group mb-3">
-                                <div class="input-group-append">
+                                <div class="input-group-prepend">
                                     <span class="input-group-text">Вариант 1<red>&nbsp;*</red></span>
                                 </div>
                                 <input type="text" class="edit-variant form-control necessary-field" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2829,7 +3189,7 @@ function emptyQuizForm() {
                         </div>
                         <div class="col">
                             <div class="input-group mb-3">
-                                <div class="input-group-append">
+                                <div class="input-group-prepend">
                                     <span class="input-group-text">Вариант 2<red>&nbsp;*</red></span>
                                 </div>
                                 <input type="text" class="edit-variant form-control necessary-field" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2839,7 +3199,7 @@ function emptyQuizForm() {
                     <div class="row edit-quiz-form-ans-row">
                         <div class="col">
                             <div class="input-group mb-3">
-                                <div class="input-group-append">
+                                <div class="input-group-prepend">
                                     <span class="input-group-text">Вариант 3</span>
                                 </div>
                                 <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2847,7 +3207,7 @@ function emptyQuizForm() {
                         </div>
                         <div class="col">
                             <div class="input-group mb-3">
-                                <div class="input-group-append">
+                                <div class="input-group-prepend">
                                     <span class="input-group-text">Вариант 4</span>
                                 </div>
                                 <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2857,7 +3217,7 @@ function emptyQuizForm() {
                     <div class="row edit-quiz-form-ans-row">
                         <div class="col">
                             <div class="input-group mb-3">
-                                <div class="input-group-append">
+                                <div class="input-group-prepend">
                                     <span class="input-group-text">Вариант 5</span>
                                 </div>
                                 <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2865,7 +3225,7 @@ function emptyQuizForm() {
                         </div>
                         <div class="col">
                             <div class="input-group mb-3">
-                                <div class="input-group-append">
+                                <div class="input-group-prepend">
                                     <span class="input-group-text">Вариант 6</span>
                                 </div>
                                 <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2875,7 +3235,7 @@ function emptyQuizForm() {
                     <div class="row edit-quiz-form-ans-row">
                         <div class="col">
                             <div class="input-group mb-3">
-                                <div class="input-group-append">
+                                <div class="input-group-prepend">
                                     <span class="input-group-text">Вариант 7</span>
                                 </div>
                                 <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2883,7 +3243,7 @@ function emptyQuizForm() {
                         </div>
                         <div class="col">
                             <div class="input-group mb-3">
-                                <div class="input-group-append">
+                                <div class="input-group-prepend">
                                     <span class="input-group-text">Вариант 8</span>
                                 </div>
                                 <input type="text" class="edit-variant form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
@@ -2893,16 +3253,16 @@ function emptyQuizForm() {
                     <div class="row edit-quiz-form-ans-row">
                         <div class="col">
                             <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                    <span class="input-group-text bg-success text-white">Правильный вариант<red>&nbsp;*</red></span>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-light text-success">Правильный вариант<red>&nbsp;*</red></span>
                                 </div>
                                 <input maxlength="1" type="number"  min="1" max="8" class="true-var edit-answer form-control necessary-field numeric-field" placeholder="1" aria-label="" aria-describedby="basic-addon2">
                             </div>
                         </div>
                         <div class="col">
                             <div class="input-group mb-3">
-                                <div class="input-group-append">
-                                    <span class="input-group-text bg-info text-white">Очки за ответ<red>&nbsp;*</red></span>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-light text-info">Очки за ответ<red>&nbsp;*</red></span>
                                 </div>
                                 <input maxlength="3" type="number"  min="1" max="999" class="edit-points form-control necessary-field numeric-field" placeholder="5" aria-label="" aria-describedby="basic-addon2">
                             </div>
@@ -2916,7 +3276,7 @@ function emptyQuizForm() {
 }
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2966,9 +3326,42 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
 
     addEventsOnButtons() {
         document.getElementById("next-question-btn").onclick = () => {
+            document.getElementById("true-ans-box").innerHTML = "";
             Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.switchNext();
             document.getElementById("game-table-question").innerHTML = "";
             this.game_table_answered = [];
+            document.getElementById("next-question-btn").setAttribute("disabled", "true");
+
+            const nextButton = () => {
+                document.getElementById("next-question-btn").removeAttribute("disabled");
+            };
+            setTimeout(nextButton, 1000);
+        };
+
+        document.getElementById("print-here-ans-btn").onclick = () => {
+            let trueBox = document.getElementById("true-ans-box");
+            trueBox.hidden = !trueBox.hidden;
+            if (trueBox.hidden) {
+                document.getElementById("print-here-ans-btn")
+                    .querySelector("i").setAttribute('class', 'fa fa-eye')
+            } else {
+                document.getElementById("print-here-ans-btn")
+                    .querySelector("i").setAttribute('class', 'fa fa-eye-slash')
+            }
+        };
+        document.getElementById("print-here-table-btn").onclick = () => {
+            let ansTable = document.getElementById("game-table-question");
+            ansTable.hidden = !ansTable.hidden;
+            if (ansTable.hidden) {
+                document.getElementById("print-here-table-btn")
+                    .querySelector("i").setAttribute('class', 'fa fa-eye')
+            } else {
+                document.getElementById("print-here-table-btn")
+                    .querySelector("i").setAttribute('class', 'fa fa-eye-slash')
+            }
+        };
+        document.getElementById("show-ans-btn").onclick = () => {
+            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.showTrueAnswer();
         };
     }
 
@@ -2978,6 +3371,11 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
         document.getElementById("game-diagram-1").hidden = true;
         document.getElementById("game-diagram-2").hidden = true;
         document.getElementById("exit-game-btn").hidden = true;
+
+        document.getElementById("print-here-ans-btn").hidden = true;
+        document.getElementById("print-here-table-btn").hidden = true;
+        document.getElementById("show-ans-btn").hidden = true;
+
         document.getElementById("question-preview").innerHTML = "";
         document.getElementById("next-question-btn").innerHTML = "Запустить соревнование >>";
         document.getElementById("answered-counter").hidden = true;
@@ -2992,18 +3390,37 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
         document.getElementById("joined-counter").hidden = true;
         document.getElementById("answered-counter").hidden = false;
         document.getElementById("game-table").hidden = false;
+        document.getElementById("print-here-ans-btn").hidden = false;
+        document.getElementById("print-here-table-btn").hidden = false;
+        document.getElementById("show-ans-btn").hidden = false;
     }
 
     renderQuestion(ws_dataObj) {
         document.getElementById("question-preview").innerHTML =
-            "Вопрос "+
+            "<u>Вопрос "+
             ws_dataObj.payload.data.current_question.number + "/<b>" +
-            ws_dataObj.payload.data.quiz.questions.length + "</b>" + ": " +
+            ws_dataObj.payload.data.quiz.questions.length + "</b>" + ":</u> " +
             Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(ws_dataObj.payload.data.current_question.question);
+
+        let game_data = ws_dataObj.payload.data;
+        let true_id = game_data.current_question.answer[0];
+        let ans = "";
+        game_data.current_question.variants.forEach((elem) => {
+            if (elem.id === true_id) {
+                ans = elem.variant;
+            }
+        });
+        document.getElementById("true-ans-box").innerHTML = `<u>Правильный ответ:</u> ${ans}`;
+        document.getElementById("true-ans-box").hidden = true;
+        document.getElementById("game-table-question").hidden = true;
+        document.getElementById("print-here-ans-btn")
+            .querySelector("i").setAttribute('class', 'fa fa-eye');
+        document.getElementById("print-here-table-btn")
+            .querySelector("i").setAttribute('class', 'fa fa-eye');
     }
 
     renderQuizNum(game_id) {
-        document.getElementById("game-num").innerHTML = `Ход соревнования ${game_id}`;
+        document.getElementById("game-num").innerHTML = `Ход соревнования <span class="badge badge-secondary">${game_id}</span>`;
         document.getElementById("next-question-btn").hidden = false;
     }
 
@@ -3092,6 +3509,11 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     }
 
     renderFinish(ws_dataObj) {
+        let game_data = ws_dataObj.payload.data;
+
+        document.getElementById("print-here-ans-btn").hidden = true;
+        document.getElementById("print-here-table-btn").hidden = true;
+        document.getElementById("show-ans-btn").hidden = true;
         // считаем соотношение ответов
         let all_ans_countObj = this.countAllAnswers(ws_dataObj);
         let all_ans_len = 0;
@@ -3161,7 +3583,17 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
         });
         chart_1.render();
         chart_2.render();
-        document.getElementById("question-preview").innerHTML = "Соревнование завершено";
+        let pin = game_data.id;
+        document.getElementById("question-preview").innerHTML =
+            `Соревнование завершено 
+                    <button id=xls-by-pin-${pin} type="button" 
+                    data-toggle="tooltip" data-placement="right"
+                    title="Скачать отчет по соревнованию в формате Excel"
+                    class="btn btn-sm btn-success btn-icon">
+                        <i class="fa fa-file-excel-o" aria-hidden="true"></i> Отчет .xls
+                    </button>`;
+        document.getElementById(`xls-by-pin-${pin}`).onclick = function() {open(`http://api.keklik.xyz/media/games/${pin}/report`)};
+
         document.getElementById("next-question-btn").hidden = true;
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = true;
@@ -3172,7 +3604,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3216,6 +3648,8 @@ class GameStudentPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     }
 
     renderQuestion(ws_dataObj) {
+        document.getElementById("figure-box").hidden = false;
+        document.getElementById("play-page-question").innerHTML = "";
         document.getElementById("play-page-header").innerHTML =
             "Соревнование " +
             ws_dataObj.payload.data.id + ": " +
@@ -3245,20 +3679,43 @@ class GameStudentPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
 
     renderWaitingStart() {
         document.getElementById("exit-game-student-btn").hidden = true;
-        document.getElementById("play-page-header").innerHTML = `Ожидание старта соревнования
-        ${Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.game_id}...`;
+        document.getElementById("play-page-header").innerHTML =
+            `Ожидание старта соревнования ${Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.game_id}...`;
         document.getElementById("play-page-question").innerHTML = "";
         document.getElementById("play-page-ans-list").innerHTML = "";
-        document.getElementById("play-figure").setAttribute("src", "img/pic.jpg");
+        document.getElementById("play-figure").hidden = true;
+        document.getElementById("play-figure").setAttribute("src", "");
+        document.getElementById("figure-box").hidden = true;
     }
 
     renderWaitingNext() {
-        document.getElementById("play-page-header").innerHTML = "Следующий вопрос...";
-        document.getElementById("play-page-question").innerHTML = "";
+        document.getElementById("play-page-header").innerHTML =
+            '<i class="fa fa-check-square-o" aria-hidden="true"></i>'+ " Ответ принят";
+        // вопрос оставляем
+        // document.getElementById("play-page-question").innerHTML = "";
         document.getElementById("play-page-ans-list").innerHTML = "";
     }
 
+    renderAnswer(ws_dataObj) {
+        document.getElementById("play-page-ans-list").innerHTML = "";
+        let game_data = ws_dataObj.payload.data;
+        let true_id = game_data.answer[0];
+        let ans = "";
+        game_data.variants.forEach((elem) => {
+            if (elem.id === true_id) {
+                ans = elem.variant;
+            }
+        });
+        Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(ans);
+        document.getElementById("play-page-ans-list").innerHTML =
+            `<br><h5 class="text-left text-success">
+                    <i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                    <u>Правильный ответ:</u> ${ans}
+                </h5>`;
+    }
+
     renderFinish(ws_dataObj) {
+        document.getElementById("play-page-question").innerHTML = "";
         document.getElementById("exit-game-student-btn").hidden = false;
         let data = ws_dataObj.payload.data;
         let max_score = 0;
@@ -3276,11 +3733,15 @@ class GameStudentPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
                 }
             }
         }
-
-        document.getElementById("play-page-header").innerHTML = "Соревнование завершено";
-        document.getElementById("play-page-question").innerHTML = "Ваш результат " + person_score + " из " + max_score;
+        document.getElementById("play-page-header").innerHTML =
+            `Соревнование завершено`;
+        document.getElementById("play-page-question").innerHTML =
+            `<h3 class="text-center text-white bg-success game-result-header">
+                Ваш результат <br>${person_score} из ${max_score}
+            </h3>`;
         document.getElementById("play-page-ans-list").innerHTML = "";
         document.getElementById("play-figure").setAttribute("src", "img/finish_flag_700.jpg");
+        document.getElementById("play-figure").hidden = false;
     }
 
     addEventsOnButtons() {
@@ -3291,7 +3752,7 @@ class GameStudentPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3360,7 +3821,7 @@ class ModalWindow {
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

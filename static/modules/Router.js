@@ -22,6 +22,7 @@ export default class Router {
 
         this.addRedirectOnNavBtn(
             {button: "nav-main-btn", nextPage: "main-page", pagePath: "/main"},
+            {button: "nav-logo-btn", nextPage: "main-page", pagePath: "/main"},
             {button: "nav-login-btn", nextPage: "login-page", pagePath: "/login"},
             {button: "nav-info-btn", nextPage: "info-page", pagePath: "/info"},
             {button: "nav-office-btn", nextPage: "office-page", pagePath: "/office"}
@@ -34,6 +35,7 @@ export default class Router {
         globalBus().btn.signoutBtn = document.getElementById("nav-signout-btn");
         globalBus().nav.loginBox = document.getElementById("nav-login-box");
         globalBus().btn.officeBtn = document.getElementById("nav-office-btn");
+        globalBus().btn.mainBtn = document.getElementById("nav-main-btn");
 
         let navBtnArr = document.getElementsByClassName('btnLink');
         for (let i = 0; i < navBtnArr.length; i++) {
@@ -72,14 +74,21 @@ export default class Router {
 
         document.getElementById("participate-btn").onclick = () => {
             globalBus().btn.officeBtn.click();
+            Router.navigate(globalBus().btn.officeBtn);
+        };
+
+        document.getElementById("nav-logo-btn").onclick = () => {
+            Router.navigate(globalBus().btn.mainBtn);
         };
 
         globalBus().btn.signoutBtn.onclick = () => {
             globalBus().authWorker.deleteToken();
             globalBus().btn.signoutBtn.hidden =true;
             globalBus().btn.loginBtn.hidden =false;
-            globalBus().btn.loginBtn.click();
+            // globalBus().btn.loginBtn.click();
             globalBus().nav.loginBox.innerHTML = "";
+            window.removeEventListener("beforeunload", globalBus().unloadFunc);
+            window.location = "/login";
         };
 
         Router.redirect();
@@ -92,8 +101,12 @@ export default class Router {
         });
     }
 
-    navigate() {
-
+    static navigate(btn_active) {
+        let navBtnArr = document.getElementsByClassName('btnLink');
+        for (let j = 0; j < navBtnArr.length; j++) {
+            navBtnArr[j].parentNode.setAttribute('class', 'nav-item');
+        }
+        btn_active.parentNode.setAttribute('class', 'nav-item active');
     }
 
     addRedirectOnNavBtn(...buttons) {
@@ -129,9 +142,9 @@ export default class Router {
                         PagePresenter.showOnlyOnePage("login-page");
                         break;
 
-                    case "/info":
-                        PagePresenter.showOnlyOnePage("info-page");
-                        break;
+                    // case "/info":
+                    //     PagePresenter.showOnlyOnePage("info-page");
+                    //     break;
 
                     default:
                         globalBus().btn.loginBtn.click();
@@ -159,15 +172,16 @@ export default class Router {
                                 globalBus().btn.loginBtn.click();
                                 return debugLog("office error router");
                             }
+                            Router.navigate(globalBus().btn.officeBtn);
                             globalBus().officePage.render();
                             PagePresenter.showOnlyOnePage("office-page");
                             return debugLog("office norm router");
                         });
                         break;
 
-                    case "/info":
-                        PagePresenter.showOnlyOnePage("info-page");
-                        break;
+                    // case "/info":
+                    //     PagePresenter.showOnlyOnePage("info-page");
+                    //     break;
 
                     case "/course":
                         Requester.whoami((err, resp) => {

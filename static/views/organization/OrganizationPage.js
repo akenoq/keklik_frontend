@@ -46,11 +46,6 @@ export default class OrganizationPage extends Page {
 
         for (let i = 0; i < groups_len; i++) {
             table_groups.innerHTML += `<div id="group-card-${groups[i].group.id}" class="card game-card-in-group">
-              <!--<div class="card-body">-->
-                <!--<h5 class="card-title">Актуальные соревнования</h5>-->
-                <!--&lt;!&ndash;<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>&ndash;&gt;-->
-                <!--&lt;!&ndash;<a href="#" class="btn btn-primary">Go somewhere</a>&ndash;&gt;-->
-              <!--</div>-->
             </div>`;
 
             Requester.getRunningGameByGroupId(groups[i].group.id, (err, resp) => {
@@ -73,7 +68,10 @@ export default class OrganizationPage extends Page {
                             htmlContent += `<div id="group-game-${running_games[i].id}" class="card-body">
                                 <h5 class="card-title"><u>PIN</u> ${running_games[i].id}</h5>
                                 <p class="card-text"><u>Название:</u> ${running_games[i].quiz.title}</p>
-                                <a id="to-group-game-btn-${running_games[i].id}" class="btn btn-success">Присоединиться</a>
+                                <a id="to-group-game-btn-${running_games[i].id}" 
+                                data-toggle="tooltip" data-placement="right"
+                                title="Участвовать в соревновании"
+                                class="btn btn-success">Присоединиться</a>
                               </div>
                               <hr>`;
                         }
