@@ -2019,7 +2019,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 function startApp() {
-    console.log("HELLO APP");
+    // console.log("HELLO APP");
     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().authWorker = new __WEBPACK_IMPORTED_MODULE_10__network_AuthWorker__["a" /* default */]();
     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().router = new __WEBPACK_IMPORTED_MODULE_1__Router_js__["a" /* default */]();
     let router = Object(__WEBPACK_IMPORTED_MODULE_0__globalBus_js__["a" /* default */])().router;
@@ -2410,8 +2410,8 @@ class QuizzesDesk extends __WEBPACK_IMPORTED_MODULE_0__Page__["a" /* default */]
                 return console.log(" error");
             }
             Object(__WEBPACK_IMPORTED_MODULE_5__modules_debugLog__["a" /* default */])(resp);
-            console.log(resp);
-            console.log(resp.tags);
+            // console.log(resp);
+            // console.log(resp.tags);
             let cardsInRow = 1;
             let rowCount = 1;
             for (let i = 0; i < resp.length; i++) {
@@ -2591,7 +2591,7 @@ class ProfileForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js_
             ProfileForm.clearMessages();
             if (err) {
                 document.getElementById("profile-form-error").innerHTML = "Некорректный ввод";
-                console.log("Некорректный ввод");
+                // console.log("Некорректный ввод");
                 return;
             }
             this.setFormValues(resp);
@@ -2604,7 +2604,7 @@ class ProfileForm extends __WEBPACK_IMPORTED_MODULE_0__modules_FormValidator_js_
             ProfileForm.clearMessages();
             if (err) {
                 document.getElementById("profile-form-error").innerHTML = "Ошибка смены пароля";
-                console.log("Ошибка смены пароля");
+                // console.log("Ошибка смены пароля");
                 return;
             }
             document.getElementById("profile-form-ok").innerHTML = ProfileForm.msgSuccess();

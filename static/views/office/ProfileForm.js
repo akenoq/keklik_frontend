@@ -61,7 +61,7 @@ export default class ProfileForm extends FormValidator {
             ProfileForm.clearMessages();
             if (err) {
                 document.getElementById("profile-form-error").innerHTML = "Некорректный ввод";
-                console.log("Некорректный ввод");
+                // console.log("Некорректный ввод");
                 return;
             }
             this.setFormValues(resp);
@@ -74,7 +74,7 @@ export default class ProfileForm extends FormValidator {
             ProfileForm.clearMessages();
             if (err) {
                 document.getElementById("profile-form-error").innerHTML = "Ошибка смены пароля";
-                console.log("Ошибка смены пароля");
+                // console.log("Ошибка смены пароля");
                 return;
             }
             document.getElementById("profile-form-ok").innerHTML = ProfileForm.msgSuccess();

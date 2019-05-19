@@ -14,7 +14,7 @@ import AuthWorker from "./network/AuthWorker";
 import QuizEditorPage from "../views/edit_quiz/QuizEditorPage";
 
 function startApp() {
-    console.log("HELLO APP");
+    // console.log("HELLO APP");
     globalBus().authWorker = new AuthWorker();
     globalBus().router = new Router();
     let router = globalBus().router;

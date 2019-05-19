@@ -57,8 +57,8 @@ export default class QuizzesDesk extends Page {
                 return console.log(" error");
             }
             debugLog(resp);
-            console.log(resp);
-            console.log(resp.tags);
+            // console.log(resp);
+            // console.log(resp.tags);
             let cardsInRow = 1;
             let rowCount = 1;
             for (let i = 0; i < resp.length; i++) {
