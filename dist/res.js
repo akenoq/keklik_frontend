@@ -281,6 +281,10 @@ class Requester {
         Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
 
+    static getGameRatingById(id, callback) {
+        Requester.requestToHost("GET", `api/games/${id}/rating/`, null, callback);
+    }
+
     static getGameByUser(url_to_page, callback) {
         let url = "api/" + url_to_page.split("/api/")[1];
         // https://api.example.org/accounts/?limit=100&offset=400
@@ -3281,10 +3285,10 @@ function emptyQuizForm() {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Page_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_PagePresenter__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_globalBus__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_debugLog__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__modules_globalBus__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__modules_htmlEntities__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__modules_debugLog__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__modules_network_Requester__ = __webpack_require__(2);
 
 
 
@@ -3298,14 +3302,14 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     constructor() {
         super();
         this.addEventsOnButtons();
-        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("teacher");
+        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("teacher");
         this.addRedirectOnButtons(
             {button: "start-game-btn_clicker", nextPage: "play-page-manage", pagePath: "/teacher"},
             {button: "exit-game-btn", nextPage: "office-page", pagePath: "/office"}
         );
         document.getElementById("exit-game-btn").onclick = () => {
-            Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("OFFICE rerender");
-            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().btn.officeBtn.click();
+            Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("OFFICE rerender");
+            Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().btn.officeBtn.click();
         };
         this.game_table_answered = [];
         this.game_table_joined = [];
@@ -3321,13 +3325,13 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
 
     attachRedirect() {
         this.prepareWaitingPlayers();
-        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("add redirect");
+        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("add redirect");
     }
 
     addEventsOnButtons() {
         document.getElementById("next-question-btn").onclick = () => {
             document.getElementById("true-ans-box").innerHTML = "";
-            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.switchNext();
+            Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.switchNext();
             document.getElementById("game-table-question").innerHTML = "";
             this.game_table_answered = [];
             document.getElementById("next-question-btn").setAttribute("disabled", "true");
@@ -3361,7 +3365,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             }
         };
         document.getElementById("show-ans-btn").onclick = () => {
-            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.showTrueAnswer();
+            Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.showTrueAnswer();
         };
     }
 
@@ -3400,7 +3404,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             "<u>Вопрос "+
             ws_dataObj.payload.data.current_question.number + "/<b>" +
             ws_dataObj.payload.data.quiz.questions.length + "</b>" + ":</u> " +
-            Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(ws_dataObj.payload.data.current_question.question);
+            Object(__WEBPACK_IMPORTED_MODULE_2__modules_htmlEntities__["a" /* default */])(ws_dataObj.payload.data.current_question.question);
 
         let game_data = ws_dataObj.payload.data;
         let true_id = game_data.current_question.answer[0];
@@ -3426,34 +3430,34 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
 
     renderAnsweredCounter() {
         document.getElementById("answered-counter").querySelector("ans").innerHTML =
-            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter.toString();
+            Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.answered_counter.toString();
         document.getElementById("answered-counter").querySelector("all").innerHTML =
-            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.joined_counter.toString();
+            Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.joined_counter.toString();
     }
 
     renderJoinedCounter() {
         document.getElementById("joined-counter").querySelector("all").innerHTML =
-            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.joined_counter.toString();
+            Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.joined_counter.toString();
     }
 
     renderGameTable(ws_gameObj) {
         let data = ws_gameObj.payload.data;
-        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("DATA = " + data);
+        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("DATA = " + data);
         let ansUser = data.player.user.username;
         if (data.player.user.last_name !== "") {
             ansUser = data.player.user.last_name;
         }
-        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("ОТВЕТИЛ " + ansUser);
+        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("ОТВЕТИЛ " + ansUser);
 
-        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])(this.game_table_answered);
-        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])(this.game_table_answered.indexOf(ansUser.toString()));
+        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])(this.game_table_answered);
+        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])(this.game_table_answered.indexOf(ansUser.toString()));
 
-        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("answered_counter до if =>" + Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter);
+        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("answered_counter до if =>" + Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.answered_counter);
 
         if (this.game_table_answered.indexOf(ansUser.toString()) === -1) {
             // индикатор сколько ответило
-            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter += 1;
-            Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])("answered_counter += 1 =>" + Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter);
+            Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.answered_counter += 1;
+            Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("answered_counter += 1 =>" + Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.answered_counter);
             this.renderAnsweredCounter();
 
             this.game_table_answered.push(ansUser.toString());
@@ -3461,16 +3465,16 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             if (data.correct === true) {
                 document.getElementById("game-table-question").innerHTML +=
                     `<tr class="line-result-table table-group-line right-ans">
-                    <th scope="row">${Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter}</th>
-                    <td>${Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(ansUser)}</td>
-                    <td>${Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(data.answer[0].variant)}</td>
+                    <th scope="row">${Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.answered_counter}</th>
+                    <td>${Object(__WEBPACK_IMPORTED_MODULE_2__modules_htmlEntities__["a" /* default */])(ansUser)}</td>
+                    <td>${Object(__WEBPACK_IMPORTED_MODULE_2__modules_htmlEntities__["a" /* default */])(data.answer[0].variant)}</td>
             </tr>`
             } else {
                 document.getElementById("game-table-question").innerHTML +=
                     `<tr class="line-result-table table-group-line">
-                    <th scope="row">${Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.answered_counter}</th>
-                    <td>${Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(ansUser)}</td>
-                    <td>${Object(__WEBPACK_IMPORTED_MODULE_3__modules_htmlEntities__["a" /* default */])(data.answer[0].variant)}</td>
+                    <th scope="row">${Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.answered_counter}</th>
+                    <td>${Object(__WEBPACK_IMPORTED_MODULE_2__modules_htmlEntities__["a" /* default */])(ansUser)}</td>
+                    <td>${Object(__WEBPACK_IMPORTED_MODULE_2__modules_htmlEntities__["a" /* default */])(data.answer[0].variant)}</td>
             </tr>`
             }
         }
@@ -3479,7 +3483,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
     newJoin(username) {
         if (this.game_table_joined.indexOf(username.toString()) === -1) {
             this.game_table_joined.push(username);
-            Object(__WEBPACK_IMPORTED_MODULE_2__modules_globalBus__["a" /* default */])().gameManager.joined_counter += 1;
+            Object(__WEBPACK_IMPORTED_MODULE_1__modules_globalBus__["a" /* default */])().gameManager.joined_counter += 1;
         }
     }
 
@@ -3504,8 +3508,50 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
                 }
             }
         }
-        Object(__WEBPACK_IMPORTED_MODULE_4__modules_debugLog__["a" /* default */])(answers_count);
+        Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])(answers_count);
         return answers_count;
+    }
+
+    renderTopTable(game_pk) {
+        let beforeElem  = document.getElementById('game-diagram-1');
+        let newElem = document.createElement("table");
+        newElem.setAttribute('id', 'top-table');
+        newElem.setAttribute('class', 'table bg-white');
+        newElem.setAttribute('hidden', 'true');
+        newElem.innerHTML = `
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Имя участника</th>
+                    <th scope="col">Рейтинг</th>
+                </tr>
+                </thead>
+                <tbody id="top-table_body">
+                </tbody>`;
+        let parentNode = beforeElem.parentNode;
+        parentNode.insertBefore(newElem,beforeElem);
+
+        let playerRow_html = '';
+
+        __WEBPACK_IMPORTED_MODULE_4__modules_network_Requester__["a" /* default */].getGameRatingById(game_pk, (err, resp) => {
+            if (err) {
+               Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("err in get game by id")
+            } else {
+                for (let i = 0; i < resp.length && i < 10; i++) {
+                    let current_player = resp[i];
+                    let username = current_player.user.username;
+                    let rating = current_player.rating;
+                    playerRow_html +=`<tr class="line-result-table table-group-line right-ans">
+                                            <th scope="row">${i + 1}</th>
+                                            <td>${username}</td>
+                                            <td>${rating}</td>
+                                        </tr>`;
+                    let tableBody = document.getElementById('top-table_body');
+                    tableBody.innerHTML = playerRow_html;
+                    document.getElementById('top-table').hidden = false;
+                }
+            }
+        });
     }
 
     renderFinish(ws_dataObj) {
@@ -3598,6 +3644,8 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = true;
         document.getElementById("game-table").hidden = true;
+
+        this.renderTopTable(pin);
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = GameTeacherPage;

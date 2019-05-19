@@ -179,6 +179,10 @@ export default class Requester {
         Requester.requestToHost("GET", `api/games/${id}`, null, callback);
     }
 
+    static getGameRatingById(id, callback) {
+        Requester.requestToHost("GET", `api/games/${id}/rating/`, null, callback);
+    }
+
     static getGameByUser(url_to_page, callback) {
         let url = "api/" + url_to_page.split("/api/")[1];
         // https://api.example.org/accounts/?limit=100&offset=400

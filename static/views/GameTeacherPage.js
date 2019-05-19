@@ -1,10 +1,10 @@
 "use strict";
 
 import Page from "./Page.js";
-import PagePresenter from "../modules/PagePresenter";
 import globalBus from "../modules/globalBus";
 import htmlEntities from "../modules/htmlEntities";
 import debugLog from "../modules/debugLog";
+import Requester from "../modules/network/Requester";
 
 export default class GameTeacherPage extends Page {
 
@@ -221,6 +221,48 @@ export default class GameTeacherPage extends Page {
         return answers_count;
     }
 
+    renderTopTable(game_pk) {
+        let beforeElem  = document.getElementById('game-diagram-1');
+        let newElem = document.createElement("table");
+        newElem.setAttribute('id', 'top-table');
+        newElem.setAttribute('class', 'table bg-white');
+        newElem.setAttribute('hidden', 'true');
+        newElem.innerHTML = `
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Имя участника</th>
+                    <th scope="col">Рейтинг</th>
+                </tr>
+                </thead>
+                <tbody id="top-table_body">
+                </tbody>`;
+        let parentNode = beforeElem.parentNode;
+        parentNode.insertBefore(newElem,beforeElem);
+
+        let playerRow_html = '';
+
+        Requester.getGameRatingById(game_pk, (err, resp) => {
+            if (err) {
+               debugLog("err in get game by id")
+            } else {
+                for (let i = 0; i < resp.length && i < 10; i++) {
+                    let current_player = resp[i];
+                    let username = current_player.user.username;
+                    let rating = current_player.rating;
+                    playerRow_html +=`<tr class="line-result-table table-group-line right-ans">
+                                            <th scope="row">${i + 1}</th>
+                                            <td>${username}</td>
+                                            <td>${rating}</td>
+                                        </tr>`;
+                    let tableBody = document.getElementById('top-table_body');
+                    tableBody.innerHTML = playerRow_html;
+                    document.getElementById('top-table').hidden = false;
+                }
+            }
+        });
+    }
+
     renderFinish(ws_dataObj) {
         let game_data = ws_dataObj.payload.data;
 
@@ -311,5 +353,7 @@ export default class GameTeacherPage extends Page {
         document.getElementById("answered-counter").hidden = true;
         document.getElementById("joined-counter").hidden = true;
         document.getElementById("game-table").hidden = true;
+
+        this.renderTopTable(pin);
     }
 }
