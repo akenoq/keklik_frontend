@@ -246,7 +246,7 @@ export default class GameTeacherPage extends Page {
             if (err) {
                debugLog("err in get game by id")
             } else {
-                for (let i = 0; i < resp.length && i < 10; i++) {
+                for (let i = 0; i < resp.length && i < 15; i++) {
                     let current_player = resp[i];
                     let username = current_player.user.username;
                     let rating = current_player.rating;
@@ -255,10 +255,10 @@ export default class GameTeacherPage extends Page {
                                             <td>${username}</td>
                                             <td>${rating}</td>
                                         </tr>`;
-                    let tableBody = document.getElementById('top-table_body');
-                    tableBody.innerHTML = playerRow_html;
-                    document.getElementById('top-table').hidden = false;
                 }
+                let tableBody = document.getElementById('top-table_body');
+                tableBody.innerHTML = playerRow_html;
+                document.getElementById('top-table').hidden = false;
             }
         });
     }

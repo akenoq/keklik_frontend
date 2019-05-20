@@ -3537,7 +3537,7 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
             if (err) {
                Object(__WEBPACK_IMPORTED_MODULE_3__modules_debugLog__["a" /* default */])("err in get game by id")
             } else {
-                for (let i = 0; i < resp.length && i < 10; i++) {
+                for (let i = 0; i < resp.length && i < 15; i++) {
                     let current_player = resp[i];
                     let username = current_player.user.username;
                     let rating = current_player.rating;
@@ -3546,10 +3546,10 @@ class GameTeacherPage extends __WEBPACK_IMPORTED_MODULE_0__Page_js__["a" /* defa
                                             <td>${username}</td>
                                             <td>${rating}</td>
                                         </tr>`;
-                    let tableBody = document.getElementById('top-table_body');
-                    tableBody.innerHTML = playerRow_html;
-                    document.getElementById('top-table').hidden = false;
                 }
+                let tableBody = document.getElementById('top-table_body');
+                tableBody.innerHTML = playerRow_html;
+                document.getElementById('top-table').hidden = false;
             }
         });
     }
