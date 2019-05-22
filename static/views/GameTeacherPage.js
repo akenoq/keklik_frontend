@@ -81,6 +81,9 @@ export default class GameTeacherPage extends Page {
     prepareWaitingPlayers() {
         this.game_table_answered = [];
         this.game_table_joined = [];
+        if (document.getElementById("top-table")) {
+            document.getElementById("top-table").remove();
+        }
         document.getElementById("game-diagram-1").hidden = true;
         document.getElementById("game-diagram-2").hidden = true;
         document.getElementById("exit-game-btn").hidden = true;
