@@ -2725,7 +2725,7 @@ class WsController {
                     ws_dataObj.payload.data.state !== STATE.finish) {
                     Object(__WEBPACK_IMPORTED_MODULE_2__debugLog__["a" /* default */])(ws_dataObj.payload.data.current_question + "_TEACHER_____________________________");
                     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderQuestion(ws_dataObj);
-                } else if (ws_dataObj.payload.data.state === STATE.finish) {
+                } else if (ws_dataObj.payload.action === ACTIONS.finish) {
                     Object(__WEBPACK_IMPORTED_MODULE_2__debugLog__["a" /* default */])("_________________FINISH___________________");
                     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameTeacherPage.renderFinish(ws_dataObj);
                     Object(__WEBPACK_IMPORTED_MODULE_0__globalBus__["a" /* default */])().gameManager.reset();
@@ -2797,6 +2797,17 @@ class WsController {
                     }
                 }
             }));
+        this.socket.send(JSON.stringify(
+            {
+                "stream": "games",
+                "payload": {
+                    "action": "subscribe",
+                    "pk": game_id,
+                    "data": {
+                        "action": "finish"
+                    }
+                }
+            }));
     }
 
     subscribeStudent(game_id) {
@@ -2836,6 +2847,8 @@ class WsController {
             }));
     }
 
+    // teacher
+
     sendNextMessage(game_id) {
         Object(__WEBPACK_IMPORTED_MODULE_2__debugLog__["a" /* default */])("GAME ID in sending = " + game_id);
         this.socket.send(
@@ -2859,6 +2872,8 @@ class WsController {
                 }
             }));
     }
+
+    // student
 
     sendAnswerMessage(game_id, ans_var_index, cur_question_id) {
         Object(__WEBPACK_IMPORTED_MODULE_2__debugLog__["a" /* default */])("GAME ID in ANSWERING = " + game_id);
